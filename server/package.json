@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Boot Workflow ----",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvc-works/boot-workflow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mvc-works/boot-workflow/issues"
+  },
+  "homepage": "https://github.com/mvc-works/boot-workflow#readme",
+  "dependencies": {
+    "shortid": "^2.2.6",
+    "ws": "^1.1.0"
+  }
+}
