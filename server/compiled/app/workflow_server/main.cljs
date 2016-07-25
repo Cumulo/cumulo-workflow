@@ -1,10 +1,10 @@
 
-(ns tiye-server.main
+(ns workflow-server.main
   (:require [cljs.nodejs :as nodejs]
-            [tiye-server.schema :as schema]
+            [workflow-server.schema :as schema]
             [cumulo-server.core :refer [setup-server! reload-renderer!]]
-            [tiye-server.updater.core :refer [updater]]
-            [tiye-server.view :refer [render-view render-scene]]))
+            [workflow-server.updater.core :refer [updater]]
+            [workflow-server.view :refer [render-view render-scene]]))
 
 (defonce db-ref (atom schema/database))
 

@@ -1,5 +1,5 @@
 
-(ns tiye-server.schema)
+(ns workflow-server.schema)
 
 (def database {:states {}, :messages {}, :users {}})
 

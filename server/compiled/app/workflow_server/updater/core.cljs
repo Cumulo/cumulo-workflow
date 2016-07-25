@@ -1,6 +1,6 @@
 
-(ns tiye-server.updater.core
-  (:require [tiye-server.updater.state :as state]))
+(ns workflow-server.updater.core
+  (:require [workflow-server.updater.state :as state]))
 
 (defn updater [db op op-data state-id op-id op-time]
   (case
