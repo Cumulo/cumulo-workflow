@@ -18,7 +18,7 @@
 (defn -main []
   (enable-console-print!)
   (render-app!)
-  (setup-socket! store-ref {:url "ws://frp.im:5020"})
+  (setup-socket! store-ref {:url "ws://repo:5020"})
   (add-watch store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
   (println "app started!")
