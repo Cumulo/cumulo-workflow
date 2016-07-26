@@ -1,11 +1,3 @@
 
-Tiye Server
+Server
 ----
-
-### Usage
-
-### Develop
-
-### License
-
-MIT

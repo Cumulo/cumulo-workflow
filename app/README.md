@@ -1,9 +1,3 @@
 
-Tiye App
+App
 ----
-
-### Develop
-
-### License
-
-MIT
