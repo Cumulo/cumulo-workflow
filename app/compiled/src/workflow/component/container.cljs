@@ -11,6 +11,6 @@
     (div
       {:style (merge layout/fullscreen layout/horizontal)}
       (div {:style widget/row-divider})
-      (comp-debug (:state store) {:bottom 0, :left 0}))))
+      (comp-debug store {:bottom 0, :max-width "100%", :left 0}))))
 
 (def comp-container (create-comp :container render))

@@ -1,7 +1,6 @@
 
 [
 [ "ns" "workflow-server.schema" ]
-[ "def" "database" [ "{}" [ ":states" [ "{}" ] ] [ ":users" [ "{}" ] ] [ ":messages" [ "{}" ] ] ] ]
-[ "def" "state" [ "{}" [ ":user-id" "nil" ] [ ":id" "nil" ] [ ":buffer" "nil" ] [ ":buffer-time" "nil" ] [ ":show-settings?" "false" ] ] ]
-[ "def" "message" [ "{}" [ ":id" "nil" ] [ ":text" "|" ] [ ":nickname" "|" ] [ ":time" "nil" ] [ ":writing?" "false" ] ] ]
+[ "def" "database" [ "{}" [ ":states" [ "{}" ] ] [ ":users" [ "{}" ] ] ] ]
+[ "def" "state" [ "{}" [ ":user-id" "nil" ] [ ":id" "nil" ] [ ":nickname" "nil" ] ] ]
 ]
