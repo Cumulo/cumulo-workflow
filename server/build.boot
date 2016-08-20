@@ -33,7 +33,7 @@
 
 (def all-builds
   [{:id "dev"
-    :source-paths ["compiled/app"]
+    :source-paths ["src/"]
     :compiler {:output-to "app.js"
                :output-dir "server_out/"
                :main 'workflow-server.main
@@ -57,7 +57,7 @@
 
 (deftask dev! []
   (set-env!
-    :source-paths #{"compiled/app"})
+    :source-paths #{"src"})
   (comp
     (start-stack-editor! :port 7011)
     (target :dir #{"src/"})
@@ -71,10 +71,11 @@
 
 (deftask build-simple []
   (comp
-    (transform-stack :filename "stack-sepal.ir" :port 7011)
+    (transform-stack :filename "stack-sepal.ir")
     (cljs :optimizations :simple :compiler-options {:target :nodejs})
     (target)))
 
+; use build-simple instead due to WebSocket reasons
 (deftask build-advanced []
   (comp
     (transform-stack :filename "stack-sepal.ir" :port 7011)

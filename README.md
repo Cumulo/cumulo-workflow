@@ -10,14 +10,17 @@ Features:
 * hot swapping server
 * declarative programming
 
+Based on [Stack Editor](https://github.com/mvc-works/stack-workflow).
+
 ### Usages
 
 Start developing app:
 
 ```bash
 cd app/
-boot dev
+boot dev!
 # open browser
+open http://repo.cirru.org/stack-editor/target/index.html
 ```
 
 Start developing server:
@@ -25,17 +28,12 @@ Start developing server:
 ```bash
 cd server/
 npm install
-boot dev
+boot dev!
 # and...
 cd target/
 node main.js
-```
-
-Start editing code:
-
-```bash
-cle app/cirru/src/workflow/ server/cirru/app/workflow_server/
-# open http://repo.cirru.org/light-editor
+# open another browser
+open http://repo.cirru.org/stack-editor/target/index.html?port=7011
 ```
 
 ### Build
