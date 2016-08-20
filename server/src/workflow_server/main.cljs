@@ -8,6 +8,10 @@
 
 (defonce db-ref (atom schema/database))
 
+(defn on-jsload []
+  (println "code updated")
+  (reload-renderer! @db-ref updater render-scene render-view))
+
 (defn -main []
   (nodejs/enable-util-print!)
   (setup-server! db-ref updater render-scene render-view {:port 5020})
@@ -15,7 +19,3 @@
   (println "server started"))
 
 (set! *main-cli-fn* -main)
-
-(defn on-jsload []
-  (println "code updated")
-  (reload-renderer! @db-ref updater render-scene render-view))

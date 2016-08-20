@@ -1,6 +1,0 @@
-
-[
-[ "ns" "workflow-server.schema" ]
-[ "def" "database" [ "{}" [ ":states" [ "{}" ] ] [ ":users" [ "{}" ] ] ] ]
-[ "def" "state" [ "{}" [ ":user-id" "nil" ] [ ":id" "nil" ] [ ":nickname" "nil" ] ] ]
-]
