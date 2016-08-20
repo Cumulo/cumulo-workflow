@@ -4,7 +4,7 @@
             [respo.alias :refer [create-comp div span]]
             [workflow.style.widget :as widget]
             [workflow.style.layout :as layout]
-            [respo.component.debug :refer [comp-debug]]))
+            [respo.comp.debug :refer [comp-debug]]))
 
 (defn render [store]
   (fn [state mutate!]
