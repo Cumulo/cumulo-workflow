@@ -4,10 +4,11 @@
                  [org.clojure/clojure       "1.8.0"       :scope "test"]
                  [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
                  [adzerk/boot-reload        "0.4.12"      :scope "test"]
-                 [cirru/stack-server        "0.1.7"       :scope "test"]
+                 [cirru/stack-server        "0.1.8"       :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"]
                  [respo                     "0.3.9"]
+                 [respo/ui                  "0.1.1"]
                  [cumulo/client             "0.1.1"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
