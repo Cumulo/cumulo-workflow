@@ -19,7 +19,7 @@ Start developing app:
 ```bash
 cd app/
 boot dev!
-# open browser
+# open browser for editor
 open http://repo.cirru.org/stack-editor/target/index.html
 ```
 
@@ -28,12 +28,17 @@ Start developing server:
 ```bash
 cd server/
 npm install
-boot dev!
-# and...
-cd target/
-node main.js
-# open another browser
+
+boot repl
+# then run `(boot (dev!))` for editor
 open http://repo.cirru.org/stack-editor/target/index.html?port=7011
+
+boot dev
+# then run `(start-figwheel!)`
+
+# start node.js server
+cd target/
+node app.js
 ```
 
 ### Build
