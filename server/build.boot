@@ -7,10 +7,10 @@
                  [com.cemerick/piggieback   "0.2.1"       :scope "test"]
                  [org.clojure/tools.nrepl   "0.2.12"      :scope "test"]
                  [ajchemist/boot-figwheel   "0.5.4-6"     :scope "test"]
-                 [cirru/stack-server        "0.1.8"       :scope "test"]
+                 [cirru/stack-server        "0.1.11"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"       :scope "test"]
-                 [cumulo/server             "0.1.0"]
+                 [cumulo/server             "0.1.1"]
                  [cumulo/shallow-diff       "0.1.1"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
@@ -55,11 +55,12 @@
     (target :dir #{"src/"})))
 
 (deftask dev! []
-  (set-env!
-    :source-paths #{"src"})
   (comp
     (start-stack-editor! :port 7011)
-    (target :dir #{"src/"})
+    (target :dir #{"src/"})))
+
+(deftask dev []
+  (comp
     (repl)
     (figwheel
       :build-ids ["dev"]
