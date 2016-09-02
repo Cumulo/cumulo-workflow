@@ -56,6 +56,7 @@
 
 (deftask dev! []
   (comp
+    (repl)
     (start-stack-editor! :port 7011)
     (target :dir #{"src/"})))
 
