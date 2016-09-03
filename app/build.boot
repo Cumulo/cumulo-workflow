@@ -7,7 +7,7 @@
                  [cirru/stack-server        "0.1.11"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"]
-                 [respo                     "0.3.9"]
+                 [respo                     "0.3.13"]
                  [respo/ui                  "0.1.1"]
                  [cumulo/client             "0.1.1"]])
 
