@@ -1,7 +1,7 @@
 
 (ns workflow.core
   (:require [respo.core :refer [render! clear-cache!]]
-            [workflow.component.container :refer [comp-container]]
+            [workflow.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [cumulo-client.core :refer [send! setup-socket!]]))
 

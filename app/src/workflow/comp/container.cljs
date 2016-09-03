@@ -1,5 +1,5 @@
 
-(ns workflow.component.container
+(ns workflow.comp.container
   (:require [hsl.core :refer [hsl]]
             [respo.alias :refer [create-comp div span]]
             [workflow.style.widget :as widget]
