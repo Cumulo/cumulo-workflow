@@ -29,14 +29,7 @@
   (let [server-ch (run-server! {:port 5020})]
     (go-loop
       []
-      (let [[op op-data state-id op-id op-time] (<! server-ch)
-            new-db (updater
-                     @writer-db-ref
-                     op
-                     op-data
-                     state-id
-                     op-id
-                     op-time)]
+      (let [[op op-data state-id op-id op-time] (<! server-ch)]
         (comment
           println
           "event"
@@ -46,7 +39,16 @@
           state-id
           op-id
           op-time)
-        (reset! writer-db-ref new-db)
+        (try
+          (let [new-db (updater
+                         @writer-db-ref
+                         op
+                         op-data
+                         state-id
+                         op-id
+                         op-time)]
+            (reset! writer-db-ref new-db))
+          (catch js/Error e (.log js/console e)))
         (recur)))
     (render-loop!))
   (add-watch reader-db-ref :log (fn []))
