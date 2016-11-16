@@ -1,15 +1,14 @@
 
-(ns workflow.style.typeset
-  (:require [hsl.core :refer [hsl]]))
+(ns workflow.style.typeset (:require [hsl.core :refer [hsl]]))
 
 (def entry {})
 
 (def heading
- {:line-height 2,
-  :color (hsl 0 0 70),
-  :font-size "20px",
-  :font-weight "lighter",
-  :margin-top "16px"})
+  {:line-height 2,
+   :color (hsl 0 0 70),
+   :font-size "20px",
+   :font-weight "lighter",
+   :margin-top "16px"})
 
 (def paragraph {:line-height 2})
 

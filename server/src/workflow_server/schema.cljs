@@ -1,5 +1,5 @@
 
-(ns workflow-server.schema)
+(ns workflow-server.schema )
 
 (def database {:states {}, :users {}})
 

@@ -11,13 +11,12 @@
 (defn render [store]
   (fn [state mutate!]
     (div
-      {:style (merge layout/fullscreen layout/horizontal)}
+     {:style (merge layout/fullscreen layout/horizontal)}
+     (div
+      {}
       (div
-        {}
-        (div
-          {:style ui/button,
-           :event {:click (fn [e dispatch!] (dispatch! :ping nil))}}
-          (comp-text "ping" nil)))
-      (comp-debug store {:bottom 0, :max-width "100%", :left 0}))))
+       {:style ui/button, :event {:click (fn [e dispatch!] (dispatch! :ping nil))}}
+       (comp-text "ping" nil)))
+     (comp-debug store {:bottom 0, :max-width "100%", :left 0}))))
 
 (def comp-container (create-comp :container render))

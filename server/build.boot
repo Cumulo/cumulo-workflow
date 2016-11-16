@@ -1,13 +1,13 @@
 
 (set-env!
- :dependencies '[[org.clojure/clojurescript "1.9.216"     :scope "test"]
-                 [org.clojure/clojure       "1.8.0"       :scope "test"]
+ :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "test"]
+                 [org.clojure/clojurescript "1.9.293"     :scope "test"]
                  [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
                  [figwheel-sidecar          "0.5.4-7"     :scope "test"]
                  [com.cemerick/piggieback   "0.2.1"       :scope "test"]
                  [org.clojure/tools.nrepl   "0.2.12"      :scope "test"]
                  [ajchemist/boot-figwheel   "0.5.4-6"     :scope "test"]
-                 [cirru/boot-stack-server   "0.1.12"      :scope "test"]
+                 [cirru/boot-stack-server   "0.1.23"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"       :scope "test"]
                  [cumulo/server             "0.1.1"]
@@ -23,7 +23,7 @@
 (task-options!
   pom {:project     'tiye/tiye-server
        :version     +version+
-       :description "Tiye server"
+       :description "Cumulo workflow server"
        :url         "https://github.com/tiye/tiye.me"
        :scm         {:url "https://github.com/tiye/tiye.me"}
        :license     {"MIT" "http://opensource.org/licenses/mit-license.php"}})
@@ -54,7 +54,7 @@
     (transform-stack :filename "stack-sepal.ir")
     (target :dir #{"src/"})))
 
-(deftask dev! []
+(deftask editor! []
   (comp
     (repl)
     (start-stack-editor! :port 7011)
@@ -73,19 +73,25 @@
 (deftask build-simple []
   (comp
     (transform-stack :filename "stack-sepal.ir")
-    (cljs :optimizations :simple :compiler-options {:target :nodejs})
+    (cljs :optimizations :simple
+          :compiler-options {:target :nodejs
+                             :language-in :ecmascript5
+                             :parallel-build true})
     (target)))
 
 ; use build-simple instead due to WebSocket reasons
 (deftask build-advanced []
   (comp
     (transform-stack :filename "stack-sepal.ir" :port 7011)
-    (cljs :optimizations :advanced :compiler-options {:target :nodejs})
+    (cljs :optimizations :advanced
+          :compiler-options {:target :nodejs
+                             :language-in :ecmascript5
+                             :parallel-build true})
     (target)))
 
 (deftask rsync []
   (with-pre-wrap fileset
-    (sh "rsync" "-r" "target" "tiye:servers/tiye" "--exclude" "main.out" "--delete")
+    (sh "rsync" "-r" "target" "repo.tiye.me:servers/tiye" "--exclude" "main.out" "--delete")
     fileset))
 
 (deftask watch-test []
@@ -93,4 +99,4 @@
     :source-paths #{"src" "test"})
   (comp
     (watch)
-    (test :namespaces '#{tiye-server.test})))
+    (test :namespaces '#{workflow-server.test})))

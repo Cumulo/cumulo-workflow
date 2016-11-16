@@ -3,3 +3,4 @@
 /src/*.png
 /src/*.json
 /src/*.js
+/.nrepl-*

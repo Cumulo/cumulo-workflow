@@ -29,8 +29,7 @@ Start developing server:
 cd server/
 npm install
 
-boot repl
-# then run `(boot (dev!))` for editor
+boot editor!
 open http://repo.cirru.org/stack-editor/target/index.html?port=7011
 
 boot dev
