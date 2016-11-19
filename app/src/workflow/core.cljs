@@ -3,7 +3,7 @@
   (:require [respo.core :refer [render! clear-cache!]]
             [workflow.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [cumulo-client.core :refer [send! setup-socket!]]))
+            [workflow.network :refer [send! setup-socket!]]))
 
 (defn dispatch! [op op-data] (send! op op-data))
 

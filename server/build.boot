@@ -10,8 +10,9 @@
                  [cirru/boot-stack-server   "0.1.23"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"       :scope "test"]
-                 [cumulo/server             "0.1.1"]
-                 [cumulo/shallow-diff       "0.1.1"]])
+                 [org.clojure/core.async    "0.2.385"     :scope "test"]
+                 [cumulo/shallow-diff       "0.1.1"]
+                 [cumulo/recollect          "0.1.0"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[stack-server.core  :refer [start-stack-editor! transform-stack]]

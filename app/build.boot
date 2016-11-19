@@ -9,7 +9,8 @@
                  [mvc-works/hsl             "0.1.2"]
                  [respo                     "0.3.32"]
                  [respo/ui                  "0.1.4"]
-                 [cumulo/client             "0.1.1"]])
+                 [org.clojure/core.async    "0.2.374"]
+                 [cumulo/recollect          "0.1.0"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[adzerk.boot-reload :refer [reload]]

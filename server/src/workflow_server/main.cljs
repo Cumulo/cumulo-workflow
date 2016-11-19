@@ -2,7 +2,7 @@
 (ns workflow-server.main
   (:require [cljs.nodejs :as nodejs]
             [workflow-server.schema :as schema]
-            [cumulo-server.core :refer [run-server! render-clients!]]
+            [workflow-server.network :refer [run-server! render-clients!]]
             [workflow-server.updater.core :refer [updater]]
             [workflow-server.view :refer [render-view render-scene]]
             [cljs.core.async :refer [<!]])
