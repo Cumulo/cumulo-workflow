@@ -2,8 +2,10 @@
 (ns workflow-server.network
   (:require [cljs.nodejs :as nodejs]
             [cljs.reader :as reader]
-            [shallow-diff.diff :refer [diff]]
-            [cljs.core.async :refer [chan >!]])
+            [cljs.core.async :refer [chan >!]]
+            [workflow-server.twig.container :refer [twig-container]]
+            [recollect.diff :refer [diff-bunch]]
+            [recollect.bunch :refer [render-bunch]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (defonce socket-registry (atom {}))
@@ -45,13 +47,12 @@
 
 (defonce client-caches (atom {}))
 
-(defn render-clients! [db render-scene render-view]
+(defn render-clients! [db]
   (doseq [state-entry (:states db)]
-    (let [state-id (first state-entry)
-          scene (render-scene db)
-          new-store (render-view state-id scene)
-          old-store (or (get @client-caches state-id) {})
-          changes (diff old-store new-store)
+    (let [[state-id state] state-entry
+          old-store (or (get @client-caches state-id) nil)
+          new-store (render-bunch (twig-container db state) old-store)
+          changes (diff-bunch [] old-store new-store)
           socket (get @socket-registry state-id)]
       (if (and (not= changes []) (some? socket))
         (do (.send socket (pr-str changes)) (swap! client-caches assoc state-id new-store))))))

@@ -4,7 +4,6 @@
             [workflow-server.schema :as schema]
             [workflow-server.network :refer [run-server! render-clients!]]
             [workflow-server.updater.core :refer [updater]]
-            [workflow-server.view :refer [render-view render-scene]]
             [cljs.core.async :refer [<!]])
   (:require-macros [cljs.core.async.macros :refer [go-loop]]))
 
@@ -12,16 +11,14 @@
 
 (defonce reader-db-ref (atom @writer-db-ref))
 
-(defn on-jsload []
-  (println "code updated.")
-  (render-clients! @reader-db-ref render-scene render-view))
+(defn on-jsload [] (println "code updated.") (render-clients! @reader-db-ref))
 
 (defn render-loop! []
   (if (not= @reader-db-ref @writer-db-ref)
     (do
      (reset! reader-db-ref @writer-db-ref)
      (comment println "render loop")
-     (render-clients! @reader-db-ref render-scene render-view)))
+     (render-clients! @reader-db-ref)))
   (js/setTimeout render-loop! 300))
 
 (defn -main []
