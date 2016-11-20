@@ -3,15 +3,13 @@
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
             [respo.alias :refer [create-comp div span]]
-            [workflow.style.widget :as widget]
-            [workflow.style.layout :as layout]
             [respo.comp.debug :refer [comp-debug]]
             [respo.comp.text :refer [comp-text]]))
 
 (defn render [store]
   (fn [state mutate!]
     (div
-     {:style (merge layout/fullscreen layout/horizontal)}
+     {:style (merge ui/fullscreen ui/row)}
      (div
       {}
       (div
