@@ -2,6 +2,7 @@
 (set-env!
  :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "test"]
                  [org.clojure/clojurescript "1.9.293"     :scope "test"]
+                 [andare                    "0.4.0"       :scope "test"]
                  [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
                  [adzerk/boot-reload        "0.4.12"      :scope "test"]
                  [cirru/boot-stack-server   "0.1.23"      :scope "test"]
@@ -9,8 +10,7 @@
                  [mvc-works/hsl             "0.1.2"]
                  [respo                     "0.3.32"]
                  [respo/ui                  "0.1.4"]
-                 [org.clojure/core.async    "0.2.374"]
-                 [cumulo/recollect          "0.1.0"]])
+                 [cumulo/recollect          "0.1.1"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[adzerk.boot-reload :refer [reload]]
@@ -37,6 +37,7 @@
       (head {}
         (title (use-text "Cumulo Workflow"))
         (link {:attrs {:rel "icon" :type "image/jpg" :href "cumulo.png"}})
+        (link {:attrs {:rel "stylesheet" :type "text/css" :href "style.css"}})
         (if (:build? data)
           (link (:attrs {:rel "manifest" :href "manifest.json"})))
         (style (use-text "body {margin: 0;}"))

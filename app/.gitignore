@@ -4,3 +4,5 @@
 /src/*.json
 /src/*.js
 /.nrepl-*
+
+node_modules
