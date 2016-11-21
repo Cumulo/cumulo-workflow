@@ -6,7 +6,8 @@
             [respo.alias :refer [create-comp div span]]
             [respo.comp.debug :refer [comp-debug]]
             [respo.comp.text :refer [comp-code comp-text]]
-            [workflow.comp.home :refer [comp-home]]))
+            [workflow.comp.home :refer [comp-home]]
+            [respo-message.comp.msg-list :refer [comp-msg-list]]))
 
 (def style-header
   {:color :white,
@@ -27,6 +28,7 @@
       (div {} (comp-text "Messages" nil))
       (div {:style {:cursor "pointer"}, :event {}} (comp-text "Not logged in" nil)))
      (div {:style style-body} (comp-home store))
-     (comp-debug store {:bottom 0, :max-width "100%", :left 0}))))
+     (comp-debug store {:bottom 0, :max-width "100%", :left 0})
+     (comp-msg-list (get-in store [:state :notifications]) :state/remove-notification))))
 
 (def comp-container (create-comp :container render))
