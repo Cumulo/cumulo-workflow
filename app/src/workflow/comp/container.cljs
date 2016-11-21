@@ -5,7 +5,8 @@
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span]]
             [respo.comp.debug :refer [comp-debug]]
-            [respo.comp.text :refer [comp-code comp-text]]))
+            [respo.comp.text :refer [comp-code comp-text]]
+            [workflow.comp.home :refer [comp-home]]))
 
 (def style-header
   {:color :white,
@@ -23,9 +24,9 @@
      {:style (merge ui/global ui/fullscreen ui/column)}
      (div
       {:style (merge ui/row-center style-header)}
-      (div {} (comp-text "Site" nil))
+      (div {} (comp-text "Messages" nil))
       (div {:style {:cursor "pointer"}, :event {}} (comp-text "Not logged in" nil)))
-     (div {:style style-body})
+     (div {:style style-body} (comp-home store))
      (comp-debug store {:bottom 0, :max-width "100%", :left 0}))))
 
 (def comp-container (create-comp :container render))
