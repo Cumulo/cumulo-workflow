@@ -5,7 +5,7 @@
 
 (def user {:password nil, :name nil, :nickname nil, :id nil, :avatar nil})
 
-(def database {:states {}, :users {}})
+(def database {:states {}, :topics {}, :users {}})
 
 (def state {:router nil, :nickname nil, :user-id nil, :notifications [], :id nil})
 

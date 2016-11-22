@@ -1,6 +1,9 @@
 
 (ns workflow-server.updater.user (:require [workflow-server.util :refer [find-first]]))
 
+(defn log-out [db op-data state-id op-id op-time]
+  (assoc-in db [:states state-id :user-id] nil))
+
 (defn sign-up [db op-data state-id op-id op-time]
   (let [[username password] op-data
         maybe-user (find-first (fn [user] (= username (:name user))) (vals (:users db)))]

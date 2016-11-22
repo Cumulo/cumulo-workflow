@@ -62,7 +62,7 @@
 
 (deftask editor! []
   (comp
-    (repl)
+    (wait)
     (start-stack-editor!)
     (target :dir #{"src/"})))
 
@@ -75,7 +75,7 @@
     (reload :on-jsload 'workflow.core/on-jsload
             :cljs-asset-path ".")
     (cljs :compiler-options {:language-in :ecmascript5})
-    (target)))
+    (target :no-clean true)))
 
 (deftask generate-code []
   (comp

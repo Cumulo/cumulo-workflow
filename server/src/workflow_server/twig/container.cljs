@@ -11,4 +11,5 @@
        {:state state,
         :logged-in? logged-in?,
         :statistics {},
+        :topics (:topics db),
         :user (if logged-in? (twig-user (get-in db [:users (:user-id state)])) nil)}))))
