@@ -2,7 +2,6 @@
 (ns workflow-server.updater.message )
 
 (defn create [db op-data state-id op-id op-time]
-  (println "Database" db)
   (let [[topic-id text] op-data]
     (assoc-in
      db

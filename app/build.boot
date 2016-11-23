@@ -11,7 +11,7 @@
                  [respo                     "0.3.32"]
                  [respo/ui                  "0.1.6"]
                  [respo/message             "0.1.3"]
-                 [cumulo/recollect          "0.1.1"]])
+                 [cumulo/recollect          "0.1.2"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[adzerk.boot-reload :refer [reload]]
