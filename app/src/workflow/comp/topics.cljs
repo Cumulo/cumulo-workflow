@@ -8,6 +8,12 @@
 
 (defn on-input [mutate!] (fn [e dispatch!] (mutate! (:value e))))
 
+(defn on-topic [topic-id]
+  (fn [e dispatch!]
+    (dispatch!
+     :router/change
+     {:router nil, :name :topic, :title (str "Topic:" topic-id), :data topic-id})))
+
 (defn on-add [mutate! text] (fn [e dispatch!] (dispatch! :topic/create text) (mutate! "")))
 
 (defn update-state [state text] text)
@@ -15,6 +21,8 @@
 (def style-header {:font-size 16, :font-family "Josefin Sans"})
 
 (defn init-state [& args] "")
+
+(def style-topic {:cursor :pointer})
 
 (defn render [topics logged-in?]
   (fn [state mutate!]
@@ -35,6 +43,11 @@
      (div
       {}
       (->> (vals topics)
-           (map (fn [topic] [(:id topic) (div {} (comp-text (:title topic) nil))])))))))
+           (map
+            (fn [topic]
+              [(:id topic)
+               (div
+                {:style style-topic, :event {:click (on-topic (:id topic))}}
+                (comp-text (:title topic) nil))])))))))
 
 (def comp-topics (create-comp :topics init-state update-state render))

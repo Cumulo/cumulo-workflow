@@ -6,7 +6,8 @@
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [workflow.comp.topics :refer [comp-topics]]
-            [workflow.comp.login :refer [comp-login]]))
+            [workflow.comp.login :refer [comp-login]]
+            [workflow.comp.room :refer [comp-room]]))
 
 (defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
 
@@ -25,11 +26,14 @@
      {:style (merge ui/row style-container)}
      (comp-topics (:topics store) (:logged-in? store))
      (if (:logged-in? store)
-       (div
-        {:style ui/flex}
-        (comp-text (str "Hello! " (get-in store [:user :name])) nil)
-        (comp-space 8 nil)
-        (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))
+       (let [router (get-in store [:state :router])]
+         (if (= (:name router) :topic)
+           (comp-room (:seeing-messages store) (:data router))
+           (div
+            {:style ui/flex}
+            (comp-text (str "Hello! " (get-in store [:user :name])) nil)
+            (comp-space 8 nil)
+            (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))))
        (comp-login)))))
 
 (def comp-home (create-comp :home render))

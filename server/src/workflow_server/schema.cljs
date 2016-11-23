@@ -1,7 +1,7 @@
 
 (ns workflow-server.schema )
 
-(def message {:id nil, :topic-id nil, :author-id nil, :text nil})
+(def message {:time nil, :id nil, :topic-id nil, :author-id nil, :text nil})
 
 (def user {:password nil, :name nil, :nickname nil, :id nil, :avatar nil})
 
