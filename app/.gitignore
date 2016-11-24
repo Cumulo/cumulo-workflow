@@ -1,8 +1,6 @@
 
 /target
-/src/*.png
-/src/*.json
-/src/*.js
+/src/*.*
 /.nrepl-*
 
 node_modules

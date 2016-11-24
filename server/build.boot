@@ -82,7 +82,7 @@
 ; use build-simple instead due to WebSocket reasons
 (deftask build-advanced []
   (comp
-    (transform-stack :filename "stack-sepal.ir" :port 7011)
+    (transform-stack :filename "stack-sepal.ir")
     (cljs :optimizations :advanced
           :compiler-options {:target :nodejs
                              :language-in :ecmascript5
