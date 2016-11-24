@@ -25,6 +25,7 @@
     (div
      {:style (merge ui/row style-container)}
      (comp-topics (:topics store) (:logged-in? store))
+     (comp-space 8 nil)
      (if (:logged-in? store)
        (let [router (get-in store [:state :router])]
          (if (= (:name router) :topic)

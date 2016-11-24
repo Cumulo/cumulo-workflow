@@ -28,7 +28,7 @@
       (div {} (comp-text "Messages" nil))
       (div {:style {:cursor "pointer"}, :event {}} (comp-text "Not logged in" nil)))
      (div {:style style-body} (comp-home store))
-     (comp-debug (:seeing-messages store) {:bottom 0, :max-width "100%", :left 0})
+     (comment comp-debug (:seeing-messages store) {:bottom 0, :max-width "100%", :left 0})
      (comp-msg-list (get-in store [:state :notifications]) :state/remove-notification))))
 
 (def comp-container (create-comp :container render))

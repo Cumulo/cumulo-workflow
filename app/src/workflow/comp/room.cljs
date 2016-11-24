@@ -1,6 +1,7 @@
 
 (ns workflow.comp.room
   (:require [hsl.core :refer [hsl]]
+            [clojure.string :as string]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span input button]]
@@ -17,6 +18,12 @@
 
 (defn init-state [& args] "")
 
+(defn on-keydown [mutate! topic-id text]
+  (fn [e dispatch!]
+    (println e)
+    (if (and (= (:key-code e) 13) (not (string/blank? text)))
+      (do (dispatch! :message/create [topic-id text]) (mutate! "")))))
+
 (defn render [messages topic-id]
   (fn [state mutate!]
     (div
@@ -30,7 +37,7 @@
       {:style ui/row}
       (input
        {:style (merge ui/input ui/flex),
-        :event {:input (on-input mutate!)},
+        :event {:keydown (on-keydown mutate! topic-id state), :input (on-input mutate!)},
         :attrs {:placeholder "reply here...", :value state}})
       (comp-space 8 nil)
       (button

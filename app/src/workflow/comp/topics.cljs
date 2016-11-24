@@ -4,30 +4,23 @@
             [respo.comp.text :refer [comp-text]]
             [respo.comp.space :refer [comp-space]]
             [respo-ui.style :as ui]
-            [respo-ui.style.colors :as colors]))
+            [respo-ui.style.colors :as colors]
+            [workflow.comp.topic :refer [comp-topic]]))
 
 (defn on-input [mutate!] (fn [e dispatch!] (mutate! (:value e))))
-
-(defn on-topic [topic-id]
-  (fn [e dispatch!]
-    (dispatch!
-     :router/change
-     {:router nil, :name :topic, :title (str "Topic:" topic-id), :data topic-id})))
 
 (defn on-add [mutate! text] (fn [e dispatch!] (dispatch! :topic/create text) (mutate! "")))
 
 (defn update-state [state text] text)
 
-(def style-header {:font-size 16, :font-family "Josefin Sans"})
+(def style-header {:font-size 24, :font-weight :lighter, :font-family "Josefin Sans"})
 
 (defn init-state [& args] "")
-
-(def style-topic {:cursor :pointer})
 
 (defn render [topics logged-in?]
   (fn [state mutate!]
     (div
-     {:style ui/flex}
+     {:style (merge ui/flex)}
      (div {:style style-header} (comp-text "Topics" nil))
      (if logged-in?
        (div
@@ -40,14 +33,6 @@
         (button
          {:style ui/button, :event {:click (on-add mutate! state)}}
          (comp-text "Add" nil))))
-     (div
-      {}
-      (->> (vals topics)
-           (map
-            (fn [topic]
-              [(:id topic)
-               (div
-                {:style style-topic, :event {:click (on-topic (:id topic))}}
-                (comp-text (:title topic) nil))])))))))
+     (div {} (->> (vals topics) (map (fn [topic] [(:id topic) (comp-topic topic)])))))))
 
 (def comp-topics (create-comp :topics init-state update-state render))

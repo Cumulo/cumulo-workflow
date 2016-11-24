@@ -5,7 +5,7 @@
                  [andare                    "0.4.0"       :scope "test"]
                  [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
                  [adzerk/boot-reload        "0.4.12"      :scope "test"]
-                 [cirru/boot-stack-server   "0.1.23"      :scope "test"]
+                 [cirru/boot-stack-server   "0.1.24"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"]
                  [respo                     "0.3.32"]
@@ -39,6 +39,8 @@
         (title (use-text "Cumulo Workflow"))
         (link {:attrs {:rel "icon" :type "image/jpg" :href "cumulo.png"}})
         (link {:attrs {:rel "stylesheet" :type "text/css" :href "style.css"}})
+        (meta' {:attrs {:name "viewport" :content "width=device-width, initial-scale=1"}})
+        (meta' {:attrs {:charset "utf-8"}})
         (if (:build? data)
           (link (:attrs {:rel "manifest" :href "manifest.json"})))
         (style (use-text "body {margin: 0;}"))

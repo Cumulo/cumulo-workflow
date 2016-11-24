@@ -8,7 +8,7 @@
                  [com.cemerick/piggieback   "0.2.1"       :scope "test"]
                  [org.clojure/tools.nrepl   "0.2.12"      :scope "test"]
                  [ajchemist/boot-figwheel   "0.5.4-6"     :scope "test"]
-                 [cirru/boot-stack-server   "0.1.23"      :scope "test"]
+                 [cirru/boot-stack-server   "0.1.24"      :scope "test"]
                  [adzerk/boot-test          "1.1.1"       :scope "test"]
                  [mvc-works/hsl             "0.1.2"       :scope "test"]
                  [cumulo/recollect          "0.1.2"]])
