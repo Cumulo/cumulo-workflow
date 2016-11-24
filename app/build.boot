@@ -31,20 +31,19 @@
        :scm         {:url "https://github.com/Cumulo/cumulo-workflow"}
        :license     {"MIT" "http://opensource.org/licenses/mit-license.php"}})
 
-(defn use-text [x] {:attrs {:innerHTML x}})
 (defn html-dsl [data fileset]
   (make-html
     (html {}
       (head {}
-        (title (use-text "Cumulo Workflow"))
+        (title {:attrs {:innerHTML "Cumulo Workflow"}})
         (link {:attrs {:rel "icon" :type "image/jpg" :href "cumulo.png"}})
         (link {:attrs {:rel "stylesheet" :type "text/css" :href "style.css"}})
-        (meta' {:attrs {:name "viewport" :content "width=device-width, initial-scale=1"}})
+        (link (:attrs {:rel "manifest" :href "manifest.json"}))
         (meta' {:attrs {:charset "utf-8"}})
-        (if (:build? data)
-          (link (:attrs {:rel "manifest" :href "manifest.json"})))
-        (style (use-text "body {margin: 0;}"))
-        (style (use-text "body * {box-sizing: border-box;}"))
+        (meta' {:attrs {:name "viewport" :content "width=device-width, initial-scale=1"}})
+        (meta' {:attrs {:id "ssr-stages" :content "#{}"}})
+        (style {:attrs {:innerHTML "body {margin: 0;}"}})
+        (style {:attrs {:innerHTML "body * {box-sizing: border-box;}"}})
         (script {:attrs {:id "config" :type "text/edn" :innerHTML (pr-str data)}}))
       (body {}
         (div {:attrs {:id "app"}})
