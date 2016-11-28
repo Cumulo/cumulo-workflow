@@ -18,6 +18,9 @@ Start developing app:
 
 ```bash
 cd app/
+mkdir -p target/
+npm install
+webpack
 boot dev!
 # open browser for editor
 open http://repo.cirru.org/stack-editor/target/index.html
@@ -55,6 +58,10 @@ Build server:
 cd server/
 boot build-simple
 ```
+
+### Workflow
+
+https://github.com/Cumulo/cumulo-workflow
 
 ### License
 
