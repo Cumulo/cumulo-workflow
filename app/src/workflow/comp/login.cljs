@@ -23,7 +23,24 @@
   (fn [state mutate!]
     (div
      {:style (merge ui/flex ui/column)}
-     (div {:style style-title} (comp-text (if (:signup? state) "Sign up" "Log in") nil))
+     (div
+      {}
+      (comp-text (if (:signup? state) "Sign up" "Log in") style-title)
+      (if (:signup? state)
+        (div
+         {}
+         (comp-text "Want to log in?" nil)
+         (comp-space 8 nil)
+         (div
+          {:style ui/clickable-text, :event {:click (on-toggle mutate! (:signup? state))}}
+          (comp-text "Log in" nil)))
+        (div
+         {}
+         (comp-text "No account yet?" nil)
+         (comp-space 8 nil)
+         (div
+          {:style ui/clickable-text, :event {:click (on-toggle mutate! (:signup? state))}}
+          (comp-text "Sign up" nil)))))
      (div
       {:style {}}
       (div
@@ -46,22 +63,6 @@
        {:style (merge ui/button {:outline :none, :border :none}),
         :event {:click (on-submit (:username state) (:password state) (:signup? state))}}
        (comp-text "Submit" nil)))
-     (comment comp-debug state nil)
-     (comp-space nil 8)
-     (if (:signup? state)
-       (div
-        {}
-        (comp-text "Want to log in?" nil)
-        (comp-space 8 nil)
-        (button
-         {:style ui/button, :event {:click (on-toggle mutate! (:signup? state))}}
-         (comp-text "Log in" nil)))
-       (div
-        {}
-        (comp-text "No account yet?" nil)
-        (comp-space 8 nil)
-        (button
-         {:style ui/button, :event {:click (on-toggle mutate! (:signup? state))}}
-         (comp-text "Sign up" nil)))))))
+     (comment comp-debug state nil))))
 
 (def comp-login (create-comp :login init-state update-state render))

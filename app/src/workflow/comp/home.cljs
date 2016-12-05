@@ -5,7 +5,6 @@
             [respo.comp.space :refer [comp-space]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [workflow.comp.topics :refer [comp-topics]]
             [workflow.comp.login :refer [comp-login]]
             [workflow.comp.room :refer [comp-room]]))
 
@@ -24,8 +23,6 @@
   (fn [state mutate!]
     (div
      {:style (merge ui/row style-container)}
-     (comp-topics (:topics store) (:logged-in? store))
-     (comp-space 8 nil)
      (if (:logged-in? store)
        (let [router (get-in store [:state :router])]
          (if (= (:name router) :topic)
