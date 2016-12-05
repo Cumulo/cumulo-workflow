@@ -23,7 +23,7 @@
   (setup-socket!
    store-ref
    {:on-close! (fn [event] (.error js/console "Lost connection!")),
-    :url "ws://tiye.me:5021"})
+    :url (str "ws://" (.-hostname js/location) ":5021")})
   (add-watch store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
   (println "app started!"))

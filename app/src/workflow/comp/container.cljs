@@ -6,29 +6,31 @@
             [respo.alias :refer [create-comp div span]]
             [respo.comp.debug :refer [comp-debug]]
             [respo.comp.text :refer [comp-code comp-text]]
-            [workflow.comp.home :refer [comp-home]]
+            [workflow.comp.header :refer [comp-header]]
+            [workflow.comp.profile :refer [comp-profile]]
+            [workflow.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]))
 
-(def style-header
-  {:color :white,
-   :font-size 16,
-   :background-color colors/motif,
-   :padding "0 16px",
-   :justify-content :space-between,
-   :height 48})
+(def style-body {:padding "8px 16px"})
 
-(def style-body {})
+(def style-debugger {:bottom 0, :max-width "100%", :left 0})
 
 (defn render [store]
   (fn [state mutate!]
     (div
      {:style (merge ui/global ui/fullscreen ui/column)}
+     (comp-header (:logged-in? store))
      (div
-      {:style (merge ui/row-center style-header)}
-      (div {} (comp-text "Workflow" nil))
-      (div {:style {:cursor "pointer"}, :event {}} (comp-text "Guest" nil)))
-     (div {:style style-body} (comp-home store))
-     (comp-debug store {:bottom 0, :max-width "100%", :left 0})
+      {:style style-body}
+      (div
+       {:style (merge ui/row style-body)}
+       (if (:logged-in? store)
+         (let [router (get-in store [:state :router])]
+           (case (:name router)
+             :profile (comp-profile (:user store))
+             (div {} (comp-text (str "404 page: " (pr-str router)) nil))))
+         (comp-login))))
+     (comp-debug store style-debugger)
      (comp-msg-list (get-in store [:state :notifications]) :state/remove-notification))))
 
 (def comp-container (create-comp :container render))

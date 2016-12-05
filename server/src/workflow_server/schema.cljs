@@ -5,7 +5,12 @@
 
 (def database {:states {}, :topics {}, :users {}})
 
-(def state {:router nil, :nickname nil, :user-id nil, :notifications [], :id nil})
+(def state
+  {:router {:router nil, :name :home, :data nil},
+   :nickname nil,
+   :user-id nil,
+   :notifications [],
+   :id nil})
 
 (def router {:router nil, :name nil, :title nil, :data {}})
 
