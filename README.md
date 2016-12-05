@@ -35,12 +35,10 @@ npm install
 boot editor!
 open http://repo.cirru.org/stack-editor/target/index.html?port=7011
 
-boot dev
-# then run `(start-figwheel!)`
+export boot_deps=`boot show -c`
+lumo -Kc $boot_deps:src/
 
-# start node.js server
-cd target/
-node app.js
+# run code from REPL and clear cache to do it
 ```
 
 ### Build
