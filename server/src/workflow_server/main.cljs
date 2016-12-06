@@ -11,8 +11,6 @@
 
 (defonce reader-db-ref (atom @writer-db-ref))
 
-(defn on-jsload [] (println "code updated.") (render-clients! @reader-db-ref))
-
 (defn render-loop! []
   (if (not= @reader-db-ref @writer-db-ref)
     (do
@@ -37,5 +35,10 @@
     (render-loop!))
   (add-watch reader-db-ref :log (fn [] ))
   (println "server started"))
+
+(defn rm-caches! []
+  (.execSync (js/require "child_process") "rm .lumo_cache/workflow_server_SLASH_*"))
+
+(defn on-jsload! [] (println "code updated.") (render-clients! @reader-db-ref))
 
 (set! *main-cli-fn* -main)

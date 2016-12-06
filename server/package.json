@@ -19,5 +19,6 @@
   "dependencies": {
     "shortid": "^2.2.6",
     "ws": "^1.1.0"
-  }
+  },
+  "devDependencies": {}
 }
