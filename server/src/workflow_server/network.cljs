@@ -14,7 +14,7 @@
 
 (def shortid (js/require "shortid"))
 
-(def ws (js/require "ws"))
+(def ws (js/require "uws"))
 
 (def WebSocketServer (.-Server ws))
 
