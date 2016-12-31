@@ -23,5 +23,3 @@
          (println "Changes" changes)
          (reset! store-ref (patch-bunch @store-ref changes)))))
     (go (loop [] (.send ws (pr-str (<! sender))) (recur)))))
-
-(defonce receiver (chan))

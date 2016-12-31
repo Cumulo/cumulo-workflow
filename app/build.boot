@@ -74,7 +74,7 @@
   (comp
     (editor!)
     (html-file :data {:build? false})
-    (reload :on-jsload 'workflow.core/on-jsload
+    (reload :on-jsload 'workflow.main/on-jsload!
             :cljs-asset-path ".")
     (cljs :compiler-options {:language-in :ecmascript5})
     (target :no-clean true)))

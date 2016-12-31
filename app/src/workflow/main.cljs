@@ -1,5 +1,5 @@
 
-(ns workflow.core
+(ns workflow.main
   (:require [respo.core :refer [render! clear-cache!]]
             [workflow.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
@@ -15,8 +15,6 @@
   (let [target (.querySelector js/document "#app")]
     (render! (comp-container @store-ref) target dispatch! states-ref)))
 
-(defn on-jsload [] (clear-cache!) (render-app!) (println "code updated."))
-
 (defn -main []
   (enable-console-print!)
   (render-app!)
@@ -28,4 +26,4 @@
   (add-watch states-ref :changes render-app!)
   (println "app started!"))
 
-(set! js/window.onload -main)
+(defn on-jsload! [] (clear-cache!) (render-app!) (println "code updated."))
