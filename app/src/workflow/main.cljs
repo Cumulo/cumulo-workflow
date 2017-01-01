@@ -27,3 +27,5 @@
   (println "app started!"))
 
 (defn on-jsload! [] (clear-cache!) (render-app!) (println "code updated."))
+
+(set! js/window.onload -main)
