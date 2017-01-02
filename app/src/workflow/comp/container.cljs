@@ -25,7 +25,7 @@
       (div
        {:style (merge ui/row style-body)}
        (if (:logged-in? store)
-         (let [router (get-in store [:state :router])]
+         (let [router (:router store)]
            (case (:name router)
              :profile (comp-profile (:user store))
              (div {} (comp-text (str "404 page: " (pr-str router)) nil))))

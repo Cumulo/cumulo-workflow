@@ -9,7 +9,7 @@
             [respo.comp.space :refer [comp-space]]))
 
 (defn on-profile [e dispatch!]
-  (dispatch! :router/change {:router nil, :name :profile, :data nil}))
+  (dispatch! :router/change {:router nil, :name :profile, :params nil}))
 
 (def style-header
   {:color :white,
@@ -20,7 +20,9 @@
    :height 48})
 
 (defn on-home [e dispatch!]
-  (dispatch! :router/change {:router nil, :name :home, :data nil}))
+  (dispatch! :router/change {:router nil, :name :home, :params nil}))
+
+(def style-logo {:cursor :pointer})
 
 (def style-pointer {:cursor "pointer"})
 
@@ -28,7 +30,7 @@
   (fn [state mutate!]
     (div
      {:style (merge ui/row-center style-header)}
-     (div {:event {:click on-home}} (comp-text "Workflow" nil))
+     (div {:style style-logo, :event {:click on-home}} (comp-text "Workflow" nil))
      (div
       {:style style-pointer, :event {:click on-profile}}
       (comp-text (if logged-in? "Me" "Guest") nil)))))

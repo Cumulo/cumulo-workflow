@@ -34,7 +34,7 @@
        (recur)))
     (render-loop!))
   (add-watch reader-db-ref :log (fn [] ))
-  (println "server started"))
+  (println "Server started."))
 
 (defn rm-caches! []
   (.execSync (js/require "child_process") "rm .lumo_cache/workflow_server_SLASH_*"))

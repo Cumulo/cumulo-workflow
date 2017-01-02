@@ -8,7 +8,10 @@
    :container
    (fn [db state]
      (let [logged-in? (some? (:user-id state)), router (:router state)]
-       {:state state,
-        :logged-in? logged-in?,
-        :statistics {},
-        :user (if logged-in? (twig-user (get-in db [:users (:user-id state)])) nil)}))))
+       (if logged-in?
+         {:router router,
+          :state state,
+          :logged-in? true,
+          :statistics {},
+          :user (twig-user (get-in db [:users (:user-id state)]))}
+         {:state state, :logged-in? false})))))
