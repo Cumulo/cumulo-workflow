@@ -6,12 +6,12 @@
 (def twig-container
   (create-twig
    :container
-   (fn [db state]
-     (let [logged-in? (some? (:user-id state)), router (:router state)]
+   (fn [db session]
+     (let [logged-in? (some? (:user-id session)), router (:router session)]
        (if logged-in?
          {:router router,
-          :state state,
           :logged-in? true,
           :statistics {},
-          :user (twig-user (get-in db [:users (:user-id state)]))}
-         {:state state, :logged-in? false})))))
+          :user (twig-user (get-in db [:users (:user-id session)])),
+          :session session}
+         {:logged-in? false, :session session})))))

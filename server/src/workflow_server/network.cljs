@@ -18,9 +18,9 @@
 
 (def WebSocketServer (.-Server ws))
 
-(defn handle-message [op op-data state-id]
+(defn handle-message [op op-data session-id]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
-    (go (>! server-chan [op op-data state-id op-id op-time]))))
+    (go (>! server-chan [op op-data session-id op-id op-time]))))
 
 (defn run-server! [configs]
   (let [wss (new WebSocketServer (js-obj "port" (:port configs)))]
@@ -28,31 +28,31 @@
      wss
      "connection"
      (fn [socket]
-       (let [state-id (.generate shortid)]
-         (handle-message :state/connect nil state-id)
-         (swap! socket-registry assoc state-id socket)
+       (let [session-id (.generate shortid)]
+         (handle-message :session/connect nil session-id)
+         (swap! socket-registry assoc session-id socket)
          (.on
           socket
           "message"
           (fn [rawData]
             (let [action (reader/read-string rawData), [op op-data] action]
-              (handle-message op op-data state-id))))
+              (handle-message op op-data session-id))))
          (.on
           socket
           "close"
           (fn []
-            (swap! socket-registry dissoc state-id)
-            (handle-message :state/disconnect nil state-id)))))))
+            (swap! socket-registry dissoc session-id)
+            (handle-message :session/disconnect nil session-id)))))))
   server-chan)
 
 (defonce client-caches (atom {}))
 
 (defn render-clients! [db]
-  (doseq [state-entry (:states db)]
-    (let [[state-id state] state-entry
-          old-store (or (get @client-caches state-id) nil)
-          new-store (render-bunch (twig-container db state) old-store)
+  (doseq [session-entry (:sessions db)]
+    (let [[session-id session] session-entry
+          old-store (or (get @client-caches session-id) nil)
+          new-store (render-bunch (twig-container db session) old-store)
           changes (diff-bunch [] old-store new-store)
-          socket (get @socket-registry state-id)]
+          socket (get @socket-registry session-id)]
       (if (and (not= changes []) (some? socket))
-        (do (.send socket (pr-str changes)) (swap! client-caches assoc state-id new-store))))))
+        (do (.send socket (pr-str changes)) (swap! client-caches assoc session-id new-store))))))

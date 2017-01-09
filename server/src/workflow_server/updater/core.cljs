@@ -1,16 +1,17 @@
 
 (ns workflow-server.updater.core
-  (:require [workflow-server.updater.state :as state]
+  (:require [workflow-server.updater.session :as session]
             [workflow-server.updater.user :as user]
             [workflow-server.updater.router :as router]))
 
-(defn updater [db op op-data state-id op-id op-time]
+(defn updater [db op op-data session-id op-id op-time]
   (case op
-    :state/connect (state/connect db op-data state-id op-id op-time)
-    :state/disconnect (state/disconnect db op-data state-id op-id op-time)
-    :user/log-in (user/log-in db op-data state-id op-id op-time)
-    :user/sign-up (user/sign-up db op-data state-id op-id op-time)
-    :user/log-out (user/log-out db op-data state-id op-id op-time)
-    :state/remove-notification (state/remove-notification db op-data state-id op-id op-time)
-    :router/change (router/change db op-data state-id op-id op-time)
+    :session/connect (session/connect db op-data session-id op-id op-time)
+    :session/disconnect (session/disconnect db op-data session-id op-id op-time)
+    :user/log-in (user/log-in db op-data session-id op-id op-time)
+    :user/sign-up (user/sign-up db op-data session-id op-id op-time)
+    :user/log-out (user/log-out db op-data session-id op-id op-time)
+    :session/remove-notification
+      (session/remove-notification db op-data session-id op-id op-time)
+    :router/change (router/change db op-data session-id op-id op-time)
     db))
