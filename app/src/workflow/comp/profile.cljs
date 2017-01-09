@@ -1,6 +1,7 @@
 
 (ns workflow.comp.profile
   (:require [hsl.core :refer [hsl]]
+            [workflow.schema :as schema]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span a]]
@@ -8,7 +9,9 @@
             [respo.comp.text :refer [comp-code comp-text]]
             [respo.comp.space :refer [comp-space]]))
 
-(defn on-log-out [e dispatch!] (dispatch! :user/log-out nil))
+(defn on-log-out [e dispatch!]
+  (dispatch! :user/log-out nil)
+  (.removeItem js/localStorage (:storage-key schema/configs)))
 
 (def style-trigger
   {:color :white,

@@ -4,12 +4,23 @@
             [workflow-server.schema :as schema]
             [workflow-server.network :refer [run-server! render-clients!]]
             [workflow-server.updater.core :refer [updater]]
-            [cljs.core.async :refer [<!]])
+            [cljs.core.async :refer [<!]]
+            [cljs.reader :refer [read-string]])
   (:require-macros [cljs.core.async.macros :refer [go-loop]]))
 
-(defonce writer-db-ref (atom schema/database))
+(defonce writer-db-ref
+  (atom
+   (let [fs (js/require "fs"), filepath (:storage-key schema/configs)]
+     (enable-console-print!)
+     (if (fs.existsSync filepath)
+       (do (println "Found storage.") (read-string (fs.readFileSync filepath "utf8")))
+       (do (println "Found no storage.") schema/database)))))
 
 (defonce reader-db-ref (atom @writer-db-ref))
+
+(defn persist! []
+  (let [fs (js/require "fs")]
+    (fs.writeFileSync (:storage-key schema/configs) (pr-str @writer-db-ref))))
 
 (defn render-loop! []
   (if (not= @reader-db-ref @writer-db-ref)
@@ -34,6 +45,7 @@
        (recur)))
     (render-loop!))
   (add-watch reader-db-ref :log (fn [] ))
+  (.on js/process "exit" (fn [code] (println "Code:" code) (persist!)))
   (println "Server started."))
 
 (defn rm-caches! []

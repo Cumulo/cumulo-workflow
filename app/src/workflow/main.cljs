@@ -3,9 +3,16 @@
   (:require [respo.core :refer [render! clear-cache!]]
             [workflow.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [workflow.network :refer [send! setup-socket!]]))
+            [workflow.network :refer [send! setup-socket!]]
+            [workflow.schema :as schema]))
 
 (defn dispatch! [op op-data] (send! op op-data))
+
+(defn simulate-login! []
+  (let [raw (.getItem js/localStorage (:storage-key schema/configs))]
+    (if (some? raw)
+      (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
+      (do (println "Found no storage.")))))
 
 (defonce store-ref (atom {}))
 
@@ -20,7 +27,8 @@
   (render-app!)
   (setup-socket!
    store-ref
-   {:on-close! (fn [event] (.error js/console "Lost connection!")),
+   {:on-open! (fn [event] (simulate-login!)),
+    :on-close! (fn [event] (.error js/console "Lost connection!")),
     :url (str "ws://" (.-hostname js/location) ":5021")})
   (add-watch store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)

@@ -1,6 +1,8 @@
 
 (ns workflow-server.schema )
 
+(def configs {:port 5021, :storage-key "/tmp/workflow-storage.edn"})
+
 (def user {:password nil, :name nil, :nickname nil, :id nil, :avatar nil})
 
 (def database {:topics {}, :sessions {}, :users {}})

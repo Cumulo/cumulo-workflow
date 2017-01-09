@@ -4,7 +4,8 @@
             [respo.comp.text :refer [comp-text]]
             [respo.comp.space :refer [comp-space]]
             [respo.comp.debug :refer [comp-debug]]
-            [respo-ui.style :as ui]))
+            [respo-ui.style :as ui]
+            [workflow.schema :as schema]))
 
 (defn on-input [mutate! k] (fn [e dispatch!] (mutate! k (:value e))))
 
@@ -17,7 +18,9 @@
 (defn on-toggle [mutate! signup?] (fn [e dispatch!] (mutate! :signup? (not signup?))))
 
 (defn on-submit [username password signup?]
-  (fn [e dispatch!] (dispatch! (if signup? :user/sign-up :user/log-in) [username password])))
+  (fn [e dispatch!]
+    (dispatch! (if signup? :user/sign-up :user/log-in) [username password])
+    (.setItem js/localStorage (:storage-key schema/configs) [username password])))
 
 (defn render []
   (fn [state mutate!]
