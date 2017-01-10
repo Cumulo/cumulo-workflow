@@ -29,7 +29,7 @@
    store-ref
    {:on-open! (fn [event] (simulate-login!)),
     :on-close! (fn [event] (.error js/console "Lost connection!")),
-    :url (str "ws://" (.-hostname js/location) ":5021")})
+    :url (str "ws://" (.-hostname js/location) ":" (:port schema/configs))})
   (add-watch store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
   (println "app started!"))

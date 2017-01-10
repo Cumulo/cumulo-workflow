@@ -32,7 +32,7 @@
 
 (defn -main []
   (nodejs/enable-util-print!)
-  (let [server-ch (run-server! {:port 5021})]
+  (let [server-ch (run-server! {:port (:port schema/configs)})]
     (go-loop
      []
      (let [[op op-data session-id op-id op-time] (<! server-ch)]
@@ -45,7 +45,7 @@
        (recur)))
     (render-loop!))
   (add-watch reader-db-ref :log (fn [] ))
-  (.on js/process "exit" (fn [code] (println "Code:" code) (persist!)))
+  (.on js/process "exit" (fn [code] (println "Saving file on exit" code) (persist!)))
   (println "Server started."))
 
 (defn rm-caches! []
