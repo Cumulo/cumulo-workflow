@@ -51,6 +51,6 @@
 (defn rm-caches! []
   (.execSync (js/require "child_process") "rm .lumo_cache/workflow_server_SLASH_*"))
 
-(defn on-jsload! [] (println "code updated.") (render-clients! @reader-db-ref))
+(defn on-jsload! [] (println "Code updated.") (render-clients! @reader-db-ref))
 
 (set! *main-cli-fn* -main)

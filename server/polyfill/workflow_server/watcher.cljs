@@ -13,19 +13,20 @@
   (.runInThisContext vm source (str (munge name) ".js")))
 
 (defn eval-inside! [st code]
-  (cljs/eval st code
-    {:eval node-eval :load @#'lumo.repl/load}
-    (fn [error]
-      (println "Error:" error))))
+  )
 
 (defn handle-reload! [ns-path]
   (let [st (cljs/empty-state)
         segment (-> ns-path
                     (string/replace "-" "_")
                     (string/replace "." "_SLASH_"))]
-    (println "Removing:" segment)
-    (cp.execSync (str "rm -rf .lumo_cache/" segment "*"))
-    (eval-inside! st `(~'require (quote ~(symbol ns-path)) :reload))
+    (cp.execSync (str "rm -f .lumo_cache/" segment "*"))
+    (cljs/eval st
+      `(~'require (quote ~(symbol ns-path)) :reload)
+      {:eval node-eval :load @#'lumo.repl/load}
+      (fn [error]
+        (println "Reload namespace:" ns-path)
+        (println error)))
     (main/on-jsload!)))
 
 (defn handle-path! [filepath]
@@ -42,4 +43,5 @@
     (fn [err, watcher]
       (.on watcher "changed"
         (fn ([filepath]
-          (handle-path! filepath)))))))
+          (handle-path! filepath))))))
+  (println "Started watching."))
