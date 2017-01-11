@@ -14,7 +14,7 @@
       (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
       (do (println "Found no storage.")))))
 
-(defonce store-ref (atom {}))
+(defonce store-ref (atom nil))
 
 (defonce states-ref (atom {}))
 
@@ -28,7 +28,7 @@
   (setup-socket!
    store-ref
    {:on-open! (fn [event] (simulate-login!)),
-    :on-close! (fn [event] (.error js/console "Lost connection!")),
+    :on-close! (fn [event] (reset! store-ref nil) (.error js/console "Lost connection!")),
     :url (str "ws://" (.-hostname js/location) ":" (:port schema/configs))})
   (add-watch store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
