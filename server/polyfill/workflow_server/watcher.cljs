@@ -12,9 +12,6 @@
 (defn node-eval [{:keys [name source]}]
   (.runInThisContext vm source (str (munge name) ".js")))
 
-(defn eval-inside! [st code]
-  )
-
 (defn handle-reload! [ns-path]
   (let [st (cljs/empty-state)
         segment (-> ns-path
