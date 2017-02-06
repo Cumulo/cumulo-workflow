@@ -1,19 +1,19 @@
 
 (ns workflow-server.schema )
 
-(def configs {:port 5021, :storage-key "/tmp/workflow-storage.edn"})
+(def user {:name nil, :id nil, :nickname nil, :avatar nil, :password nil})
 
-(def user {:password nil, :name nil, :nickname nil, :id nil, :avatar nil})
+(def router {:name nil, :title nil, :data {}, :router nil})
 
-(def database {:topics {}, :sessions {}, :users {}})
+(def configs {:storage-key "/tmp/workflow-storage.edn", :port 5021})
 
-(def router {:router nil, :name nil, :title nil, :data {}})
+(def database {:sessions {}, :users {}, :topics {}})
 
 (def session
-  {:router {:router nil, :name :home, :data nil},
+  {:user-id nil,
+   :id nil,
    :nickname nil,
-   :user-id nil,
-   :notifications [],
-   :id nil})
+   :router {:name :home, :data nil, :router nil},
+   :notifications []})
 
 (def notification {:id nil, :kind nil, :text nil})

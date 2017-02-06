@@ -9,9 +9,9 @@
    (fn [db session]
      (let [logged-in? (some? (:user-id session)), router (:router session)]
        (if logged-in?
-         {:router router,
+         {:session session,
           :logged-in? true,
-          :statistics {},
           :user (twig-user (get-in db [:users (:user-id session)])),
-          :session session}
-         {:logged-in? false, :session session})))))
+          :router router,
+          :statistics {}}
+         {:session session, :logged-in? false})))))

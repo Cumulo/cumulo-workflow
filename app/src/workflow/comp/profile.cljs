@@ -14,10 +14,10 @@
   (.removeItem js/localStorage (:storage-key schema/configs)))
 
 (def style-trigger
-  {:color :white,
-   :font-size 14,
-   :background-color colors/motif-light,
+  {:font-size 14,
    :cursor :pointer,
+   :background-color colors/motif-light,
+   :color :white,
    :padding "0 8px"})
 
 (defn render [user]

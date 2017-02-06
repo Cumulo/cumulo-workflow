@@ -1,4 +1,4 @@
 
 (ns workflow.schema )
 
-(def configs {:port 5021, :storage-key "workflow-storage"})
+(def configs {:storage-key "workflow-storage", :port 5021})

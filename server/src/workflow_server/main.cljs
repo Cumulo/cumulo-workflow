@@ -16,11 +16,13 @@
        (do (println "Found storage.") (read-string (fs.readFileSync filepath "utf8")))
        (do (println "Found no storage.") schema/database)))))
 
-(defonce reader-db-ref (atom @writer-db-ref))
-
 (defn persist! []
   (let [fs (js/require "fs")]
     (fs.writeFileSync (:storage-key schema/configs) (pr-str @writer-db-ref))))
+
+(defonce reader-db-ref (atom @writer-db-ref))
+
+(defn on-jsload! [] (println "Code updated.") (render-clients! @reader-db-ref))
 
 (defn render-loop! []
   (if (not= @reader-db-ref @writer-db-ref)
@@ -50,7 +52,5 @@
 
 (defn rm-caches! []
   (.execSync (js/require "child_process") "rm .lumo_cache/workflow_server_SLASH_*"))
-
-(defn on-jsload! [] (println "Code updated.") (render-clients! @reader-db-ref))
 
 (set! *main-cli-fn* -main)

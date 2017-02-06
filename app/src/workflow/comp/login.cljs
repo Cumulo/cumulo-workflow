@@ -7,13 +7,7 @@
             [respo-ui.style :as ui]
             [workflow.schema :as schema]))
 
-(defn on-input [mutate! k] (fn [e dispatch!] (mutate! k (:value e))))
-
 (defn update-state [state k v] (assoc state k v))
-
-(def style-title {:font-size 24, :font-weight 300, :font-family "Josefin Sans"})
-
-(defn init-state [& args] {:password "", :username "", :signup? false})
 
 (defn on-toggle [mutate! signup?] (fn [e dispatch!] (mutate! :signup? (not signup?))))
 
@@ -21,6 +15,12 @@
   (fn [e dispatch!]
     (dispatch! (if signup? :user/sign-up :user/log-in) [username password])
     (.setItem js/localStorage (:storage-key schema/configs) [username password])))
+
+(defn init-state [& args] {:signup? false, :username "", :password ""})
+
+(defn on-input [mutate! k] (fn [e dispatch!] (mutate! k (:value e))))
+
+(def style-title {:font-size 24, :font-weight 300, :font-family "Josefin Sans"})
 
 (defn render []
   (fn [state mutate!]
@@ -50,15 +50,15 @@
        {}
        (input
         {:style ui/input,
-         :event {:input (on-input mutate! :username)},
-         :attrs {:placeholder "Username", :value (:username state)}}))
+         :attrs {:placeholder "Username", :value (:username state)},
+         :event {:input (on-input mutate! :username)}}))
       (comp-space nil 8)
       (div
        {}
        (input
         {:style ui/input,
-         :event {:input (on-input mutate! :password)},
-         :attrs {:placeholder "Password", :value (:password state)}})))
+         :attrs {:placeholder "Password", :value (:password state)},
+         :event {:input (on-input mutate! :password)}})))
      (comp-space nil 8)
      (div
       {:style ui/flex}

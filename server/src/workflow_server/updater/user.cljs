@@ -1,9 +1,6 @@
 
 (ns workflow-server.updater.user (:require [workflow-server.util :refer [find-first]]))
 
-(defn log-out [db op-data session-id op-id op-time]
-  (assoc-in db [:sessions session-id :user-id] nil))
-
 (defn sign-up [db op-data session-id op-id op-time]
   (let [[username password] op-data
         maybe-user (find-first (fn [user] (= username (:name user))) (vals (:users db)))]
@@ -19,7 +16,7 @@
           (assoc-in [:sessions session-id :user-id] op-id)
           (assoc-in
            [:users op-id]
-           {:password password, :name username, :nickname username, :id op-id, :avatar nil})))))
+           {:id op-id, :name username, :nickname username, :password password, :avatar nil})))))
 
 (defn log-in [db op-data session-id op-id op-time]
   (let [[username password] op-data
@@ -47,3 +44,6 @@
             (conj
              notifications
              {:id op-id, :kind :attentive, :text (str "No user named: " username)}))))))))
+
+(defn log-out [db op-data session-id op-id op-time]
+  (assoc-in db [:sessions session-id :user-id] nil))
