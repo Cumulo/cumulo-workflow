@@ -2,5 +2,6 @@
 /target
 /src/*.*
 /.nrepl-*
+.lumo_cache
 
 node_modules
