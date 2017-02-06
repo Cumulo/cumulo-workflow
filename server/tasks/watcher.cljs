@@ -1,30 +1,29 @@
 
 (ns workflow-server.watcher
   (:require [cljs.js :as cljs]
-            [clojure.string :as string]
-            [workflow-server.main :as main]))
+            [clojure.string :as string]))
 
 (def gaze (js/require "gaze"))
 (def path (js/require "path"))
 (def vm (js/require "vm"))
 (def cp (js/require "child_process"))
+(def net (js/require "net"))
 
-(defn node-eval [{:keys [name source]}]
-  (.runInThisContext vm source (str (munge name) ".js")))
+(def client (.createConnection net (clj->js {:port 6000})))
+
+(.on client "data" (fn [chunk]
+  (.log js/console (.toString chunk))))
 
 (defn handle-reload! [ns-path]
+  (println "Trying to reload:" ns-path)
   (let [st (cljs/empty-state)
         segment (-> ns-path
                     (string/replace "-" "_")
                     (string/replace "." "_SLASH_"))]
-    (cp.execSync (str "rm -f .lumo_cache/" segment "*"))
-    (cljs/eval st
-      `(~'require (quote ~(symbol ns-path)) :reload)
-      {:eval node-eval :load @#'lumo.repl/load}
-      (fn [error]
-        (println "Reload namespace:" ns-path)
-        (println error)))
-    (main/on-jsload!)))
+    (cp.execSync (str "rm -fv .lumo_cache/" segment "*"))
+    (.write client (str "(require '" ns-path " :reload)" \newline))
+    (.write client "(require '[workflow-server.main :as main])\n")
+    (.write client "(main/on-jsload!)\n")))
 
 (defn handle-path! [filepath]
   (let
@@ -42,3 +41,5 @@
         (fn ([filepath]
           (handle-path! filepath))))))
   (println "Started watching."))
+
+(watch-src!)

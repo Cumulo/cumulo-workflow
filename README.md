@@ -36,18 +36,27 @@ boot editor!
 open http://repo.cirru.org/stack-editor/target/index.html?port=7011
 
 export boot_deps=`boot show -c`
-lumo -Kvc $boot_deps:src/ -i src/workflow_server/main.cljs
+source tasks/class-path.sh
+lumo -n 6000 -Kvc $boot_deps:src/ -i src/workflow_server/main.cljs
 
 # run code from REPL and clear cache to do it
 ```
 
 To remove Lumo caches and reload the files:
 
+```bash
+lumo -i tasks/watcher.cljs
+```
+
+Read this post for how it works http://clojure-china.org/t/lumo-repl/611
+
+If it fails, you can type in REPL manually:
+
 ```clojure
 (require '[workflow-server.main :as main] :reload)
 (main/rm-caches!)
 (require '[workflow-server.updater.core :as updater] :reload)
-(main/on-jsreload!)
+(main/on-jsload!)
 ```
 
 ### Build
