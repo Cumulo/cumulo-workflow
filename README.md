@@ -36,11 +36,11 @@ Start developing server:
 cd server/
 npm install
 
+source tasks/class-path.sh
 lumo -Kc $boot_deps:src/ -i tasks/server.cljs
 open http://repo.cirru.org/stack-editor/target/index.html?port=7011
 
 # with another terminal
-export boot_deps=`boot show -c`
 source tasks/class-path.sh
 lumo -n 6000 -Kvc $boot_deps:src/ -i src/workflow_server/main.cljs
 

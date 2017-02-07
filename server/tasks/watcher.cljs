@@ -10,8 +10,14 @@
 
 (def client (.createConnection net (clj->js {:port 6000})))
 
-(.on client "data" (fn [chunk]
-  (.log js/console (.toString chunk))))
+(.on client "data"
+  (fn [chunk]
+    (.log js/console (.toString chunk))))
+
+(.on client "end"
+  (fn []
+    (.log js/console "Connection ended!")
+    (.exit js/process 0)))
 
 (defn handle-reload! [ns-path]
   (println "Trying to reload:" ns-path)
