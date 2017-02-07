@@ -5,7 +5,6 @@
 
 (def gaze (js/require "gaze"))
 (def path (js/require "path"))
-(def vm (js/require "vm"))
 (def cp (js/require "child_process"))
 (def net (js/require "net"))
 
