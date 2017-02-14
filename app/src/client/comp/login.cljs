@@ -1,11 +1,11 @@
 
-(ns workflow.comp.login
+(ns client.comp.login
   (:require [respo.alias :refer [create-comp div input button]]
             [respo.comp.text :refer [comp-text]]
             [respo.comp.space :refer [comp-space]]
             [respo.comp.debug :refer [comp-debug]]
             [respo-ui.style :as ui]
-            [workflow.schema :as schema]))
+            [client.schema :as schema]))
 
 (defn update-state [state k v] (assoc state k v))
 

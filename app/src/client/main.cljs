@@ -1,10 +1,10 @@
 
-(ns workflow.main
+(ns client.main
   (:require [respo.core :refer [render! clear-cache!]]
-            [workflow.comp.container :refer [comp-container]]
+            [client.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [workflow.network :refer [send! setup-socket!]]
-            [workflow.schema :as schema]))
+            [client.network :refer [send! setup-socket!]]
+            [client.schema :as schema]))
 
 (defn dispatch! [op op-data] (send! op op-data))
 

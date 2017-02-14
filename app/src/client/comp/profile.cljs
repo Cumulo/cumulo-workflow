@@ -1,7 +1,7 @@
 
-(ns workflow.comp.profile
+(ns client.comp.profile
   (:require [hsl.core :refer [hsl]]
-            [workflow.schema :as schema]
+            [client.schema :as schema]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span a]]
