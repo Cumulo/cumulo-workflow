@@ -63,9 +63,7 @@
                                       [":notifications" ["[]"]]]],
                           "notification" ["def" "notification" ["{}" [":id" "nil"] [":kind" "nil"] [":text" "nil"]]]},
                    :procs []},
-         "updater.user" {:ns ["ns"
-                              "server.updater.user"
-                              [":require" ["[]" "server.util" ":refer" ["[]" "find-first"]]]],
+         "updater.user" {:ns ["ns" "server.updater.user" [":require" ["[]" "server.util" ":refer" ["[]" "find-first"]]]],
                          :defs {"sign-up" ["defn"
                                            "sign-up"
                                            ["db" "op-data" "session-id" "op-id" "op-time"]
@@ -145,9 +143,7 @@
                                            ["db" "op-data" "session-id" "op-id" "op-time"]
                                            ["assoc-in" "db" ["[]" ":sessions" "session-id" ":user-id"] "nil"]]},
                          :procs []},
-         "updater.session" {:ns ["ns"
-                                 "server.updater.session"
-                                 [":require" ["[]" "server.schema" ":as" "schema"]]],
+         "updater.session" {:ns ["ns" "server.updater.session" [":require" ["[]" "server.schema" ":as" "schema"]]],
                             :defs {"connect" ["defn"
                                               "connect"
                                               ["db" "op-data" "session-id" "op-id" "op-time"]
@@ -321,9 +317,7 @@
                                                [">!" "server-chan" ["[]" "op" "op-data" "session-id" "op-id" "op-time"]]]]],
                            "ws" ["def" "ws" ["js/require" "|uws"]]},
                     :procs []},
-         "twig.user" {:ns ["ns"
-                           "server.twig.user"
-                           [":require" ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]]]],
+         "twig.user" {:ns ["ns" "server.twig.user" [":require" ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]]]],
                       :defs {"twig-user" ["def"
                                           "twig-user"
                                           ["create-twig" ":user" ["fn" ["user"] ["dissoc" "user" ":password"]]]]},

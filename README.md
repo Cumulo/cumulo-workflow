@@ -27,7 +27,7 @@ lumo -Kc $boot_deps:src/ -i tasks/server.cljs
 # with another terminal
 boot dev
 # open browser for editor
-open http://repo.cirru.org/stack-editor/target/index.html
+open http://repo.cirru.org/stack-editor/
 ```
 
 Start developing server:
@@ -38,13 +38,11 @@ npm install
 
 source tasks/class-path.sh
 lumo -Kc $boot_deps:src/ -i tasks/server.cljs
-open http://repo.cirru.org/stack-editor/target/index.html?port=7011
+open http://repo.cirru.org/stack-editor/?port=7011
 
 # with another terminal
 source tasks/class-path.sh
 lumo -n 6000 -Kvc $boot_deps:src/ -i src/workflow_server/main.cljs
-
-# run code from REPL and clear cache to do it
 ```
 
 To remove Lumo caches and reload the files:
@@ -58,9 +56,9 @@ Read this post for how it works http://clojure-china.org/t/lumo-repl/611
 If it fails, you can type in REPL manually:
 
 ```clojure
-(require '[workflow-server.main :as main] :reload)
+(require '[server.main :as main] :reload)
 (main/rm-caches!)
-(require '[workflow-server.updater.core :as updater] :reload)
+(require '[server.updater.core :as updater] :reload)
 (main/on-jsload!)
 ```
 

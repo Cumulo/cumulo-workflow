@@ -299,7 +299,7 @@
                                       []
                                       ["clear-cache!"]
                                       ["render-app!"]
-                                      ["println" "|code updated."]],
+                                      ["println" "|Code updated."]],
                         "render-app!" ["defn"
                                        "render-app!"
                                        []
