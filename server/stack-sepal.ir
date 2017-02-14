@@ -1,1 +1,362 @@
-{:definitions {"updater.session/connect" ["defn" "connect" ["db" "op-data" "session-id" "op-id" "op-time"] ["assoc-in" "db" ["[]" ":sessions" "session-id"] ["merge" "schema/session" ["{}" [":id" "session-id"]]]]], "schema/user" ["def" "user" ["{}" [":name" "nil"] [":id" "nil"] [":nickname" "nil"] [":avatar" "nil"] [":password" "nil"]]], "main/persist!" ["defn" "persist!" [] ["let" [["fs" ["js/require" "|fs"]]] ["fs.writeFileSync" [":storage-key" "schema/configs"] ["pr-str" "@writer-db-ref"]]]], "twig.user/twig-user" ["def" "twig-user" ["create-twig" ":user" ["fn" ["user"] ["dissoc" "user" ":password"]]]], "network/client-caches" ["defonce" "client-caches" ["atom" ["{}"]]], "updater.user/sign-up" ["defn" "sign-up" ["db" "op-data" "session-id" "op-id" "op-time"] ["let" [[["[]" "username" "password"] "op-data"] ["maybe-user" ["find-first" ["fn" ["user"] ["=" "username" [":name" "user"]]] ["vals" [":users" "db"]]]]] ["if" ["some?" "maybe-user"] ["update-in" "db" ["[]" ":sessions" "session-id" ":notifications"] ["fn" ["notifications"] ["conj" "notifications" ["{}" [":id" "op-id"] [":kind" ":attentive"] [":text" ["str" "|Name is token: " "username"]]]]]] ["->" "db" ["assoc-in" ["[]" ":sessions" "session-id" ":user-id"] "op-id"] ["assoc-in" ["[]" ":users" "op-id"] ["{}" [":id" "op-id"] [":name" "username"] [":nickname" "username"] [":password" "password"] [":avatar" "nil"]]]]]]], "main/on-jsload!" ["defn" "on-jsload!" [] ["println" "|Code updated."] ["render-clients!" "@reader-db-ref"]], "schema/router" ["def" "router" ["{}" [":name" "nil"] [":title" "nil"] [":data" ["{}"]] [":router" "nil"]]], "network/handle-message" ["defn" "handle-message" ["op" "op-data" "session-id"] ["let" [["op-id" [".generate" "shortid"]] ["op-time" [".valueOf" ["js/Date."]]]] ["go" [">!" "server-chan" ["[]" "op" "op-data" "session-id" "op-id" "op-time"]]]]], "updater.core/updater" ["defn" "updater" ["db" "op" "op-data" "session-id" "op-id" "op-time"] ["case" "op" [":session/connect" ["session/connect" "db" "op-data" "session-id" "op-id" "op-time"]] [":session/disconnect" ["session/disconnect" "db" "op-data" "session-id" "op-id" "op-time"]] [":user/log-in" ["user/log-in" "db" "op-data" "session-id" "op-id" "op-time"]] [":user/sign-up" ["user/sign-up" "db" "op-data" "session-id" "op-id" "op-time"]] [":user/log-out" ["user/log-out" "db" "op-data" "session-id" "op-id" "op-time"]] [":session/remove-notification" ["session/remove-notification" "db" "op-data" "session-id" "op-id" "op-time"]] [":router/change" ["router/change" "db" "op-data" "session-id" "op-id" "op-time"]] "db"]], "updater.session/disconnect" ["defn" "disconnect" ["db" "op-data" "session-id" "op-id" "op-time"] ["update" "db" ":sessions" ["fn" ["session"] ["dissoc" "session" "session-id"]]]], "schema/configs" ["def" "configs" ["{}" [":storage-key" "|/tmp/workflow-storage.edn"] [":port" "5021"]]], "main/-main" ["defn" "-main" [] ["nodejs/enable-util-print!"] ["let" [["server-ch" ["run-server!" ["{}" [":port" [":port" "schema/configs"]]]]]] ["go-loop" ["[]"] ["let" [[["[]" "op" "op-data" "session-id" "op-id" "op-time"] ["<!" "server-ch"]]] ["println" "|Action:" "op" "op-data" "session-id" "op-id" "op-time"] ["--" "println" "|Database:" "@writer-db-ref"] ["try" ["let" [["new-db" ["updater" "@writer-db-ref" "op" "op-data" "session-id" "op-id" "op-time"]]] ["reset!" "writer-db-ref" "new-db"]] ["catch" "js/Error" "e" [".log" "js/console" "e"]]] ["recur"]]] ["render-loop!"]] ["add-watch" "reader-db-ref" ":log" ["fn" []]] [".on" "js/process" "|exit" ["fn" ["code"] ["println" "|Saving file on exit" "code"] ["persist!"]]] ["println" "|Server started."]], "schema/database" ["def" "database" ["{}" [":sessions" ["{}"]] [":users" ["{}"]] [":topics" ["{}"]]]], "network/server-chan" ["defonce" "server-chan" ["chan"]], "network/ws" ["def" "ws" ["js/require" "|uws"]], "network/render-clients!" ["defn" "render-clients!" ["db"] ["doseq" ["[]" "session-entry" [":sessions" "db"]] ["let" [[["[]" "session-id" "session"] "session-entry"] ["old-store" ["or" ["get" "@client-caches" "session-id"] "nil"]] ["new-store" ["render-bunch" ["twig-container" "db" "session"] "old-store"]] ["changes" ["diff-bunch" ["[]"] "old-store" "new-store"]] ["socket" ["get" "@socket-registry" "session-id"]]] ["if" ["and" ["not=" "changes" ["[]"]] ["some?" "socket"]] ["do" [".send" "socket" ["pr-str" "changes"]] ["swap!" "client-caches" "assoc" "session-id" "new-store"]]]]]], "util/find-first" ["defn" "find-first" ["f" "xs"] ["reduce" ["fn" ["_" "x"] ["when" ["f" "x"] ["reduced" "x"]]] "nil" "xs"]], "main/writer-db-ref" ["defonce" "writer-db-ref" ["atom" ["let" [["fs" ["js/require" "|fs"]] ["filepath" [":storage-key" "schema/configs"]]] ["enable-console-print!"] ["if" ["fs.existsSync" "filepath"] ["do" ["println" "|Found storage."] ["read-string" ["fs.readFileSync" "filepath" "|utf8"]]] ["do" ["println" "|Found no storage."] "schema/database"]]]]], "network/shortid" ["def" "shortid" ["js/require" "|shortid"]], "updater.user/log-in" ["defn" "log-in" ["db" "op-data" "session-id" "op-id" "op-time"] ["let" [[["[]" "username" "password"] "op-data"] ["maybe-user" ["find-first" ["fn" ["user"] ["and" ["=" "username" [":name" "user"]]]] ["vals" [":users" "db"]]]]] ["update-in" "db" ["[]" ":sessions" "session-id"] ["fn" ["session"] ["if" ["some?" "maybe-user"] ["if" ["=" "password" [":password" "maybe-user"]] ["assoc" "session" ":user-id" [":id" "maybe-user"]] ["update" "session" ":notifications" ["fn" ["notifications"] ["conj" "notifications" ["{}" [":id" "op-id"] [":kind" ":attentive"] [":text" ["str" "|Wrong password for " "username"]]]]]]] ["update" "session" ":notifications" ["fn" ["notifications"] ["conj" "notifications" ["{}" [":id" "op-id"] [":kind" ":attentive"] [":text" ["str" "|No user named: " "username"]]]]]]]]]]], "twig.container/twig-container" ["def" "twig-container" ["create-twig" ":container" ["fn" ["db" "session"] ["let" [["logged-in?" ["some?" [":user-id" "session"]]] ["router" [":router" "session"]]] ["if" "logged-in?" ["{}" [":session" "session"] [":logged-in?" "true"] [":user" ["twig-user" ["get-in" "db" ["[]" ":users" [":user-id" "session"]]]]] [":router" "router"] [":statistics" ["{}"]]] ["{}" [":session" "session"] [":logged-in?" "false"]]]]]]], "updater.user/log-out" ["defn" "log-out" ["db" "op-data" "session-id" "op-id" "op-time"] ["assoc-in" "db" ["[]" ":sessions" "session-id" ":user-id"] "nil"]], "main/render-loop!" ["defn" "render-loop!" [] ["if" ["not=" "@reader-db-ref" "@writer-db-ref"] ["do" ["reset!" "reader-db-ref" "@writer-db-ref"] ["--" "println" "|render loop"] ["render-clients!" "@reader-db-ref"]]] ["js/setTimeout" "render-loop!" "300"]], "network/socket-registry" ["defonce" "socket-registry" ["atom" ["{}"]]], "updater.router/change" ["defn" "change" ["db" "op-data" "session-id" "op-id" "op-time"] ["assoc-in" "db" ["[]" ":sessions" "session-id" ":router"] "op-data"]], "main/reader-db-ref" ["defonce" "reader-db-ref" ["atom" "@writer-db-ref"]], "network/run-server!" ["defn" "run-server!" ["configs"] ["let" [["wss" ["new" "WebSocketServer" ["js-obj" "|port" [":port" "configs"]]]]] [".on" "wss" "|connection" ["fn" ["socket"] ["let" [["session-id" [".generate" "shortid"]]] ["handle-message" ":session/connect" "nil" "session-id"] ["swap!" "socket-registry" "assoc" "session-id" "socket"] [".on" "socket" "|message" ["fn" ["rawData"] ["let" [["action" ["reader/read-string" "rawData"]] [["[]" "op" "op-data"] "action"]] ["handle-message" "op" "op-data" "session-id"]]]] [".on" "socket" "|close" ["fn" [] ["swap!" "socket-registry" "dissoc" "session-id"] ["handle-message" ":session/disconnect" "nil" "session-id"]]]]]]] "server-chan"], "network/WebSocketServer" ["def" "WebSocketServer" [".-Server" "ws"]], "main/rm-caches!" ["defn" "rm-caches!" [] [".execSync" ["js/require" "|child_process"] "|rm .lumo_cache/workflow_server_SLASH_*"]], "schema/session" ["def" "session" ["{}" [":user-id" "nil"] [":id" "nil"] [":nickname" "nil"] [":router" ["{}" [":name" ":home"] [":data" "nil"] [":router" "nil"]]] [":notifications" ["[]"]]]], "updater.session/remove-notification" ["defn" "remove-notification" ["db" "op-data" "session-id" "op-id" "op-time"] ["update-in" "db" ["[]" ":sessions" "session-id" ":notifications"] ["fn" ["notifications"] ["subvec" "notifications" "0" "op-data"]]]], "schema/notification" ["def" "notification" ["{}" [":id" "nil"] [":kind" "nil"] [":text" "nil"]]]}, :namespaces {"updater.router" ["ns" "workflow-server.updater.router"], "twig.container" ["ns" "workflow-server.twig.container" [":require" ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]] ["[]" "workflow-server.twig.user" ":refer" ["[]" "twig-user"]]]], "util" ["ns" "workflow-server.util"], "schema" ["ns" "workflow-server.schema"], "updater.user" ["ns" "workflow-server.updater.user" [":require" ["[]" "workflow-server.util" ":refer" ["[]" "find-first"]]]], "updater.session" ["ns" "workflow-server.updater.session" [":require" ["[]" "workflow-server.schema" ":as" "schema"]]], "main" ["ns" "workflow-server.main" [":require" ["[]" "cljs.nodejs" ":as" "nodejs"] ["[]" "workflow-server.schema" ":as" "schema"] ["[]" "workflow-server.network" ":refer" ["[]" "run-server!" "render-clients!"]] ["[]" "workflow-server.updater.core" ":refer" ["[]" "updater"]] ["[]" "cljs.core.async" ":refer" ["[]" "<!"]] ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]] [":require-macros" ["[]" "cljs.core.async.macros" ":refer" ["[]" "go-loop"]]]], "network" ["ns" "workflow-server.network" [":require" ["[]" "cljs.nodejs" ":as" "nodejs"] ["[]" "cljs.reader" ":as" "reader"] ["[]" "cljs.core.async" ":refer" ["[]" "chan" ">!"]] ["[]" "workflow-server.twig.container" ":refer" ["[]" "twig-container"]] ["[]" "recollect.diff" ":refer" ["[]" "diff-bunch"]] ["[]" "recollect.bunch" ":refer" ["[]" "render-bunch"]]] [":require-macros" ["[]" "cljs.core.async.macros" ":refer" ["[]" "go"]]]], "twig.user" ["ns" "workflow-server.twig.user" [":require" ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]]]], "updater.core" ["ns" "workflow-server.updater.core" [":require" ["[]" "workflow-server.updater.session" ":as" "session"] ["[]" "workflow-server.updater.user" ":as" "user"] ["[]" "workflow-server.updater.router" ":as" "router"]]]}, :procedures {"updater.router" [], "updater.topic" [], "swig.container" [], "util" [], "schema" [], "updater.user" [], "updater.session" [], "main" [["set!" "*main-cli-fn*" "-main"]], "network" [], "twig.topic" [], "twig.user" [], "updater.core" [], "updater.message" [], "watcher" [["run-watcher!"] [".on" "socket-client" "|data" ["fn" ["data"] ["let" [["content" ["->" "data" [".toString"] ["string/replace" "|cljs.user=> " "|"] ["string/replace" "|\\n" "|"]]]] ["if" ["not" ["string/blank?" "content"]] ["println" "content"]]]]]], "view" []}, :package "workflow-server", :procudures nil}
+{:package "server",
+ :files {"updater.router" {:ns ["ns" "server.updater.router"],
+                           :defs {"change" ["defn"
+                                            "change"
+                                            ["db" "op-data" "session-id" "op-id" "op-time"]
+                                            ["assoc-in" "db" ["[]" ":sessions" "session-id" ":router"] "op-data"]]},
+                           :procs []},
+         "twig.container" {:ns ["ns"
+                                "server.twig.container"
+                                [":require"
+                                 ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]]
+                                 ["[]" "server.twig.user" ":refer" ["[]" "twig-user"]]]],
+                           :defs {"twig-container" ["def"
+                                                    "twig-container"
+                                                    ["create-twig"
+                                                     ":container"
+                                                     ["fn"
+                                                      ["db" "session"]
+                                                      ["let"
+                                                       [["logged-in?" ["some?" [":user-id" "session"]]]
+                                                        ["router" [":router" "session"]]]
+                                                       ["if"
+                                                        "logged-in?"
+                                                        ["{}"
+                                                         [":session" "session"]
+                                                         [":logged-in?" "true"]
+                                                         [":user"
+                                                          ["twig-user"
+                                                           ["get-in" "db" ["[]" ":users" [":user-id" "session"]]]]]
+                                                         [":router" "router"]
+                                                         [":statistics" ["{}"]]]
+                                                        ["{}" [":session" "session"] [":logged-in?" "false"]]]]]]]},
+                           :procs []},
+         "util" {:ns ["ns" "server.util"],
+                 :defs {"find-first" ["defn"
+                                      "find-first"
+                                      ["f" "xs"]
+                                      ["reduce" ["fn" ["_" "x"] ["when" ["f" "x"] ["reduced" "x"]]] "nil" "xs"]]},
+                 :procs []},
+         "schema" {:ns ["ns" "server.schema"],
+                   :defs {"user" ["def"
+                                  "user"
+                                  ["{}"
+                                   [":name" "nil"]
+                                   [":id" "nil"]
+                                   [":nickname" "nil"]
+                                   [":avatar" "nil"]
+                                   [":password" "nil"]]],
+                          "router" ["def"
+                                    "router"
+                                    ["{}" [":name" "nil"] [":title" "nil"] [":data" ["{}"]] [":router" "nil"]]],
+                          "configs" ["def"
+                                     "configs"
+                                     ["{}" [":storage-key" "|/tmp/workflow-storage.edn"] [":port" "5021"]]],
+                          "database" ["def" "database" ["{}" [":sessions" ["{}"]] [":users" ["{}"]] [":topics" ["{}"]]]],
+                          "session" ["def"
+                                     "session"
+                                     ["{}"
+                                      [":user-id" "nil"]
+                                      [":id" "nil"]
+                                      [":nickname" "nil"]
+                                      [":router" ["{}" [":name" ":home"] [":data" "nil"] [":router" "nil"]]]
+                                      [":notifications" ["[]"]]]],
+                          "notification" ["def" "notification" ["{}" [":id" "nil"] [":kind" "nil"] [":text" "nil"]]]},
+                   :procs []},
+         "updater.user" {:ns ["ns"
+                              "server.updater.user"
+                              [":require" ["[]" "server.util" ":refer" ["[]" "find-first"]]]],
+                         :defs {"sign-up" ["defn"
+                                           "sign-up"
+                                           ["db" "op-data" "session-id" "op-id" "op-time"]
+                                           ["let"
+                                            [[["[]" "username" "password"] "op-data"]
+                                             ["maybe-user"
+                                              ["find-first"
+                                               ["fn" ["user"] ["=" "username" [":name" "user"]]]
+                                               ["vals" [":users" "db"]]]]]
+                                            ["if"
+                                             ["some?" "maybe-user"]
+                                             ["update-in"
+                                              "db"
+                                              ["[]" ":sessions" "session-id" ":notifications"]
+                                              ["fn"
+                                               ["notifications"]
+                                               ["conj"
+                                                "notifications"
+                                                ["{}"
+                                                 [":id" "op-id"]
+                                                 [":kind" ":attentive"]
+                                                 [":text" ["str" "|Name is token: " "username"]]]]]]
+                                             ["->"
+                                              "db"
+                                              ["assoc-in" ["[]" ":sessions" "session-id" ":user-id"] "op-id"]
+                                              ["assoc-in"
+                                               ["[]" ":users" "op-id"]
+                                               ["{}"
+                                                [":id" "op-id"]
+                                                [":name" "username"]
+                                                [":nickname" "username"]
+                                                [":password" "password"]
+                                                [":avatar" "nil"]]]]]]],
+                                "log-in" ["defn"
+                                          "log-in"
+                                          ["db" "op-data" "session-id" "op-id" "op-time"]
+                                          ["let"
+                                           [[["[]" "username" "password"] "op-data"]
+                                            ["maybe-user"
+                                             ["find-first"
+                                              ["fn" ["user"] ["and" ["=" "username" [":name" "user"]]]]
+                                              ["vals" [":users" "db"]]]]]
+                                           ["update-in"
+                                            "db"
+                                            ["[]" ":sessions" "session-id"]
+                                            ["fn"
+                                             ["session"]
+                                             ["if"
+                                              ["some?" "maybe-user"]
+                                              ["if"
+                                               ["=" "password" [":password" "maybe-user"]]
+                                               ["assoc" "session" ":user-id" [":id" "maybe-user"]]
+                                               ["update"
+                                                "session"
+                                                ":notifications"
+                                                ["fn"
+                                                 ["notifications"]
+                                                 ["conj"
+                                                  "notifications"
+                                                  ["{}"
+                                                   [":id" "op-id"]
+                                                   [":kind" ":attentive"]
+                                                   [":text" ["str" "|Wrong password for " "username"]]]]]]]
+                                              ["update"
+                                               "session"
+                                               ":notifications"
+                                               ["fn"
+                                                ["notifications"]
+                                                ["conj"
+                                                 "notifications"
+                                                 ["{}"
+                                                  [":id" "op-id"]
+                                                  [":kind" ":attentive"]
+                                                  [":text" ["str" "|No user named: " "username"]]]]]]]]]]],
+                                "log-out" ["defn"
+                                           "log-out"
+                                           ["db" "op-data" "session-id" "op-id" "op-time"]
+                                           ["assoc-in" "db" ["[]" ":sessions" "session-id" ":user-id"] "nil"]]},
+                         :procs []},
+         "updater.session" {:ns ["ns"
+                                 "server.updater.session"
+                                 [":require" ["[]" "server.schema" ":as" "schema"]]],
+                            :defs {"connect" ["defn"
+                                              "connect"
+                                              ["db" "op-data" "session-id" "op-id" "op-time"]
+                                              ["assoc-in"
+                                               "db"
+                                               ["[]" ":sessions" "session-id"]
+                                               ["merge" "schema/session" ["{}" [":id" "session-id"]]]]],
+                                   "disconnect" ["defn"
+                                                 "disconnect"
+                                                 ["db" "op-data" "session-id" "op-id" "op-time"]
+                                                 ["update"
+                                                  "db"
+                                                  ":sessions"
+                                                  ["fn" ["session"] ["dissoc" "session" "session-id"]]]],
+                                   "remove-notification" ["defn"
+                                                          "remove-notification"
+                                                          ["db" "op-data" "session-id" "op-id" "op-time"]
+                                                          ["update-in"
+                                                           "db"
+                                                           ["[]" ":sessions" "session-id" ":notifications"]
+                                                           ["fn"
+                                                            ["notifications"]
+                                                            ["subvec" "notifications" "0" "op-data"]]]]},
+                            :procs []},
+         "main" {:ns ["ns"
+                      "server.main"
+                      [":require"
+                       ["[]" "cljs.nodejs" ":as" "nodejs"]
+                       ["[]" "server.schema" ":as" "schema"]
+                       ["[]" "server.network" ":refer" ["[]" "run-server!" "render-clients!"]]
+                       ["[]" "server.updater.core" ":refer" ["[]" "updater"]]
+                       ["[]" "cljs.core.async" ":refer" ["[]" "<!"]]
+                       ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]]
+                      [":require-macros" ["[]" "cljs.core.async.macros" ":refer" ["[]" "go-loop"]]]],
+                 :defs {"persist!" ["defn"
+                                    "persist!"
+                                    []
+                                    ["let"
+                                     [["fs" ["js/require" "|fs"]]]
+                                     ["fs.writeFileSync" [":storage-key" "schema/configs"] ["pr-str" "@writer-db-ref"]]]],
+                        "on-jsload!" ["defn"
+                                      "on-jsload!"
+                                      []
+                                      ["println" "|Code updated."]
+                                      ["render-clients!" "@reader-db-ref"]],
+                        "-main" ["defn"
+                                 "-main"
+                                 []
+                                 ["nodejs/enable-util-print!"]
+                                 ["let"
+                                  [["server-ch" ["run-server!" ["{}" [":port" [":port" "schema/configs"]]]]]]
+                                  ["go-loop"
+                                   ["[]"]
+                                   ["let"
+                                    [[["[]" "op" "op-data" "session-id" "op-id" "op-time"] ["<!" "server-ch"]]]
+                                    ["println" "|Action:" "op" "op-data" "session-id" "op-id" "op-time"]
+                                    ["--" "println" "|Database:" "@writer-db-ref"]
+                                    ["try"
+                                     ["let"
+                                      [["new-db"
+                                        ["updater" "@writer-db-ref" "op" "op-data" "session-id" "op-id" "op-time"]]]
+                                      ["reset!" "writer-db-ref" "new-db"]]
+                                     ["catch" "js/Error" "e" [".log" "js/console" "e"]]]
+                                    ["recur"]]]
+                                  ["render-loop!"]]
+                                 ["add-watch" "reader-db-ref" ":log" ["fn" []]]
+                                 [".on"
+                                  "js/process"
+                                  "|exit"
+                                  ["fn" ["code"] ["println" "|Saving file on exit" "code"] ["persist!"]]]
+                                 ["println" "|Server started."]],
+                        "writer-db-ref" ["defonce"
+                                         "writer-db-ref"
+                                         ["atom"
+                                          ["let"
+                                           [["fs" ["js/require" "|fs"]] ["filepath" [":storage-key" "schema/configs"]]]
+                                           ["enable-console-print!"]
+                                           ["if"
+                                            ["fs.existsSync" "filepath"]
+                                            ["do"
+                                             ["println" "|Found storage."]
+                                             ["read-string" ["fs.readFileSync" "filepath" "|utf8"]]]
+                                            ["do" ["println" "|Found no storage."] "schema/database"]]]]],
+                        "render-loop!" ["defn"
+                                        "render-loop!"
+                                        []
+                                        ["if"
+                                         ["not=" "@reader-db-ref" "@writer-db-ref"]
+                                         ["do"
+                                          ["reset!" "reader-db-ref" "@writer-db-ref"]
+                                          ["--" "println" "|render loop"]
+                                          ["render-clients!" "@reader-db-ref"]]]
+                                        ["js/setTimeout" "render-loop!" "300"]],
+                        "reader-db-ref" ["defonce" "reader-db-ref" ["atom" "@writer-db-ref"]],
+                        "rm-caches!" ["defn"
+                                      "rm-caches!"
+                                      []
+                                      [".execSync"
+                                       ["js/require" "|child_process"]
+                                       "|rm .lumo_cache/workflow_server_SLASH_*"]]},
+                 :procs [["set!" "*main-cli-fn*" "-main"]]},
+         "network" {:ns ["ns"
+                         "server.network"
+                         [":require"
+                          ["[]" "cljs.nodejs" ":as" "nodejs"]
+                          ["[]" "cljs.reader" ":as" "reader"]
+                          ["[]" "cljs.core.async" ":refer" ["[]" "chan" ">!"]]
+                          ["[]" "server.twig.container" ":refer" ["[]" "twig-container"]]
+                          ["[]" "recollect.diff" ":refer" ["[]" "diff-bunch"]]
+                          ["[]" "recollect.bunch" ":refer" ["[]" "render-bunch"]]]
+                         [":require-macros" ["[]" "cljs.core.async.macros" ":refer" ["[]" "go"]]]],
+                    :defs {"socket-registry" ["defonce" "socket-registry" ["atom" ["{}"]]],
+                           "run-server!" ["defn"
+                                          "run-server!"
+                                          ["configs"]
+                                          ["let"
+                                           [["wss" ["new" "WebSocketServer" ["js-obj" "|port" [":port" "configs"]]]]]
+                                           [".on"
+                                            "wss"
+                                            "|connection"
+                                            ["fn"
+                                             ["socket"]
+                                             ["let"
+                                              [["session-id" [".generate" "shortid"]]]
+                                              ["handle-message" ":session/connect" "nil" "session-id"]
+                                              ["swap!" "socket-registry" "assoc" "session-id" "socket"]
+                                              [".on"
+                                               "socket"
+                                               "|message"
+                                               ["fn"
+                                                ["rawData"]
+                                                ["let"
+                                                 [["action" ["reader/read-string" "rawData"]]
+                                                  [["[]" "op" "op-data"] "action"]]
+                                                 ["handle-message" "op" "op-data" "session-id"]]]]
+                                              [".on"
+                                               "socket"
+                                               "|close"
+                                               ["fn"
+                                                []
+                                                ["swap!" "socket-registry" "dissoc" "session-id"]
+                                                ["handle-message" ":session/disconnect" "nil" "session-id"]]]]]]]
+                                          "server-chan"],
+                           "render-clients!" ["defn"
+                                              "render-clients!"
+                                              ["db"]
+                                              ["doseq"
+                                               ["[]" "session-entry" [":sessions" "db"]]
+                                               ["let"
+                                                [[["[]" "session-id" "session"] "session-entry"]
+                                                 ["old-store" ["or" ["get" "@client-caches" "session-id"] "nil"]]
+                                                 ["new-store"
+                                                  ["render-bunch" ["twig-container" "db" "session"] "old-store"]]
+                                                 ["changes" ["diff-bunch" ["[]"] "old-store" "new-store"]]
+                                                 ["socket" ["get" "@socket-registry" "session-id"]]]
+                                                ["if"
+                                                 ["and" ["not=" "changes" ["[]"]] ["some?" "socket"]]
+                                                 ["do"
+                                                  [".send" "socket" ["pr-str" "changes"]]
+                                                  ["swap!" "client-caches" "assoc" "session-id" "new-store"]]]]]],
+                           "client-caches" ["defonce" "client-caches" ["atom" ["{}"]]],
+                           "server-chan" ["defonce" "server-chan" ["chan"]],
+                           "shortid" ["def" "shortid" ["js/require" "|shortid"]],
+                           "WebSocketServer" ["def" "WebSocketServer" [".-Server" "ws"]],
+                           "handle-message" ["defn"
+                                             "handle-message"
+                                             ["op" "op-data" "session-id"]
+                                             ["let"
+                                              [["op-id" [".generate" "shortid"]] ["op-time" [".valueOf" ["js/Date."]]]]
+                                              ["go"
+                                               [">!" "server-chan" ["[]" "op" "op-data" "session-id" "op-id" "op-time"]]]]],
+                           "ws" ["def" "ws" ["js/require" "|uws"]]},
+                    :procs []},
+         "twig.user" {:ns ["ns"
+                           "server.twig.user"
+                           [":require" ["[]" "recollect.bunch" ":refer" ["[]" "create-twig"]]]],
+                      :defs {"twig-user" ["def"
+                                          "twig-user"
+                                          ["create-twig" ":user" ["fn" ["user"] ["dissoc" "user" ":password"]]]]},
+                      :procs []},
+         "updater.core" {:ns ["ns"
+                              "server.updater.core"
+                              [":require"
+                               ["[]" "server.updater.session" ":as" "session"]
+                               ["[]" "server.updater.user" ":as" "user"]
+                               ["[]" "server.updater.router" ":as" "router"]]],
+                         :defs {"updater" ["defn"
+                                           "updater"
+                                           ["db" "op" "op-data" "session-id" "op-id" "op-time"]
+                                           ["case"
+                                            "op"
+                                            [":session/connect"
+                                             ["session/connect" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            [":session/disconnect"
+                                             ["session/disconnect" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            [":user/log-in"
+                                             ["user/log-in" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            [":user/sign-up"
+                                             ["user/sign-up" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            [":user/log-out"
+                                             ["user/log-out" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            [":session/remove-notification"
+                                             ["session/remove-notification"
+                                              "db"
+                                              "op-data"
+                                              "session-id"
+                                              "op-id"
+                                              "op-time"]]
+                                            [":router/change"
+                                             ["router/change" "db" "op-data" "session-id" "op-id" "op-time"]]
+                                            "db"]]},
+                         :procs []}}}

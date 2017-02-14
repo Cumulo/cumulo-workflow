@@ -1,5 +1,5 @@
 
-(ns workflow-server.updater.user (:require [workflow-server.util :refer [find-first]]))
+(ns server.updater.user (:require [server.util :refer [find-first]]))
 
 (defn sign-up [db op-data session-id op-id op-time]
   (let [[username password] op-data

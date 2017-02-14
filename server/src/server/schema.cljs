@@ -1,5 +1,5 @@
 
-(ns workflow-server.schema )
+(ns server.schema )
 
 (def user {:name nil, :id nil, :nickname nil, :avatar nil, :password nil})
 

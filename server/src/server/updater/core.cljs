@@ -1,8 +1,8 @@
 
-(ns workflow-server.updater.core
-  (:require [workflow-server.updater.session :as session]
-            [workflow-server.updater.user :as user]
-            [workflow-server.updater.router :as router]))
+(ns server.updater.core
+  (:require [server.updater.session :as session]
+            [server.updater.user :as user]
+            [server.updater.router :as router]))
 
 (defn updater [db op op-data session-id op-id op-time]
   (case op

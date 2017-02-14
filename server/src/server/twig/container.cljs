@@ -1,7 +1,6 @@
 
-(ns workflow-server.twig.container
-  (:require [recollect.bunch :refer [create-twig]]
-            [workflow-server.twig.user :refer [twig-user]]))
+(ns server.twig.container
+  (:require [recollect.bunch :refer [create-twig]] [server.twig.user :refer [twig-user]]))
 
 (def twig-container
   (create-twig

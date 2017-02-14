@@ -1,9 +1,9 @@
 
-(ns workflow-server.main
+(ns server.main
   (:require [cljs.nodejs :as nodejs]
-            [workflow-server.schema :as schema]
-            [workflow-server.network :refer [run-server! render-clients!]]
-            [workflow-server.updater.core :refer [updater]]
+            [server.schema :as schema]
+            [server.network :refer [run-server! render-clients!]]
+            [server.updater.core :refer [updater]]
             [cljs.core.async :refer [<!]]
             [cljs.reader :refer [read-string]])
   (:require-macros [cljs.core.async.macros :refer [go-loop]]))
