@@ -1,13 +1,14 @@
 
 (set-env!
   :source-paths #{"src"}
-  :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "test"]
-                  [org.clojure/clojurescript "1.9.473"     :scope "test"]
-                  [andare                    "0.4.0"       :scope "test"]
-                  [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
-                  [cirru/boot-stack-server   "0.1.30"      :scope "test"]
-                  [cumulo/shallow-diff       "0.1.1"       :scope "test"]
-                  [cumulo/recollect          "0.1.5"]])
+  :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "provided"]
+                  [org.clojure/clojurescript "1.9.473"     :scope "provided"]
+                  [andare                    "0.5.0"       :scope "provided"]
+                  [adzerk/boot-cljs          "1.7.228-1"   :scope "provided"]
+                  [cirru/boot-stack-server   "0.1.30"      :scope "provided"]
+                  [cumulo/shallow-diff       "0.1.3"       :scope "provided"]
+                  [fipp                      "0.6.9"       :scope "provided"]
+                  [cumulo/recollect          "0.1.7"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]])
 
