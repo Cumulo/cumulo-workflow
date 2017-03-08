@@ -14,9 +14,9 @@
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "^1.11.1",
-    "css-loader": "^0.25.0",
+    "css-loader": "^0.26.4",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
-    "file-loader": "^0.9.0",
+    "file-loader": "^0.10.1",
     "respo-ui": "^0.1.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",

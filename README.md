@@ -19,7 +19,7 @@ Start developing app:
 ```bash
 cd app/
 mkdir -p target/
-npm install
+yarn
 webpack
 source tasks/class-path.sh
 lumo -Kc $boot_deps:src/ -i tasks/render.cljs
@@ -34,7 +34,7 @@ Start developing server:
 
 ```bash
 cd server/
-npm install
+yarn
 
 source tasks/class-path.sh
 lumo -Kc $boot_deps:src/ -i tasks/server.cljs
