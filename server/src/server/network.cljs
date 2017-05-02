@@ -52,7 +52,12 @@
     (let [[session-id session] session-entry
           old-store (or (get @client-caches session-id) nil)
           new-store (render-bunch (twig-container db session) old-store)
-          changes (diff-bunch [] old-store new-store)
+          ref-changes (atom [])
+          collect! (fn [x] (swap! ref-changes conj x))
           socket (get @socket-registry session-id)]
-      (if (and (not= changes []) (some? socket))
-        (do (.send socket (pr-str changes)) (swap! client-caches assoc session-id new-store))))))
+      (diff-bunch collect! [] old-store new-store)
+      (println "Changes for:" session-id @ref-changes)
+      (if (and (not= ref-changes []) (some? socket))
+        (do
+         (.send socket (pr-str @ref-changes))
+         (swap! client-caches assoc session-id new-store))))))

@@ -21,9 +21,9 @@ cd app/
 mkdir -p target/
 yarn
 webpack
-source tasks/class-path.sh
-lumo -Kc $boot_deps:src/ -i tasks/render.cljs
-lumo -Kc $boot_deps:src/ -i tasks/server.cljs
+export deps=`boot show -c`
+lumo -Kc $deps:src/ -i tasks/render.cljs
+stack-editor
 # with another terminal
 boot dev
 # open browser for editor
@@ -36,13 +36,13 @@ Start developing server:
 cd server/
 yarn
 
-source tasks/class-path.sh
-lumo -Kc $boot_deps:src/ -i tasks/server.cljs
+export deps=`boot show -c`
+port=7011 stack-editor
 open http://repo.cirru.org/stack-editor/?port=7011
 
 # with another terminal
-source tasks/class-path.sh
-lumo -n 6000 -Kvc $boot_deps:src/ -i src/workflow_server/main.cljs
+export deps=`boot show -c`
+lumo -n 6000 -Kvc $deps:src/ -i src/server/main.cljs
 ```
 
 To remove Lumo caches and reload the files:

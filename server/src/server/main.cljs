@@ -39,7 +39,7 @@
      []
      (let [[op op-data session-id op-id op-time] (<! server-ch)]
        (println "Action:" op op-data session-id op-id op-time)
-       (comment println "Database:" @writer-db-ref)
+       (println "Database:" @writer-db-ref)
        (try
         (let [new-db (updater @writer-db-ref op op-data session-id op-id op-time)]
           (reset! writer-db-ref new-db))

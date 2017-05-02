@@ -1,11 +1,12 @@
 
+path = require 'path'
 ExtractTextPlugin = require 'extract-text-webpack-plugin'
 
 module.exports =
   entry:
     style: 'respo-ui'
   output:
-    path: './target/'
+    path: path.join __dirname, './target/'
     filename: '[name].js'
   module:
     rules: [

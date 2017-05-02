@@ -1,5 +1,5 @@
 
-(ns Workflow.app
+(ns workflow.app
   (:require
     [respo.alias :refer [html head title script style meta' div link body]]
     [respo.render.html :refer [make-html make-string]]))
