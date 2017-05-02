@@ -26,13 +26,14 @@
 (defn on-home [e dispatch!]
   (dispatch! :router/change {:name :home, :params nil, :router nil}))
 
-(defn render [logged-in?]
-  (fn [state mutate!]
-    (div
-     {:style (merge ui/row-center style-header)}
-     (div {:event {:click on-home}, :style style-logo} (comp-text "Workflow" nil))
-     (div
-      {:style style-pointer, :event {:click on-profile}}
-      (comp-text (if logged-in? "Me" "Guest") nil)))))
-
-(def comp-header (create-comp :header render))
+(def comp-header
+  (create-comp
+   :header
+   (fn [logged-in?]
+     (fn [cursor]
+       (div
+        {:style (merge ui/row-center style-header)}
+        (div {:event {:click on-home}, :style style-logo} (comp-text "Workflow" nil))
+        (div
+         {:style style-pointer, :event {:click on-profile}}
+         (comp-text (if logged-in? "Me" "Guest") nil)))))))

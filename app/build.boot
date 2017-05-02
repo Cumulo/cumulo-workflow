@@ -8,7 +8,7 @@
                   [adzerk/boot-cljs          "1.7.228-1"   :scope "provided"]
                   [adzerk/boot-reload        "0.4.13"      :scope "provided"]
                   [mvc-works/hsl             "0.1.2"]
-                  [respo                     "0.3.39"]
+                  [respo                     "0.4.2"]
                   [respo/ui                  "0.1.9"]
                   [respo/message             "0.1.4"]
                   [cumulo/recollect          "0.1.7"]])

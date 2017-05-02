@@ -20,12 +20,13 @@
    :color :white,
    :padding "0 8px"})
 
-(defn render [user]
-  (fn [state mutate!]
-    (div
-     {:style ui/flex}
-     (comp-text (str "Hello! " (:name user)) nil)
-     (comp-space 8 nil)
-     (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))))
-
-(def comp-profile (create-comp :profile render))
+(def comp-profile
+  (create-comp
+   :profile
+   (fn [user]
+     (fn [cursor]
+       (div
+        {:style ui/flex}
+        (comp-text (str "Hello! " (:name user)) nil)
+        (comp-space 8 nil)
+        (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))))))

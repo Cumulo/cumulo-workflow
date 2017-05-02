@@ -17,26 +17,30 @@
 
 (def style-body {:padding "8px 16px"})
 
-(defn render [store]
-  (fn [state mutate!]
-    (if (nil? store)
-      (div
-       {:style (merge ui/global ui/fullscreen ui/center)}
-       (comp-text "No connection!" style-alert))
-      (div
-       {:style (merge ui/global ui/fullscreen ui/column)}
-       (comp-header (:logged-in? store))
-       (div
-        {:style style-body}
-        (div
-         {:style (merge ui/row style-body)}
-         (if (:logged-in? store)
-           (let [router (:router store)]
-             (case (:name router)
-               :profile (comp-profile (:user store))
-               (div {} (comp-text (str "404 page: " (pr-str router)) nil))))
-           (comp-login))))
-       (comp-debug store style-debugger)
-       (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)))))
-
-(def comp-container (create-comp :container render))
+(def comp-container
+  (create-comp
+   :container
+   (fn [store]
+     (fn [cursor]
+       (let [states (:states store)]
+         (if (nil? store)
+           (div
+            {:style (merge ui/global ui/fullscreen ui/center)}
+            (comp-text "No connection!" style-alert))
+           (div
+            {:style (merge ui/global ui/fullscreen ui/column)}
+            (comp-header (:logged-in? store))
+            (div
+             {:style style-body}
+             (div
+              {:style (merge ui/row style-body)}
+              (if (:logged-in? store)
+                (let [router (:router store)]
+                  (case (:name router)
+                    :profile (comp-profile (:user store))
+                    (div {} (comp-text (str "404 page: " (pr-str router)) nil))))
+                (comp-login states))))
+            (comp-debug store style-debugger)
+            (comp-msg-list
+             (get-in store [:session :notifications])
+             :session/remove-notification))))))))

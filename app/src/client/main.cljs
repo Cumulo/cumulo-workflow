@@ -1,20 +1,24 @@
 
 (ns client.main
   (:require [respo.core :refer [render! clear-cache!]]
+            [respo.cursor :refer [mutate]]
             [client.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [client.network :refer [send! setup-socket!]]
             [client.schema :as schema]))
 
-(defn dispatch! [op op-data] (send! op op-data))
-
 (defonce store-ref (atom nil))
 
-(defonce states-ref (atom {}))
+(defn dispatch! [op op-data]
+  (cond
+    (= op :states)
+      (let [new-store (update @store-ref :states (mutate op-data))]
+        (reset! store-ref new-store))
+    :else (send! op op-data)))
 
 (defn render-app! []
   (let [target (.querySelector js/document "#app")]
-    (render! (comp-container @store-ref) target dispatch! states-ref)))
+    (render! (comp-container @store-ref) target dispatch!)))
 
 (defn on-jsload! [] (clear-cache!) (render-app!) (println "Code updated."))
 
@@ -33,7 +37,6 @@
     :on-close! (fn [event] (reset! store-ref nil) (.error js/console "Lost connection!")),
     :on-open! (fn [event] (simulate-login!))})
   (add-watch store-ref :changes render-app!)
-  (add-watch states-ref :changes render-app!)
   (println "App started!"))
 
 (set! js/window.onload -main)
