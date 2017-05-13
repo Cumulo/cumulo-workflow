@@ -1,4 +1,5 @@
 {:package "server",
+ :options {:port 7011}
  :files {"updater.router" {:ns ["ns" "server.updater.router"],
                            :defs {"change" ["defn"
                                             "change"
