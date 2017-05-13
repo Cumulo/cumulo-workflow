@@ -1,5 +1,5 @@
 {:package "server",
- :options {:port 7011}
+ :options {:port 7011},
  :files {"updater.router" {:ns ["ns" "server.updater.router"],
                            :defs {"change" ["defn"
                                             "change"
@@ -238,13 +238,7 @@
                                           ["--" "println" "|render loop"]
                                           ["render-clients!" "@reader-db-ref"]]]
                                         ["js/setTimeout" "render-loop!" "300"]],
-                        "reader-db-ref" ["defonce" "reader-db-ref" ["atom" "@writer-db-ref"]],
-                        "rm-caches!" ["defn"
-                                      "rm-caches!"
-                                      []
-                                      [".execSync"
-                                       ["js/require" "|child_process"]
-                                       "|rm .lumo_cache/workflow_server_SLASH_*"]]},
+                        "reader-db-ref" ["defonce" "reader-db-ref" ["atom" "@writer-db-ref"]]},
                  :procs [["set!" "*main-cli-fn*" "-main"]]},
          "network" {:ns ["ns"
                          "server.network"

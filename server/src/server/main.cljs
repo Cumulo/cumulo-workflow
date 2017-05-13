@@ -50,7 +50,4 @@
   (.on js/process "exit" (fn [code] (println "Saving file on exit" code) (persist!)))
   (println "Server started."))
 
-(defn rm-caches! []
-  (.execSync (js/require "child_process") "rm .lumo_cache/workflow_server_SLASH_*"))
-
 (set! *main-cli-fn* -main)

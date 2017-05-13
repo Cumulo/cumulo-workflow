@@ -20,15 +20,11 @@
     (.exit js/process 0)))
 
 (defn handle-reload! [ns-path]
-  (println "Trying to reload:" ns-path)
-  (let [st (cljs/empty-state)
-        segment (-> ns-path
-                    (string/replace "-" "_")
-                    (string/replace "." "_SLASH_"))]
-    (cp.execSync (str "rm -fv .lumo_cache/" segment "*"))
-    (.write client (str "(require '" ns-path " :reload)" \newline))
-    (.write client "(require '[server.main :as main])\n")
-    (.write client "(main/on-jsload!)\n")))
+  (let [reload-code (str "(require '" ns-path " :reload)\n"
+                         "(require '[server.main :as main])\n"
+                         "(main/on-jsload!)\n")]
+    (println reload-code)
+    (.write client reload-code)))
 
 (defn handle-path! [filepath]
   (let
