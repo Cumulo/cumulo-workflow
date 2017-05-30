@@ -4,11 +4,53 @@
   "description": "Stack Workflow",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tiye": "rsync -r dist/ tiye.me:repo/Cumulo/workflow",
+    "cljs-once": "shadow-cljs --release",
+    "cljs": "shadow-cljs --dev",
+    "html-dev": "env=dev node compiled/client.render.js",
+    "html": "node compiled/client.render.js",
+    "hmr": "webpack-dev-server --config webpack.dev.coffee --hot-only",
+    "webpack": "webpack --hide-modules --progress",
+    "dev": "yarn html-dev && yarn hmr",
+    "del": "rm -rf dist/*",
+    "build": "yarn cljs-once && yarn del && yarn webpack && yarn html"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:mvc-works/stack-workflow.git"
+  },
+  "shadow-cljs": {
+    "source-paths": [
+      "src",
+      "polyfill"
+    ],
+    "output-dir": "compiled",
+    "dependencies": [
+      [
+        "mvc-works/hsl",
+        "0.1.2"
+      ],
+      [
+        "respo/message",
+        "0.1.4"
+      ],
+      [
+        "cumulo/recollect",
+        "0.1.7"
+      ],
+      [
+        "respo/ui",
+        "0.1.9"
+      ],
+      [
+        "respo",
+        "0.4.2"
+      ],
+      [
+        "org.clojure/core.async",
+        "0.3.443"
+      ]
+    ]
   },
   "author": "jiyinyiyong",
   "license": "MIT",
@@ -18,8 +60,11 @@
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "file-loader": "^0.11.1",
     "respo-ui": "^0.1.2",
+    "shadow-cljs": "^0.6.0",
     "style-loader": "^0.17.0",
     "url-loader": "^0.5.7",
-    "webpack": "^2.4.1"
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5",
+    "webpack-manifest-plugin": "^1.1.0"
   }
 }

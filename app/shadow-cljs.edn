@@ -1,0 +1,5 @@
+[{:id :npm
+  :target :npm-module
+  :output-dir "compiled"
+  :compiler-options
+    {:externs ["entry/externs.js"]}}]
