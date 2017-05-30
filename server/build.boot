@@ -2,8 +2,8 @@
 (set-env!
   :source-paths #{"src"}
   :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "provided"]
-                  [org.clojure/clojurescript "1.9.542"     :scope "provided"]
-                  [andare                    "0.5.0"       :scope "provided"]
+                  [org.clojure/clojurescript "1.9.562"     :scope "provided"]
+                  [andare                    "0.7.0"       :scope "provided"]
                   [adzerk/boot-cljs          "1.7.228-1"   :scope "provided"]
                   [cumulo/recollect          "0.1.7"]])
 

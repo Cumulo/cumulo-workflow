@@ -1,7 +1,7 @@
 
+/dist
 /target/
 /.nrepl-history
 /.nrepl-port
-/figwheel_server.log
 /node_modules/
-/.lumo_cache/
+/compiled
