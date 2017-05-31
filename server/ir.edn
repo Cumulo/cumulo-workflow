@@ -172,7 +172,6 @@
          "main" {:ns ["ns"
                       "server.main"
                       [":require"
-                       ["[]" "cljs.nodejs" ":as" "nodejs"]
                        ["[]" "server.schema" ":as" "schema"]
                        ["[]" "server.network" ":refer" ["[]" "run-server!" "render-clients!"]]
                        ["[]" "server.updater.core" ":refer" ["[]" "updater"]]
@@ -193,7 +192,6 @@
                         "-main" ["defn"
                                  "-main"
                                  []
-                                 ["nodejs/enable-util-print!"]
                                  ["let"
                                   [["server-ch" ["run-server!" ["{}" [":port" [":port" "schema/configs"]]]]]]
                                   ["go-loop"
@@ -239,7 +237,7 @@
                                           ["render-clients!" "@reader-db-ref"]]]
                                         ["js/setTimeout" "render-loop!" "300"]],
                         "reader-db-ref" ["defonce" "reader-db-ref" ["atom" "@writer-db-ref"]]},
-                 :procs [["set!" "*main-cli-fn*" "-main"]]},
+                 :procs []},
          "network" {:ns ["ns"
                          "server.network"
                          [":require"

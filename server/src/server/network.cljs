@@ -14,9 +14,9 @@
 
 (def shortid (js/require "shortid"))
 
-(def ws (js/require "uws"))
+(def uws (js/require "uws"))
 
-(def WebSocketServer (.-Server ws))
+(def WebSocketServer (.-Server uws))
 
 (defn handle-message [op op-data session-id]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]

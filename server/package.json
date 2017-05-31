@@ -5,11 +5,8 @@
   "main": "index.js",
   "scripts": {
     "tiye": "rsync -r dist/main.js repo.tiye.me:servers/tiye",
-    "dev": "webpack --config webpack.dev.js --watch",
-    "bundle": "webpack --progress",
     "cljs-once": "shadow-cljs --once",
     "cljs": "shadow-cljs --dev",
-    "build": "yarn cljs-once && yarn bundle",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "shadow-cljs": {
@@ -49,6 +46,7 @@
   "devDependencies": {
     "gaze": "^1.1.2",
     "shadow-cljs": "^0.6.0",
+    "source-map-support": "^0.4.15",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.6.1"
   }

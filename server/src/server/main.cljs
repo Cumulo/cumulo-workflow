@@ -1,7 +1,6 @@
 
 (ns server.main
-  (:require [cljs.nodejs :as nodejs]
-            [server.schema :as schema]
+  (:require [server.schema :as schema]
             [server.network :refer [run-server! render-clients!]]
             [server.updater.core :refer [updater]]
             [cljs.core.async :refer [<!]]
@@ -33,7 +32,6 @@
   (js/setTimeout render-loop! 300))
 
 (defn -main []
-  (nodejs/enable-util-print!)
   (let [server-ch (run-server! {:port (:port schema/configs)})]
     (go-loop
      []
@@ -49,5 +47,3 @@
   (add-watch reader-db-ref :log (fn [] ))
   (.on js/process "exit" (fn [code] (println "Saving file on exit" code) (persist!)))
   (println "Server started."))
-
-(set! *main-cli-fn* -main)

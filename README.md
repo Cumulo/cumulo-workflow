@@ -35,11 +35,9 @@ yarn
 
 yarn cljs
 # another terminal
-yarn dev
-# another terminal
 stack-editor
 # another terminal
-node dist/main.js
+node compiled/main.js
 ```
 
 ### Build
