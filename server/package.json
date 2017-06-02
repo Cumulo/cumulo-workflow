@@ -41,13 +41,14 @@
   "homepage": "https://github.com/mvc-works/boot-workflow#readme",
   "dependencies": {
     "shortid": "^2.2.6",
-    "uws": "^0.13.0"
+    "uws": "^0.14.5"
   },
   "devDependencies": {
     "gaze": "^1.1.2",
     "shadow-cljs": "^0.6.0",
     "source-map-support": "^0.4.15",
     "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.6.1"
+    "webpack": "^2.6.1",
+    "ws": "^3.0.0"
   }
 }
