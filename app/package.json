@@ -5,63 +5,34 @@
   "main": "index.js",
   "scripts": {
     "tiye": "rsync -r dist/ tiye.me:repo/Cumulo/workflow",
-    "cljs-once": "shadow-cljs --release",
-    "cljs": "shadow-cljs --dev",
-    "html-dev": "env=dev node compiled/client.render.js",
-    "html": "node compiled/client.render.js",
-    "hmr": "webpack-dev-server --config webpack.dev.coffee --hot-only",
+    "cljs-release": "shadow-cljs -b app --release",
+    "cljs-once": "shadow-cljs -b app --once",
+    "cljs": "shadow-cljs -b app --dev",
+    "html-dev": "env=dev node target/client.render.js",
+    "html": "node target/client.render.js",
+    "hmr": "webpack-dev-server --config webpack.dev.js --hot-only",
     "webpack": "webpack --hide-modules --progress",
     "dev": "yarn html-dev && yarn hmr",
     "del": "rm -rf dist/*",
-    "build": "yarn cljs-once && yarn del && yarn webpack && yarn html"
+    "serve": "http-server dist/",
+    "build": "yarn del && yarn cljs-release && yarn webpack && yarn cljs-once && yarn html && yarn serve"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:mvc-works/stack-workflow.git"
   },
-  "shadow-cljs": {
-    "source-paths": [
-      "src",
-      "polyfill"
-    ],
-    "output-dir": "compiled",
-    "dependencies": [
-      [
-        "mvc-works/hsl",
-        "0.1.2"
-      ],
-      [
-        "respo/message",
-        "0.1.4"
-      ],
-      [
-        "cumulo/recollect",
-        "0.1.7"
-      ],
-      [
-        "respo/ui",
-        "0.1.9"
-      ],
-      [
-        "respo",
-        "0.4.2"
-      ],
-      [
-        "org.clojure/core.async",
-        "0.3.443"
-      ]
-    ]
-  },
   "author": "jiyinyiyong",
   "license": "MIT",
   "devDependencies": {
-    "coffee-script": "^1.12.5",
-    "css-loader": "^0.28.1",
+    "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
-    "file-loader": "^0.11.1",
+    "file-loader": "^0.11.2",
+    "http-server": "^0.10.0",
     "respo-ui": "^0.1.2",
-    "shadow-cljs": "^0.6.0",
-    "style-loader": "^0.17.0",
+    "shadow-cljs": "^0.9.4",
+    "source-map-loader": "^0.2.1",
+    "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "url-loader": "^0.5.7",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",

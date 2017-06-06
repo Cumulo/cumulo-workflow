@@ -1,6 +1,9 @@
-[{:id :npm
-  :target :node-script
-  :output-dir "compiled"
-  :output-to "compiled/main.js"
-  :main server.main/-main
-  :devtools {:after-load server.main/on-jsload!}}]
+
+{:source-paths ["src"],
+ :dependencies [[mvc-works/hsl "0.1.2"]
+                [cumulo/recollect "0.1.7"]
+                [org.clojure/core.async "0.3.443"]]
+ :builds {:app {:target :node-script
+                :output-to "target/main.js"
+                :main server.main/-main
+                :devtools {:after-load server.main/on-jsload!}}}}

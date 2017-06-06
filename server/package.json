@@ -5,29 +5,9 @@
   "main": "index.js",
   "scripts": {
     "tiye": "rsync -r dist/main.js repo.tiye.me:servers/tiye",
-    "cljs-once": "shadow-cljs --once",
-    "cljs": "shadow-cljs --dev",
+    "cljs-once": "shadow-cljs -b app --once",
+    "cljs": "shadow-cljs -b app --dev",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "shadow-cljs": {
-    "source-paths": [
-      "src"
-    ],
-    "output-dir": "compiled",
-    "dependencies": [
-      [
-        "mvc-works/hsl",
-        "0.1.2"
-      ],
-      [
-        "cumulo/recollect",
-        "0.1.7"
-      ],
-      [
-        "org.clojure/core.async",
-        "0.3.443"
-      ]
-    ]
   },
   "repository": {
     "type": "git",
@@ -44,8 +24,7 @@
     "uws": "^0.14.5"
   },
   "devDependencies": {
-    "gaze": "^1.1.2",
-    "shadow-cljs": "^0.6.0",
+    "shadow-cljs": "^0.9.4",
     "source-map-support": "^0.4.15",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.6.1",

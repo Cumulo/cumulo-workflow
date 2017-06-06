@@ -1,5 +1,11 @@
-[{:id :npm
-  :target :npm-module
-  :output-dir "compiled"
-  :compiler-options
-    {:externs ["entry/externs.js"]}}]
+
+{:source-paths ["src" "polyfill"]
+ :dependencies [[mvc-works/hsl "0.1.2"]
+                [respo/message "0.1.4"]
+                [cumulo/recollect "0.1.7"]
+                [respo/ui "0.1.9"]
+                [respo "0.4.2"]
+                [org.clojure/core.async "0.3.443"]]
+ :builds {:app {:target :npm-module
+                :output-dir "target"
+                :release {:entries [client.main]}}}}
