@@ -1,11 +1,11 @@
 
-(ns client.main
+(ns app.main
   (:require [respo.core :refer [render! clear-cache!]]
             [respo.cursor :refer [mutate]]
-            [client.comp.container :refer [comp-container]]
+            [app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [client.network :refer [send! setup-socket!]]
-            [client.schema :as schema]))
+            [app.network :refer [send! setup-socket!]]
+            [app.schema :as schema]))
 
 (defonce store-ref (atom nil))
 

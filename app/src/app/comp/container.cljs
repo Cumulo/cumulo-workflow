@@ -1,14 +1,14 @@
 
-(ns client.comp.container
+(ns app.comp.container
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span]]
             [respo.comp.debug :refer [comp-debug]]
             [respo.comp.text :refer [comp-code comp-text]]
-            [client.comp.header :refer [comp-header]]
-            [client.comp.profile :refer [comp-profile]]
-            [client.comp.login :refer [comp-login]]
+            [app.comp.header :refer [comp-header]]
+            [app.comp.profile :refer [comp-profile]]
+            [app.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]))
 
 (def style-alert {:font-family "Josefin Sans", :font-weight 100, :font-size 40})

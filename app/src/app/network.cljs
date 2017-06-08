@@ -1,5 +1,5 @@
 
-(ns client.network
+(ns app.network
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.reader :as reader]
             [cljs.core.async :as a :refer [>! <! chan timeout]]

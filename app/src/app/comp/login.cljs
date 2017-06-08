@@ -1,11 +1,11 @@
 
-(ns client.comp.login
+(ns app.comp.login
   (:require [respo.alias :refer [create-comp div input button]]
             [respo.comp.text :refer [comp-text]]
             [respo.comp.space :refer [comp-space]]
             [respo.comp.debug :refer [comp-debug]]
             [respo-ui.style :as ui]
-            [client.schema :as schema]))
+            [app.schema :as schema]))
 
 (defn on-toggle [cursor state]
   (fn [e dispatch!] (dispatch! :states [cursor (update state :signup? not)])))

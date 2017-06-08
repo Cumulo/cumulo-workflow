@@ -2,11 +2,11 @@
 require('respo-ui');
 require('./main.css');
 
-var main = require('../target/client.main.js');
+var main = require('../target/app.main.js');
 
 if (module.hot) {
-  module.hot.accept('../target/client.main.js', function() {
-    main = require('../target/client.main.js');
+  module.hot.accept('../target/app.main.js', function() {
+    main = require('../target/app.main.js');
     main.on_jsload_BANG_();
   });
 }

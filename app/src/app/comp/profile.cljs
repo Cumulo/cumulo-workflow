@@ -1,7 +1,7 @@
 
-(ns client.comp.profile
+(ns app.comp.profile
   (:require [hsl.core :refer [hsl]]
-            [client.schema :as schema]
+            [app.schema :as schema]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.alias :refer [create-comp div span a]]

@@ -1,6 +1,6 @@
-{:package "client",
+{:package "app",
  :files {"comp.container" {:ns ["ns"
-                                "client.comp.container"
+                                "app.comp.container"
                                 [":require"
                                  ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                                  ["[]" "respo-ui.style" ":as" "ui"]
@@ -8,9 +8,9 @@
                                  ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span"]]
                                  ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
                                  ["[]" "respo.comp.text" ":refer" ["[]" "comp-code" "comp-text"]]
-                                 ["[]" "client.comp.header" ":refer" ["[]" "comp-header"]]
-                                 ["[]" "client.comp.profile" ":refer" ["[]" "comp-profile"]]
-                                 ["[]" "client.comp.login" ":refer" ["[]" "comp-login"]]
+                                 ["[]" "app.comp.header" ":refer" ["[]" "comp-header"]]
+                                 ["[]" "app.comp.profile" ":refer" ["[]" "comp-profile"]]
+                                 ["[]" "app.comp.login" ":refer" ["[]" "comp-login"]]
                                  ["[]" "respo-message.comp.msg-list" ":refer" ["[]" "comp-msg-list"]]]],
                            :defs {"style-alert" ["def"
                                                  "style-alert"
@@ -65,7 +65,7 @@
                                   "style-body" ["def" "style-body" ["{}" [":padding" "|8px 16px"]]]},
                            :procs []},
          "network" {:ns ["ns"
-                         "client.network"
+                         "app.network"
                          [":require-macros" ["[]" "cljs.core.async.macros" ":refer" ["[]" "go"]]]
                          [":require"
                           ["[]" "cljs.reader" ":as" "reader"]
@@ -99,14 +99,14 @@
                                              ["go" ["loop" ["[]"] [".send" "ws" ["pr-str" ["<!" "sender"]]] ["recur"]]]]]},
                     :procs []},
          "comp.login" {:ns ["ns"
-                            "client.comp.login"
+                            "app.comp.login"
                             [":require"
                              ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "input" "button"]]
                              ["[]" "respo.comp.text" ":refer" ["[]" "comp-text"]]
                              ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]
                              ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
                              ["[]" "respo-ui.style" ":as" "ui"]
-                             ["[]" "client.schema" ":as" "schema"]]],
+                             ["[]" "app.schema" ":as" "schema"]]],
                        :defs {"on-toggle" ["defn"
                                            "on-toggle"
                                            ["cursor" "state"]
@@ -222,10 +222,10 @@
                                                ["{}" [":signup?" "false"] [":username" "|"] [":password" "|"]]]},
                        :procs []},
          "comp.profile" {:ns ["ns"
-                              "client.comp.profile"
+                              "app.comp.profile"
                               [":require"
                                ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
-                               ["[]" "client.schema" ":as" "schema"]
+                               ["[]" "app.schema" ":as" "schema"]
                                ["[]" "respo-ui.style" ":as" "ui"]
                                ["[]" "respo-ui.style.colors" ":as" "colors"]
                                ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span" "a"]]
@@ -264,7 +264,7 @@
                                                   [":padding" "|0 8px"]]]},
                          :procs []},
          "comp.header" {:ns ["ns"
-                             "client.comp.header"
+                             "app.comp.header"
                              [":require"
                               ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                               ["[]" "respo-ui.style" ":as" "ui"]
@@ -316,14 +316,14 @@
                                            ["{}" [":name" ":home"] [":params" "nil"] [":router" "nil"]]]]},
                         :procs []},
          "main" {:ns ["ns"
-                      "client.main"
+                      "app.main"
                       [":require"
                        ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!"]]
                        ["[]" "respo.cursor" ":refer" ["[]" "mutate"]]
-                       ["[]" "client.comp.container" ":refer" ["[]" "comp-container"]]
+                       ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]
                        ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]
-                       ["[]" "client.network" ":refer" ["[]" "send!" "setup-socket!"]]
-                       ["[]" "client.schema" ":as" "schema"]]],
+                       ["[]" "app.network" ":refer" ["[]" "send!" "setup-socket!"]]
+                       ["[]" "app.schema" ":as" "schema"]]],
                  :defs {"dispatch!" ["defn"
                                      "dispatch!"
                                      ["op" "op-data"]
@@ -376,6 +376,6 @@
                                               ["dispatch!" ":user/log-in" ["read-string" "raw"]]]
                                              ["do" ["println" "|Found no storage."]]]]]},
                  :procs [["set!" "js/window.onload" "-main"]]},
-         "schema" {:ns ["ns" "client.schema"],
+         "schema" {:ns ["ns" "app.schema"],
                    :defs {"configs" ["def" "configs" ["{}" [":storage-key" "|workflow-storage"] [":port" "5021"]]]},
                    :procs []}}}

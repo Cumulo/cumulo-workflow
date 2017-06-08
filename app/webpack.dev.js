@@ -13,7 +13,7 @@ module.exports = {
     publicPath: '/',
     host: '0.0.0.0'
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   output: {
     filename: '[name].js'
   },
@@ -31,11 +31,11 @@ module.exports = {
           name: 'fonts/[name].[ext]'
         }
       },
-      {
-        test: /\.js$/,
-        loader: 'source-map-loader',
-        options: { enforce: 'pre' }
-      }
+      // {
+      //   test: /\.js$/,
+      //   loader: 'source-map-loader',
+      //   options: { enforce: 'pre' }
+      // }
     ]
   },
   plugins: [
