@@ -75,7 +75,7 @@
                            "send!" ["defn" "send!" ["op" "op-data"] ["go" [">!" "sender" ["[]" "op" "op-data"]]]],
                            "setup-socket!" ["defn"
                                             "setup-socket!"
-                                            ["store-ref" "configs"]
+                                            ["ref-store" "configs"]
                                             ["let"
                                              [["ws-url" [":url" "configs"]]
                                               ["ws" ["js/WebSocket." "ws-url"]]
@@ -95,7 +95,7 @@
                                                ["let"
                                                 [["changes" ["reader/read-string" "event.data"]]]
                                                 ["println" "|Changes" "changes"]
-                                                ["reset!" "store-ref" ["patch-bunch" "@store-ref" "changes"]]]]]
+                                                ["reset!" "ref-store" ["patch-bunch" "@ref-store" "changes"]]]]]
                                              ["go" ["loop" ["[]"] [".send" "ws" ["pr-str" ["<!" "sender"]]] ["recur"]]]]]},
                     :procs []},
          "comp.login" {:ns ["ns"
@@ -318,7 +318,7 @@
          "main" {:ns ["ns"
                       "app.main"
                       [":require"
-                       ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!"]]
+                       ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!" "falsify-stage!" "render-element"]]
                        ["[]" "respo.cursor" ":refer" ["[]" "mutate"]]
                        ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]
                        ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]
@@ -330,8 +330,8 @@
                                      ["cond"
                                       [["=" "op" ":states"]
                                        ["let"
-                                        [["new-store" ["update" "@store-ref" ":states" ["mutate" "op-data"]]]]
-                                        ["reset!" "store-ref" "new-store"]]]
+                                        [["new-store" ["update" "@ref-store" ":states" ["mutate" "op-data"]]]]
+                                        ["reset!" "ref-store" "new-store"]]]
                                       [":else" ["send!" "op" "op-data"]]]],
                         "on-jsload!" ["defn"
                                       "on-jsload!"
@@ -342,28 +342,34 @@
                         "render-app!" ["defn"
                                        "render-app!"
                                        []
-                                       ["let"
-                                        [["target" [".querySelector" "js/document" "|#app"]]]
-                                        ["render!" ["comp-container" "@store-ref"] "target" "dispatch!"]]],
+                                       ["println" "|Calling render-app!"]
+                                       ["render!" ["comp-container" "@ref-store"] "mount-target" "dispatch!"]],
                         "-main" ["defn"
                                  "-main"
                                  []
                                  ["enable-console-print!"]
+                                 ["println" "|Loaded"]
+                                 ["if"
+                                  "server-rendered?"
+                                  ["falsify-stage!"
+                                   "mount-target"
+                                   ["render-element" ["comp-container" "@ref-store"]]
+                                   "dispatch!"]]
                                  ["render-app!"]
                                  ["setup-socket!"
-                                  "store-ref"
+                                  "ref-store"
                                   ["{}"
                                    [":url"
                                     ["str" "|ws://" [".-hostname" "js/location"] "|:" [":port" "schema/configs"]]]
                                    [":on-close!"
                                     ["fn"
                                      ["event"]
-                                     ["reset!" "store-ref" "nil"]
+                                     ["reset!" "ref-store" "nil"]
                                      [".error" "js/console" "|Lost connection!"]]]
                                    [":on-open!" ["fn" ["event"] ["simulate-login!"]]]]]
-                                 ["add-watch" "store-ref" ":changes" "render-app!"]
+                                 ["add-watch" "ref-store" ":changes" "render-app!"]
                                  ["println" "|App started!"]],
-                        "store-ref" ["defonce" "store-ref" ["atom" "nil"]],
+                        "ref-store" ["defonce" "ref-store" ["atom" "nil"]],
                         "simulate-login!" ["defn"
                                            "simulate-login!"
                                            []
@@ -374,8 +380,88 @@
                                              ["do"
                                               ["println" "|Found storage."]
                                               ["dispatch!" ":user/log-in" ["read-string" "raw"]]]
-                                             ["do" ["println" "|Found no storage."]]]]]},
+                                             ["do" ["println" "|Found no storage."]]]]],
+                        "server-rendered?" ["def"
+                                            "server-rendered?"
+                                            ["some?" [".querySelector" "js/document" "|meta#server-rendered"]]],
+                        "mount-target" ["def" "mount-target" [".querySelector" "js/document" "|#app"]]},
                  :procs [["set!" "js/window.onload" "-main"]]},
+         "render" {:ns ["ns"
+                        "app.render"
+                        [":require"
+                         ["[]"
+                          "respo.alias"
+                          ":refer"
+                          ["[]" "html" "head" "title" "script" "style" "meta'" "div" "link" "body"]]
+                         ["[]" "respo.render.html" ":refer" ["[]" "make-html" "make-string"]]
+                         ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]
+                         ["[]" "|fs" ":refer" ["[]" "readFileSync" "writeFileSync"]]]],
+                   :defs {"main!" ["defn"
+                                   "main!"
+                                   []
+                                   ["spit"
+                                    "|dist/index.html"
+                                    ["if" ["=" "js/process.env.env" "|dev"] ["generate-empty-html"] ["generate-html"]]]],
+                          "spit" ["defn"
+                                  "spit"
+                                  ["file-name" "content"]
+                                  ["writeFileSync" "file-name" "content"]
+                                  ["println" "|Wrote to:" "file-name"]],
+                          "generate-empty-html" ["defn"
+                                                 "generate-empty-html"
+                                                 []
+                                                 ["html-dsl" ["{}" [":build?" "false"] [":main" "|/main.js"]] "|"]],
+                          "generate-html" ["defn"
+                                           "generate-html"
+                                           []
+                                           ["let"
+                                            [["tree" ["comp-container" ["{}"]]]
+                                             ["html-content" ["make-string" "tree"]]
+                                             ["resources"
+                                              ["let"
+                                               [["manifest" ["js/JSON.parse" ["slurp" "|dist/manifest.json"]]]]
+                                               ["{}"
+                                                [":build?" "true"]
+                                                [":css" ["aget" "manifest" "|main.css"]]
+                                                [":main" ["aget" "manifest" "|main.js"]]
+                                                [":vendor" ["aget" "manifest" "|vendor.js"]]]]]]
+                                            ["html-dsl" "resources" "html-content"]]],
+                          "slurp" ["defn" "slurp" ["x"] ["readFileSync" "x" "|utf8"]],
+                          "html-dsl" ["defn"
+                                      "html-dsl"
+                                      ["resources" "html-content"]
+                                      ["make-html"
+                                       ["html"
+                                        ["{}"]
+                                        ["head"
+                                         ["{}"]
+                                         ["title" ["{}" [":innerHTML" "|Stack Workflow"]]]
+                                         ["link" ["{}" [":rel" "|icon"] [":type" "|image/png"] [":href" "icon-url"]]]
+                                         ["link" ["{}" [":rel" "|manifest"] [":href" "|manifest.json"]]]
+                                         ["meta'" ["{}" [":charset" "|utf8"]]]
+                                         ["meta'"
+                                          ["{}"
+                                           [":name" "|viewport"]
+                                           [":content" "|width=device-width, initial-scale=1"]]]
+                                         ["if"
+                                          [":build?" "resources"]
+                                          ["meta'" ["{}" [":id" "|server-rendered"] [":type" "|text/edn"]]]]
+                                         ["if"
+                                          ["contains?" "resources" ":css"]
+                                          ["link"
+                                           ["{}"
+                                            [":rel" "|stylesheet"]
+                                            [":type" "|text/css"]
+                                            [":href" [":css" "resources"]]]]]]
+                                        ["body"
+                                         ["{}"]
+                                         ["div" ["{}" [":id" "|app"] [":innerHTML" "html-content"]]]
+                                         ["if"
+                                          [":build?" "resources"]
+                                          ["script" ["{}" [":src" [":vendor" "resources"]]]]]
+                                         ["script" ["{}" [":src" [":main" "resources"]]]]]]]],
+                          "icon-url" ["def" "icon-url" "|http://logo.mvc-works.org/mvc.png"]},
+                   :procs [["main!"]]},
          "schema" {:ns ["ns" "app.schema"],
                    :defs {"configs" ["def" "configs" ["{}" [":storage-key" "|workflow-storage"] [":port" "5021"]]]},
                    :procs []}}}

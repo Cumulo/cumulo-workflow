@@ -1,24 +1,26 @@
 
 (ns app.main
-  (:require [respo.core :refer [render! clear-cache!]]
+  (:require [respo.core :refer [render! clear-cache! falsify-stage! render-element]]
             [respo.cursor :refer [mutate]]
             [app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [app.network :refer [send! setup-socket!]]
             [app.schema :as schema]))
 
-(defonce store-ref (atom nil))
+(defonce ref-store (atom nil))
 
 (defn dispatch! [op op-data]
   (cond
     (= op :states)
-      (let [new-store (update @store-ref :states (mutate op-data))]
-        (reset! store-ref new-store))
+      (let [new-store (update @ref-store :states (mutate op-data))]
+        (reset! ref-store new-store))
     :else (send! op op-data)))
 
+(def mount-target (.querySelector js/document "#app"))
+
 (defn render-app! []
-  (let [target (.querySelector js/document "#app")]
-    (render! (comp-container @store-ref) target dispatch!)))
+  (println "Calling render-app!")
+  (render! (comp-container @ref-store) mount-target dispatch!))
 
 (defn on-jsload! [] (clear-cache!) (render-app!) (println "Code updated."))
 
@@ -28,15 +30,20 @@
       (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
       (do (println "Found no storage.")))))
 
+(def server-rendered? (some? (.querySelector js/document "meta#server-rendered")))
+
 (defn -main []
   (enable-console-print!)
+  (println "Loaded")
+  (if server-rendered?
+    (falsify-stage! mount-target (render-element (comp-container @ref-store)) dispatch!))
   (render-app!)
   (setup-socket!
-   store-ref
+   ref-store
    {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
-    :on-close! (fn [event] (reset! store-ref nil) (.error js/console "Lost connection!")),
+    :on-close! (fn [event] (reset! ref-store nil) (.error js/console "Lost connection!")),
     :on-open! (fn [event] (simulate-login!))})
-  (add-watch store-ref :changes render-app!)
+  (add-watch ref-store :changes render-app!)
   (println "App started!"))
 
 (set! js/window.onload -main)

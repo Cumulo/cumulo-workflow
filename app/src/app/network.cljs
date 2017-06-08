@@ -9,7 +9,7 @@
 
 (defn send! [op op-data] (go (>! sender [op op-data])))
 
-(defn setup-socket! [store-ref configs]
+(defn setup-socket! [ref-store configs]
   (let [ws-url (:url configs)
         ws (js/WebSocket. ws-url)
         handle-close! (if (fn? (:on-close! configs)) (:on-close! configs) identity)
@@ -21,5 +21,5 @@
      (fn [event]
        (let [changes (reader/read-string event.data)]
          (println "Changes" changes)
-         (reset! store-ref (patch-bunch @store-ref changes)))))
+         (reset! ref-store (patch-bunch @ref-store changes)))))
     (go (loop [] (.send ws (pr-str (<! sender))) (recur)))))
