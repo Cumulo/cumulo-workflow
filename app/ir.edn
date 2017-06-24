@@ -23,7 +23,7 @@
                                                     "comp-container"
                                                     ["states" "store"]
                                                     ["let"
-                                                     [["states" [":states" "store"]]]
+                                                     [["state" [":data" "states"]]]
                                                      ["if"
                                                       ["nil?" "store"]
                                                       ["div"
@@ -107,10 +107,10 @@
                              ["[]" "app.schema" ":as" "schema"]]],
                        :defs {"on-toggle" ["defn"
                                            "on-toggle"
-                                           ["cursor" "state"]
+                                           ["state"]
                                            ["fn"
-                                            ["e" "dispatch!"]
-                                            ["dispatch!" ":states" ["[]" "cursor" ["update" "state" ":signup?" "not"]]]]],
+                                            ["e" "dispatch!" "mutate!"]
+                                            ["mutate!" ["update" "state" ":signup?" "not"]]]],
                               "on-submit" ["defn"
                                            "on-submit"
                                            ["username" "password" "signup?"]
@@ -125,10 +125,10 @@
                                              ["[]" "username" "password"]]]],
                               "on-input" ["defn"
                                           "on-input"
-                                          ["cursor" "state" "k"]
+                                          ["state" "k"]
                                           ["fn"
-                                           ["e" "dispatch!"]
-                                           ["dispatch!" ":states" ["[]" "cursor" ["assoc" "state" "k" [":value" "1"]]]]]],
+                                           ["e" "dispatch!" "mutate!"]
+                                           ["mutate!" ["assoc" "state" "k" [":value" "e"]]]]],
                               "comp-login" ["defcomp"
                                             "comp-login"
                                             ["states"]
@@ -151,7 +151,7 @@
                                                  ["div"
                                                   ["{}"
                                                    [":style" "ui/clickable-text"]
-                                                   [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
+                                                   [":event" ["{}" [":click" ["on-toggle" "state"]]]]]
                                                   ["<>" "span" "|Log in" "nil"]]]
                                                 ["div"
                                                  ["{}"]
@@ -160,7 +160,7 @@
                                                  ["div"
                                                   ["{}"
                                                    [":style" "ui/clickable-text"]
-                                                   [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
+                                                   [":event" ["{}" [":click" ["on-toggle" "state"]]]]]
                                                   ["<>" "span" "|Sign up" "nil"]]]]]
                                               ["div"
                                                ["{}" [":style" ["{}"]]]
@@ -171,7 +171,7 @@
                                                   [":style" "ui/input"]
                                                   [":attrs"
                                                    ["{}" [":placeholder" "|Username"] [":value" [":username" "state"]]]]
-                                                  [":event" ["{}" [":input" ["on-input" "cursor" "state" ":username"]]]]]]]
+                                                  [":event" ["{}" [":input" ["on-input" "state" ":username"]]]]]]]
                                                ["=<" "nil" "8"]
                                                ["div"
                                                 ["{}"]
@@ -180,7 +180,7 @@
                                                   [":style" "ui/input"]
                                                   [":attrs"
                                                    ["{}" [":placeholder" "|Password"] [":value" [":password" "state"]]]]
-                                                  [":event" ["{}" [":input" ["on-input" "cursor" "state" ":password"]]]]]]]]
+                                                  [":event" ["{}" [":input" ["on-input" "state" ":password"]]]]]]]]
                                               ["=<" "nil" "8"]
                                               ["div"
                                                ["{}" [":style" "ui/flex"]]
@@ -301,9 +301,14 @@
                         "dispatch!" ["defn"
                                      "dispatch!"
                                      ["op" "op-data"]
+                                     ["println" "|dispatch:" "op" "op-data"]
                                      ["if"
                                       ["=" "op" ":states"]
-                                      ["swap!" "*states" ["mutate" "op-data"]]
+                                      ["let"
+                                       [["new-states" [["mutate" "op-data"] "@*states"]]]
+                                       ["println" "|states:" "new-states"]
+                                       ["reset!" "*states" "new-states"]
+                                       ["--" "swap!" "*states" ["mutate" "op-data"]]]
                                       ["send!" "op" "op-data"]]],
                         "*store" ["defonce" "*store" ["atom" "nil"]],
                         "main!" ["defn"
@@ -325,7 +330,7 @@
                                  ["add-watch" "*store" ":changes" ["fn" [] ["render-app!" "render!"]]]
                                  ["add-watch" "*states" ":changes" ["fn" [] ["render-app!" "render!"]]]
                                  ["println" "|App started!"]],
-                        "*states" ["def" "*states" ["{}"]],
+                        "*states" ["defonce" "*states" ["atom" ["{}"]]],
                         "simulate-login!" ["defn"
                                            "simulate-login!"
                                            []
@@ -340,7 +345,7 @@
                         "render-app!" ["defn"
                                        "render-app!"
                                        ["renderer"]
-                                       ["renderer" "mount-target" ["comp-container" "@*store"] "dispatch!"]],
+                                       ["renderer" "mount-target" ["comp-container" "@*states" "@*store"] "dispatch!"]],
                         "reload!" ["defn"
                                    "reload!"
                                    []

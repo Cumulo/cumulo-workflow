@@ -9,10 +9,16 @@
 
 (def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
-(def *states {})
+(defonce *states (atom {}))
 
 (defn dispatch! [op op-data]
-  (if (= op :states) (swap! *states (mutate op-data)) (send! op op-data)))
+  (println "dispatch:" op op-data)
+  (if (= op :states)
+    (let [new-states ((mutate op-data) @*states)]
+      (println "states:" new-states)
+      (reset! *states new-states)
+      (comment swap! *states (mutate op-data)))
+    (send! op op-data)))
 
 (defonce *store (atom nil))
 
@@ -24,7 +30,8 @@
 
 (def mount-target (.querySelector js/document ".app"))
 
-(defn render-app! [renderer] (renderer mount-target (comp-container @*store) dispatch!))
+(defn render-app! [renderer]
+  (renderer mount-target (comp-container @*states @*store) dispatch!))
 
 (defn main! []
   (if ssr? (render-app! realize-ssr!))

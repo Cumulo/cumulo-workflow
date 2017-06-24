@@ -7,7 +7,7 @@
             [cljs.reader :refer [read-string]])
   (:require-macros [cljs.core.async.macros :refer [go-loop]]))
 
-(defonce writer-db-ref
+(defonce *writer-db
   (atom
    (let [fs (js/require "fs"), filepath (:storage-key schema/configs)]
      (enable-console-print!)
@@ -17,33 +17,33 @@
 
 (defn persist! []
   (let [fs (js/require "fs")]
-    (fs.writeFileSync (:storage-key schema/configs) (pr-str @writer-db-ref))))
+    (fs.writeFileSync (:storage-key schema/configs) (pr-str @*writer-db))))
 
-(defonce reader-db-ref (atom @writer-db-ref))
+(defonce *reader-db (atom @*writer-db))
 
-(defn on-jsload! [] (println "Code updated.") (render-clients! @reader-db-ref))
+(defn reload! [] (println "Code updated.") (render-clients! @*reader-db))
 
 (defn render-loop! []
-  (if (not= @reader-db-ref @writer-db-ref)
+  (if (not= @*reader-db @*writer-db)
     (do
-     (reset! reader-db-ref @writer-db-ref)
+     (reset! *reader-db @*writer-db)
      (comment println "render loop")
-     (render-clients! @reader-db-ref)))
+     (render-clients! @*reader-db)))
   (js/setTimeout render-loop! 300))
 
-(defn -main []
+(defn main! []
   (let [server-ch (run-server! {:port (:port schema/configs)})]
     (go-loop
      []
      (let [[op op-data session-id op-id op-time] (<! server-ch)]
        (println "Action:" op op-data session-id op-id op-time)
-       (println "Database:" @writer-db-ref)
+       (println "Database:" @*writer-db)
        (try
-        (let [new-db (updater @writer-db-ref op op-data session-id op-id op-time)]
-          (reset! writer-db-ref new-db))
+        (let [new-db (updater @*writer-db op op-data session-id op-id op-time)]
+          (reset! *writer-db new-db))
         (catch js/Error e (.log js/console e)))
        (recur)))
     (render-loop!))
-  (add-watch reader-db-ref :log (fn [] ))
+  (add-watch *reader-db :log (fn [] ))
   (.on js/process "exit" (fn [code] (println "Saving file on exit" code) (persist!)))
   (println "Server started."))

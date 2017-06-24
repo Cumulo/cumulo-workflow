@@ -5,5 +5,5 @@
                 [org.clojure/core.async "0.3.443"]]
  :builds {:app {:target :node-script
                 :output-to "target/main.js"
-                :main server.main/-main
-                :devtools {:after-load server.main/on-jsload!}}}}
+                :main server.main/main!
+                :devtools {:after-load server.main/reload!}}}}

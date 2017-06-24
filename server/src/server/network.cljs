@@ -14,9 +14,9 @@
 
 (def shortid (js/require "shortid"))
 
-(def uws (js/require "uws"))
+(def ws (js/require "uws"))
 
-(def WebSocketServer (.-Server uws))
+(def WebSocketServer (.-Server ws))
 
 (defn handle-message [op op-data session-id]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
@@ -52,12 +52,12 @@
     (let [[session-id session] session-entry
           old-store (or (get @client-caches session-id) nil)
           new-store (render-bunch (twig-container db session) old-store)
-          ref-changes (atom [])
-          collect! (fn [x] (swap! ref-changes conj x))
+          *changes (atom [])
+          collect! (fn [x] (swap! *changes conj x))
           socket (get @socket-registry session-id)]
       (diff-bunch collect! [] old-store new-store)
-      (println "Changes for:" session-id @ref-changes)
-      (if (and (not= ref-changes []) (some? socket))
+      (println "Changes for:" session-id @*changes)
+      (if (and (not= *changes []) (some? socket))
         (do
-         (.send socket (pr-str @ref-changes))
+         (.send socket (pr-str @*changes))
          (swap! client-caches assoc session-id new-store))))))

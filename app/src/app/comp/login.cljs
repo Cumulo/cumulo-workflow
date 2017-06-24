@@ -7,16 +7,14 @@
             [respo-ui.style :as ui]
             [app.schema :as schema]))
 
-(defn on-toggle [cursor state]
-  (fn [e dispatch!] (dispatch! :states [cursor (update state :signup? not)])))
+(defn on-toggle [state] (fn [e dispatch! mutate!] (mutate! (update state :signup? not))))
 
 (defn on-submit [username password signup?]
   (fn [e dispatch!]
     (dispatch! (if signup? :user/sign-up :user/log-in) [username password])
     (.setItem js/localStorage (:storage-key schema/configs) [username password])))
 
-(defn on-input [cursor state k]
-  (fn [e dispatch!] (dispatch! :states [cursor (assoc state k (:value 1))])))
+(defn on-input [state k] (fn [e dispatch! mutate!] (mutate! (assoc state k (:value e)))))
 
 (def style-title {:font-size 24, :font-weight 300, :font-family "Josefin Sans"})
 
@@ -37,14 +35,14 @@
         (<> span "Want to log in?" nil)
         (=< 8 nil)
         (div
-         {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
+         {:style ui/clickable-text, :event {:click (on-toggle state)}}
          (<> span "Log in" nil)))
        (div
         {}
         (<> span "No account yet?" nil)
         (=< 8 nil)
         (div
-         {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
+         {:style ui/clickable-text, :event {:click (on-toggle state)}}
          (<> span "Sign up" nil)))))
     (div
      {:style {}}
@@ -53,14 +51,14 @@
       (input
        {:style ui/input,
         :attrs {:placeholder "Username", :value (:username state)},
-        :event {:input (on-input cursor state :username)}}))
+        :event {:input (on-input state :username)}}))
      (=< nil 8)
      (div
       {}
       (input
        {:style ui/input,
         :attrs {:placeholder "Password", :value (:password state)},
-        :event {:input (on-input cursor state :password)}})))
+        :event {:input (on-input state :password)}})))
     (=< nil 8)
     (div
      {:style ui/flex}
