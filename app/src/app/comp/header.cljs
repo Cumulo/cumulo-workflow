@@ -1,12 +1,10 @@
 
 (ns app.comp.header
+  (:require-macros [respo.macros :refer [defcomp <> span div]])
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [respo.alias :refer [create-comp div span]]
-            [respo.comp.debug :refer [comp-debug]]
-            [respo.comp.text :refer [comp-code comp-text]]
-            [respo.comp.space :refer [comp-space]]))
+            [respo.core :refer [create-comp]]))
 
 (defn on-profile [e dispatch!]
   (dispatch! :router/change {:name :profile, :params nil, :router nil}))
@@ -26,14 +24,12 @@
 (defn on-home [e dispatch!]
   (dispatch! :router/change {:name :home, :params nil, :router nil}))
 
-(def comp-header
-  (create-comp
-   :header
-   (fn [logged-in?]
-     (fn [cursor]
-       (div
-        {:style (merge ui/row-center style-header)}
-        (div {:event {:click on-home}, :style style-logo} (comp-text "Workflow" nil))
-        (div
-         {:style style-pointer, :event {:click on-profile}}
-         (comp-text (if logged-in? "Me" "Guest") nil)))))))
+(defcomp
+ comp-header
+ (logged-in?)
+ (div
+  {:style (merge ui/row-center style-header)}
+  (div {:event {:click on-home}, :style style-logo} (<> span "Workflow" nil))
+  (div
+   {:style style-pointer, :event {:click on-profile}}
+   (<> span (if logged-in? "Me" "Guest") nil))))

@@ -1,9 +1,9 @@
 
 (ns app.comp.login
-  (:require [respo.alias :refer [create-comp div input button]]
-            [respo.comp.text :refer [comp-text]]
-            [respo.comp.space :refer [comp-space]]
-            [respo.comp.debug :refer [comp-debug]]
+  (:require-macros [respo.macros :refer [defcomp <> div input button span]])
+  (:require [respo.core :refer [create-comp]]
+            [respo.comp.space :refer [=<]]
+            [respo.comp.inspect :refer [comp-inspect]]
             [respo-ui.style :as ui]
             [app.schema :as schema]))
 
@@ -22,52 +22,50 @@
 
 (def initial-state {:signup? false, :username "", :password ""})
 
-(def comp-login
-  (create-comp
-   :login
-   (fn [states]
-     (fn [cursor]
-       (let [state (or (:data states) initial-state)]
-         (div
-          {:style (merge ui/flex ui/column)}
-          (div
-           {}
-           (comp-text (if (:signup? state) "Sign up" "Log in") style-title)
-           (if (:signup? state)
-             (div
-              {}
-              (comp-text "Want to log in?" nil)
-              (comp-space 8 nil)
-              (div
-               {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
-               (comp-text "Log in" nil)))
-             (div
-              {}
-              (comp-text "No account yet?" nil)
-              (comp-space 8 nil)
-              (div
-               {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
-               (comp-text "Sign up" nil)))))
-          (div
-           {:style {}}
-           (div
-            {}
-            (input
-             {:style ui/input,
-              :attrs {:placeholder "Username", :value (:username state)},
-              :event {:input (on-input cursor state :username)}}))
-           (comp-space nil 8)
-           (div
-            {}
-            (input
-             {:style ui/input,
-              :attrs {:placeholder "Password", :value (:password state)},
-              :event {:input (on-input cursor state :password)}})))
-          (comp-space nil 8)
-          (div
-           {:style ui/flex}
-           (button
-            {:style (merge ui/button {:outline :none, :border :none}),
-             :event {:click (on-submit (:username state) (:password state) (:signup? state))}}
-            (comp-text "Submit" nil)))
-          (comment comp-debug state nil)))))))
+(defcomp
+ comp-login
+ (states)
+ (let [state (or (:data states) initial-state)]
+   (div
+    {:style (merge ui/flex ui/column)}
+    (div
+     {}
+     (<> span (if (:signup? state) "Sign up" "Log in") style-title)
+     (if (:signup? state)
+       (div
+        {}
+        (<> span "Want to log in?" nil)
+        (=< 8 nil)
+        (div
+         {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
+         (<> span "Log in" nil)))
+       (div
+        {}
+        (<> span "No account yet?" nil)
+        (=< 8 nil)
+        (div
+         {:style ui/clickable-text, :event {:click (on-toggle cursor state)}}
+         (<> span "Sign up" nil)))))
+    (div
+     {:style {}}
+     (div
+      {}
+      (input
+       {:style ui/input,
+        :attrs {:placeholder "Username", :value (:username state)},
+        :event {:input (on-input cursor state :username)}}))
+     (=< nil 8)
+     (div
+      {}
+      (input
+       {:style ui/input,
+        :attrs {:placeholder "Password", :value (:password state)},
+        :event {:input (on-input cursor state :password)}})))
+    (=< nil 8)
+    (div
+     {:style ui/flex}
+     (button
+      {:style (merge ui/button {:outline :none, :border :none}),
+       :event {:click (on-submit (:username state) (:password state) (:signup? state))}}
+      (<> span "Submit" nil)))
+    (comment comp-inspect state nil))))

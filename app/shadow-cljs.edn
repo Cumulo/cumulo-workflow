@@ -1,11 +1,21 @@
 
 {:source-paths ["src"]
- :dependencies [[mvc-works/hsl "0.1.2"]
-                [respo/message "0.1.4"]
-                [cumulo/recollect "0.1.7"]
-                [respo/ui "0.1.9"]
-                [respo "0.4.3"]
+ :dependencies [[mvc-works/hsl          "0.1.2"]
+                [respo/message          "0.2.0"]
+                [mvc-works/shell-page   "0.1.1"]
+                [cumulo/recollect       "0.1.7"]
+                [respo/ui               "0.1.9"]
+                [respo                  "0.5.7"]
                 [org.clojure/core.async "0.3.443"]]
- :builds {:app {:target :npm-module
-                :output-dir "target"
-                :release {:entries [app.main]}}}}
+ :builds {:browser {:output-dir "target/browser"
+                    :asset-path "/browser"
+                    :target :browser
+                    :modules {:main {:entries [app.main]}}
+                    :devtools {:after-load app.main/reload!}}
+          :ssr {:target :node-script
+                :output-to "target/ssr.js"
+                :main app.render/main!
+                :devtools {:after-load app.render/main!}}
+          :release {:entries [app.main]
+                    :target :npm-module
+                    :output-dir "target/release/"}}}

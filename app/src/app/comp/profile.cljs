@@ -1,13 +1,12 @@
 
 (ns app.comp.profile
+  (:require-macros [respo.macros :refer [defcomp <> span div a]])
   (:require [hsl.core :refer [hsl]]
             [app.schema :as schema]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [respo.alias :refer [create-comp div span a]]
-            [respo.comp.debug :refer [comp-debug]]
-            [respo.comp.text :refer [comp-code comp-text]]
-            [respo.comp.space :refer [comp-space]]))
+            [respo.core :refer [create-comp]]
+            [respo.comp.space :refer [=<]]))
 
 (defn on-log-out [e dispatch!]
   (dispatch! :user/log-out nil)
@@ -20,13 +19,11 @@
    :color :white,
    :padding "0 8px"})
 
-(def comp-profile
-  (create-comp
-   :profile
-   (fn [user]
-     (fn [cursor]
-       (div
-        {:style ui/flex}
-        (comp-text (str "Hello! " (:name user)) nil)
-        (comp-space 8 nil)
-        (a {:style style-trigger, :event {:click on-log-out}} (comp-text "Log out" nil)))))))
+(defcomp
+ comp-profile
+ (user)
+ (div
+  {:style ui/flex}
+  (<> span (str "Hello! " (:name user)) nil)
+  (=< 8 nil)
+  (a {:style style-trigger, :event {:click on-log-out}} (<> span "Log out" nil))))

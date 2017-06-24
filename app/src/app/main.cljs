@@ -1,28 +1,20 @@
 
 (ns app.main
-  (:require [respo.core :refer [render! clear-cache! falsify-stage! render-element]]
+  (:require [respo.core :refer [render! clear-cache! realize-ssr!]]
             [respo.cursor :refer [mutate]]
             [app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [app.network :refer [send! setup-socket!]]
             [app.schema :as schema]))
 
-(defonce ref-store (atom nil))
+(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
+
+(def *states {})
 
 (defn dispatch! [op op-data]
-  (cond
-    (= op :states)
-      (let [new-store (update @ref-store :states (mutate op-data))]
-        (reset! ref-store new-store))
-    :else (send! op op-data)))
+  (if (= op :states) (swap! *states (mutate op-data)) (send! op op-data)))
 
-(def mount-target (.querySelector js/document "#app"))
-
-(defn render-app! []
-  (println "Calling render-app!")
-  (render! (comp-container @ref-store) mount-target dispatch!))
-
-(defn on-jsload! [] (clear-cache!) (render-app!) (println "Code updated."))
+(defonce *store (atom nil))
 
 (defn simulate-login! []
   (let [raw (.getItem js/localStorage (:storage-key schema/configs))]
@@ -30,20 +22,22 @@
       (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
       (do (println "Found no storage.")))))
 
-(def server-rendered? (some? (.querySelector js/document "meta#server-rendered")))
+(def mount-target (.querySelector js/document ".app"))
 
-(defn -main []
-  (enable-console-print!)
-  (println "Loaded")
-  (if server-rendered?
-    (falsify-stage! mount-target (render-element (comp-container @ref-store)) dispatch!))
-  (render-app!)
+(defn render-app! [renderer] (renderer mount-target (comp-container @*store) dispatch!))
+
+(defn main! []
+  (if ssr? (render-app! realize-ssr!))
+  (render-app! render!)
   (setup-socket!
-   ref-store
+   *store
    {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
-    :on-close! (fn [event] (reset! ref-store nil) (.error js/console "Lost connection!")),
+    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
     :on-open! (fn [event] (simulate-login!))})
-  (add-watch ref-store :changes render-app!)
+  (add-watch *store :changes (fn [] (render-app! render!)))
+  (add-watch *states :changes (fn [] (render-app! render!)))
   (println "App started!"))
 
-(set! js/window.onload -main)
+(defn reload! [] (clear-cache!) (render-app! render!) (println "Code updated."))
+
+(set! js/window.onload main!)

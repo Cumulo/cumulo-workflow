@@ -1,13 +1,14 @@
 {:package "app",
+ :root {:ns "main", :def "main!"},
  :files {"comp.container" {:ns ["ns"
                                 "app.comp.container"
+                                [":require-macros" ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "div" "span"]]]
                                 [":require"
                                  ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                                  ["[]" "respo-ui.style" ":as" "ui"]
                                  ["[]" "respo-ui.style.colors" ":as" "colors"]
-                                 ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span"]]
-                                 ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
-                                 ["[]" "respo.comp.text" ":refer" ["[]" "comp-code" "comp-text"]]
+                                 ["[]" "respo.core" ":refer" ["[]" "create-comp"]]
+                                 ["[]" "respo.comp.inspect" ":refer" ["[]" "comp-inspect"]]
                                  ["[]" "app.comp.header" ":refer" ["[]" "comp-header"]]
                                  ["[]" "app.comp.profile" ":refer" ["[]" "comp-profile"]]
                                  ["[]" "app.comp.login" ":refer" ["[]" "comp-login"]]
@@ -18,47 +19,43 @@
                                                   [":font-family" "|Josefin Sans"]
                                                   [":font-weight" "100"]
                                                   [":font-size" "40"]]],
-                                  "comp-container" ["def"
+                                  "comp-container" ["defcomp"
                                                     "comp-container"
-                                                    ["create-comp"
-                                                     ":container"
-                                                     ["fn"
-                                                      ["store"]
-                                                      ["fn"
-                                                       ["cursor"]
-                                                       ["let"
-                                                        [["states" [":states" "store"]]]
-                                                        ["if"
-                                                         ["nil?" "store"]
-                                                         ["div"
-                                                          ["{}"
-                                                           [":style" ["merge" "ui/global" "ui/fullscreen" "ui/center"]]]
-                                                          ["comp-text" "|No connection!" "style-alert"]]
-                                                         ["div"
-                                                          ["{}"
-                                                           [":style" ["merge" "ui/global" "ui/fullscreen" "ui/column"]]]
-                                                          ["comp-header" [":logged-in?" "store"]]
-                                                          ["div"
-                                                           ["{}" [":style" "style-body"]]
-                                                           ["div"
-                                                            ["{}" [":style" ["merge" "ui/row" "style-body"]]]
-                                                            ["if"
-                                                             [":logged-in?" "store"]
-                                                             ["let"
-                                                              [["router" [":router" "store"]]]
-                                                              ["case"
-                                                               [":name" "router"]
-                                                               [":profile" ["comp-profile" [":user" "store"]]]
-                                                               ["div"
-                                                                ["{}"]
-                                                                ["comp-text"
-                                                                 ["str" "|404 page: " ["pr-str" "router"]]
-                                                                 "nil"]]]]
-                                                             ["comp-login" "states"]]]]
-                                                          ["comp-debug" "store" "style-debugger"]
-                                                          ["comp-msg-list"
-                                                           ["get-in" "store" ["[]" ":session" ":notifications"]]
-                                                           ":session/remove-notification"]]]]]]]],
+                                                    ["states" "store"]
+                                                    ["let"
+                                                     [["states" [":states" "store"]]]
+                                                     ["if"
+                                                      ["nil?" "store"]
+                                                      ["div"
+                                                       ["{}"
+                                                        [":style" ["merge" "ui/global" "ui/fullscreen" "ui/center"]]]
+                                                       ["<>" "span" "|No connection!" "style-alert"]]
+                                                      ["div"
+                                                       ["{}"
+                                                        [":style" ["merge" "ui/global" "ui/fullscreen" "ui/column"]]]
+                                                       ["comp-header" [":logged-in?" "store"]]
+                                                       ["div"
+                                                        ["{}" [":style" "style-body"]]
+                                                        ["div"
+                                                         ["{}" [":style" ["merge" "ui/row" "style-body"]]]
+                                                         ["if"
+                                                          [":logged-in?" "store"]
+                                                          ["let"
+                                                           [["router" [":router" "store"]]]
+                                                           ["case"
+                                                            [":name" "router"]
+                                                            [":profile" ["comp-profile" [":user" "store"]]]
+                                                            ["div"
+                                                             ["{}"]
+                                                             ["<>"
+                                                              "span"
+                                                              ["str" "|404 page: " ["pr-str" "router"]]
+                                                              "nil"]]]]
+                                                          ["comp-login" "states"]]]]
+                                                       ["comp-inspect" "|Store" "store" "style-debugger"]
+                                                       ["comp-msg-list"
+                                                        ["get-in" "store" ["[]" ":session" ":notifications"]]
+                                                        ":session/remove-notification"]]]]],
                                   "style-debugger" ["def"
                                                     "style-debugger"
                                                     ["{}" [":bottom" "0"] [":left" "0"] [":max-width" "|100%"]]],
@@ -75,7 +72,7 @@
                            "send!" ["defn" "send!" ["op" "op-data"] ["go" [">!" "sender" ["[]" "op" "op-data"]]]],
                            "setup-socket!" ["defn"
                                             "setup-socket!"
-                                            ["ref-store" "configs"]
+                                            ["*store" "configs"]
                                             ["let"
                                              [["ws-url" [":url" "configs"]]
                                               ["ws" ["js/WebSocket." "ws-url"]]
@@ -95,16 +92,17 @@
                                                ["let"
                                                 [["changes" ["reader/read-string" "event.data"]]]
                                                 ["println" "|Changes" "changes"]
-                                                ["reset!" "ref-store" ["patch-bunch" "@ref-store" "changes"]]]]]
+                                                ["reset!" "*store" ["patch-bunch" "@*store" "changes"]]]]]
                                              ["go" ["loop" ["[]"] [".send" "ws" ["pr-str" ["<!" "sender"]]] ["recur"]]]]]},
                     :procs []},
          "comp.login" {:ns ["ns"
                             "app.comp.login"
+                            [":require-macros"
+                             ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "div" "input" "button" "span"]]]
                             [":require"
-                             ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "input" "button"]]
-                             ["[]" "respo.comp.text" ":refer" ["[]" "comp-text"]]
-                             ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]
-                             ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
+                             ["[]" "respo.core" ":refer" ["[]" "create-comp"]]
+                             ["[]" "respo.comp.space" ":refer" ["[]" "=<"]]
+                             ["[]" "respo.comp.inspect" ":refer" ["[]" "comp-inspect"]]
                              ["[]" "respo-ui.style" ":as" "ui"]
                              ["[]" "app.schema" ":as" "schema"]]],
                        :defs {"on-toggle" ["defn"
@@ -131,86 +129,74 @@
                                           ["fn"
                                            ["e" "dispatch!"]
                                            ["dispatch!" ":states" ["[]" "cursor" ["assoc" "state" "k" [":value" "1"]]]]]],
-                              "comp-login" ["def"
+                              "comp-login" ["defcomp"
                                             "comp-login"
-                                            ["create-comp"
-                                             ":login"
-                                             ["fn"
-                                              ["states"]
-                                              ["fn"
-                                               ["cursor"]
-                                               ["let"
-                                                [["state" ["or" [":data" "states"] "initial-state"]]]
+                                            ["states"]
+                                            ["let"
+                                             [["state" ["or" [":data" "states"] "initial-state"]]]
+                                             ["div"
+                                              ["{}" [":style" ["merge" "ui/flex" "ui/column"]]]
+                                              ["div"
+                                               ["{}"]
+                                               ["<>"
+                                                "span"
+                                                ["if" [":signup?" "state"] "|Sign up" "|Log in"]
+                                                "style-title"]
+                                               ["if"
+                                                [":signup?" "state"]
                                                 ["div"
-                                                 ["{}" [":style" ["merge" "ui/flex" "ui/column"]]]
+                                                 ["{}"]
+                                                 ["<>" "span" "|Want to log in?" "nil"]
+                                                 ["=<" "8" "nil"]
                                                  ["div"
-                                                  ["{}"]
-                                                  ["comp-text"
-                                                   ["if" [":signup?" "state"] "|Sign up" "|Log in"]
-                                                   "style-title"]
-                                                  ["if"
-                                                   [":signup?" "state"]
-                                                   ["div"
-                                                    ["{}"]
-                                                    ["comp-text" "|Want to log in?" "nil"]
-                                                    ["comp-space" "8" "nil"]
-                                                    ["div"
-                                                     ["{}"
-                                                      [":style" "ui/clickable-text"]
-                                                      [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
-                                                     ["comp-text" "|Log in" "nil"]]]
-                                                   ["div"
-                                                    ["{}"]
-                                                    ["comp-text" "|No account yet?" "nil"]
-                                                    ["comp-space" "8" "nil"]
-                                                    ["div"
-                                                     ["{}"
-                                                      [":style" "ui/clickable-text"]
-                                                      [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
-                                                     ["comp-text" "|Sign up" "nil"]]]]]
+                                                  ["{}"
+                                                   [":style" "ui/clickable-text"]
+                                                   [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
+                                                  ["<>" "span" "|Log in" "nil"]]]
+                                                ["div"
+                                                 ["{}"]
+                                                 ["<>" "span" "|No account yet?" "nil"]
+                                                 ["=<" "8" "nil"]
                                                  ["div"
-                                                  ["{}" [":style" ["{}"]]]
-                                                  ["div"
-                                                   ["{}"]
-                                                   ["input"
-                                                    ["{}"
-                                                     [":style" "ui/input"]
-                                                     [":attrs"
-                                                      ["{}"
-                                                       [":placeholder" "|Username"]
-                                                       [":value" [":username" "state"]]]]
-                                                     [":event"
-                                                      ["{}" [":input" ["on-input" "cursor" "state" ":username"]]]]]]]
-                                                  ["comp-space" "nil" "8"]
-                                                  ["div"
-                                                   ["{}"]
-                                                   ["input"
-                                                    ["{}"
-                                                     [":style" "ui/input"]
-                                                     [":attrs"
-                                                      ["{}"
-                                                       [":placeholder" "|Password"]
-                                                       [":value" [":password" "state"]]]]
-                                                     [":event"
-                                                      ["{}" [":input" ["on-input" "cursor" "state" ":password"]]]]]]]]
-                                                 ["comp-space" "nil" "8"]
-                                                 ["div"
-                                                  ["{}" [":style" "ui/flex"]]
-                                                  ["button"
-                                                   ["{}"
-                                                    [":style"
-                                                     ["merge"
-                                                      "ui/button"
-                                                      ["{}" [":outline" ":none"] [":border" ":none"]]]]
-                                                    [":event"
-                                                     ["{}"
-                                                      [":click"
-                                                       ["on-submit"
-                                                        [":username" "state"]
-                                                        [":password" "state"]
-                                                        [":signup?" "state"]]]]]]
-                                                   ["comp-text" "|Submit" "nil"]]]
-                                                 ["--" "comp-debug" "state" "nil"]]]]]]],
+                                                  ["{}"
+                                                   [":style" "ui/clickable-text"]
+                                                   [":event" ["{}" [":click" ["on-toggle" "cursor" "state"]]]]]
+                                                  ["<>" "span" "|Sign up" "nil"]]]]]
+                                              ["div"
+                                               ["{}" [":style" ["{}"]]]
+                                               ["div"
+                                                ["{}"]
+                                                ["input"
+                                                 ["{}"
+                                                  [":style" "ui/input"]
+                                                  [":attrs"
+                                                   ["{}" [":placeholder" "|Username"] [":value" [":username" "state"]]]]
+                                                  [":event" ["{}" [":input" ["on-input" "cursor" "state" ":username"]]]]]]]
+                                               ["=<" "nil" "8"]
+                                               ["div"
+                                                ["{}"]
+                                                ["input"
+                                                 ["{}"
+                                                  [":style" "ui/input"]
+                                                  [":attrs"
+                                                   ["{}" [":placeholder" "|Password"] [":value" [":password" "state"]]]]
+                                                  [":event" ["{}" [":input" ["on-input" "cursor" "state" ":password"]]]]]]]]
+                                              ["=<" "nil" "8"]
+                                              ["div"
+                                               ["{}" [":style" "ui/flex"]]
+                                               ["button"
+                                                ["{}"
+                                                 [":style"
+                                                  ["merge" "ui/button" ["{}" [":outline" ":none"] [":border" ":none"]]]]
+                                                 [":event"
+                                                  ["{}"
+                                                   [":click"
+                                                    ["on-submit"
+                                                     [":username" "state"]
+                                                     [":password" "state"]
+                                                     [":signup?" "state"]]]]]]
+                                                ["<>" "span" "|Submit" "nil"]]]
+                                              ["--" "comp-inspect" "state" "nil"]]]],
                               "style-title" ["def"
                                              "style-title"
                                              ["{}"
@@ -223,37 +209,31 @@
                        :procs []},
          "comp.profile" {:ns ["ns"
                               "app.comp.profile"
+                              [":require-macros" ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "span" "div" "a"]]]
                               [":require"
                                ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                                ["[]" "app.schema" ":as" "schema"]
                                ["[]" "respo-ui.style" ":as" "ui"]
                                ["[]" "respo-ui.style.colors" ":as" "colors"]
-                               ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span" "a"]]
-                               ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
-                               ["[]" "respo.comp.text" ":refer" ["[]" "comp-code" "comp-text"]]
-                               ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]]],
+                               ["[]" "respo.core" ":refer" ["[]" "create-comp"]]
+                               ["[]" "respo.comp.space" ":refer" ["[]" "=<"]]]],
                          :defs {"on-log-out" ["defn"
                                               "on-log-out"
                                               ["e" "dispatch!"]
                                               ["dispatch!" ":user/log-out" "nil"]
                                               [".removeItem" "js/localStorage" [":storage-key" "schema/configs"]]],
-                                "comp-profile" ["def"
+                                "comp-profile" ["defcomp"
                                                 "comp-profile"
-                                                ["create-comp"
-                                                 ":profile"
-                                                 ["fn"
-                                                  ["user"]
-                                                  ["fn"
-                                                   ["cursor"]
-                                                   ["div"
-                                                    ["{}" [":style" "ui/flex"]]
-                                                    ["comp-text" ["str" "|Hello! " [":name" "user"]] "nil"]
-                                                    ["comp-space" "8" "nil"]
-                                                    ["a"
-                                                     ["{}"
-                                                      [":style" "style-trigger"]
-                                                      [":event" ["{}" [":click" "on-log-out"]]]]
-                                                     ["comp-text" "|Log out" "nil"]]]]]]],
+                                                ["user"]
+                                                ["div"
+                                                 ["{}" [":style" "ui/flex"]]
+                                                 ["<>" "span" ["str" "|Hello! " [":name" "user"]] "nil"]
+                                                 ["=<" "8" "nil"]
+                                                 ["a"
+                                                  ["{}"
+                                                   [":style" "style-trigger"]
+                                                   [":event" ["{}" [":click" "on-log-out"]]]]
+                                                  ["<>" "span" "|Log out" "nil"]]]],
                                 "style-trigger" ["def"
                                                  "style-trigger"
                                                  ["{}"
@@ -265,14 +245,12 @@
                          :procs []},
          "comp.header" {:ns ["ns"
                              "app.comp.header"
+                             [":require-macros" ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "span" "div"]]]
                              [":require"
                               ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                               ["[]" "respo-ui.style" ":as" "ui"]
                               ["[]" "respo-ui.style.colors" ":as" "colors"]
-                              ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span"]]
-                              ["[]" "respo.comp.debug" ":refer" ["[]" "comp-debug"]]
-                              ["[]" "respo.comp.text" ":refer" ["[]" "comp-code" "comp-text"]]
-                              ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]]],
+                              ["[]" "respo.core" ":refer" ["[]" "create-comp"]]]],
                         :defs {"on-profile" ["defn"
                                              "on-profile"
                                              ["e" "dispatch!"]
@@ -280,24 +258,19 @@
                                               ":router/change"
                                               ["{}" [":name" ":profile"] [":params" "nil"] [":router" "nil"]]]],
                                "style-logo" ["def" "style-logo" ["{}" [":cursor" ":pointer"]]],
-                               "comp-header" ["def"
+                               "comp-header" ["defcomp"
                                               "comp-header"
-                                              ["create-comp"
-                                               ":header"
-                                               ["fn"
-                                                ["logged-in?"]
-                                                ["fn"
-                                                 ["cursor"]
-                                                 ["div"
-                                                  ["{}" [":style" ["merge" "ui/row-center" "style-header"]]]
-                                                  ["div"
-                                                   ["{}" [":event" ["{}" [":click" "on-home"]]] [":style" "style-logo"]]
-                                                   ["comp-text" "|Workflow" "nil"]]
-                                                  ["div"
-                                                   ["{}"
-                                                    [":style" "style-pointer"]
-                                                    [":event" ["{}" [":click" "on-profile"]]]]
-                                                   ["comp-text" ["if" "logged-in?" "|Me" "|Guest"] "nil"]]]]]]],
+                                              ["logged-in?"]
+                                              ["div"
+                                               ["{}" [":style" ["merge" "ui/row-center" "style-header"]]]
+                                               ["div"
+                                                ["{}" [":event" ["{}" [":click" "on-home"]]] [":style" "style-logo"]]
+                                                ["<>" "span" "|Workflow" "nil"]]
+                                               ["div"
+                                                ["{}"
+                                                 [":style" "style-pointer"]
+                                                 [":event" ["{}" [":click" "on-profile"]]]]
+                                                ["<>" "span" ["if" "logged-in?" "|Me" "|Guest"] "nil"]]]],
                                "style-pointer" ["def" "style-pointer" ["{}" [":cursor" "|pointer"]]],
                                "style-header" ["def"
                                                "style-header"
@@ -318,58 +291,41 @@
          "main" {:ns ["ns"
                       "app.main"
                       [":require"
-                       ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!" "falsify-stage!" "render-element"]]
+                       ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!" "realize-ssr!"]]
                        ["[]" "respo.cursor" ":refer" ["[]" "mutate"]]
                        ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]
                        ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]
                        ["[]" "app.network" ":refer" ["[]" "send!" "setup-socket!"]]
                        ["[]" "app.schema" ":as" "schema"]]],
-                 :defs {"dispatch!" ["defn"
+                 :defs {"ssr?" ["def" "ssr?" ["some?" [".querySelector" "js/document" "|meta.respo-ssr"]]],
+                        "dispatch!" ["defn"
                                      "dispatch!"
                                      ["op" "op-data"]
-                                     ["cond"
-                                      [["=" "op" ":states"]
-                                       ["let"
-                                        [["new-store" ["update" "@ref-store" ":states" ["mutate" "op-data"]]]]
-                                        ["reset!" "ref-store" "new-store"]]]
-                                      [":else" ["send!" "op" "op-data"]]]],
-                        "on-jsload!" ["defn"
-                                      "on-jsload!"
-                                      []
-                                      ["clear-cache!"]
-                                      ["render-app!"]
-                                      ["println" "|Code updated."]],
-                        "render-app!" ["defn"
-                                       "render-app!"
-                                       []
-                                       ["println" "|Calling render-app!"]
-                                       ["render!" ["comp-container" "@ref-store"] "mount-target" "dispatch!"]],
-                        "-main" ["defn"
-                                 "-main"
+                                     ["if"
+                                      ["=" "op" ":states"]
+                                      ["swap!" "*states" ["mutate" "op-data"]]
+                                      ["send!" "op" "op-data"]]],
+                        "*store" ["defonce" "*store" ["atom" "nil"]],
+                        "main!" ["defn"
+                                 "main!"
                                  []
-                                 ["enable-console-print!"]
-                                 ["println" "|Loaded"]
-                                 ["if"
-                                  "server-rendered?"
-                                  ["falsify-stage!"
-                                   "mount-target"
-                                   ["render-element" ["comp-container" "@ref-store"]]
-                                   "dispatch!"]]
-                                 ["render-app!"]
+                                 ["if" "ssr?" ["render-app!" "realize-ssr!"]]
+                                 ["render-app!" "render!"]
                                  ["setup-socket!"
-                                  "ref-store"
+                                  "*store"
                                   ["{}"
                                    [":url"
                                     ["str" "|ws://" [".-hostname" "js/location"] "|:" [":port" "schema/configs"]]]
                                    [":on-close!"
                                     ["fn"
                                      ["event"]
-                                     ["reset!" "ref-store" "nil"]
+                                     ["reset!" "*store" "nil"]
                                      [".error" "js/console" "|Lost connection!"]]]
                                    [":on-open!" ["fn" ["event"] ["simulate-login!"]]]]]
-                                 ["add-watch" "ref-store" ":changes" "render-app!"]
+                                 ["add-watch" "*store" ":changes" ["fn" [] ["render-app!" "render!"]]]
+                                 ["add-watch" "*states" ":changes" ["fn" [] ["render-app!" "render!"]]]
                                  ["println" "|App started!"]],
-                        "ref-store" ["defonce" "ref-store" ["atom" "nil"]],
+                        "*states" ["def" "*states" ["{}"]],
                         "simulate-login!" ["defn"
                                            "simulate-login!"
                                            []
@@ -381,87 +337,61 @@
                                               ["println" "|Found storage."]
                                               ["dispatch!" ":user/log-in" ["read-string" "raw"]]]
                                              ["do" ["println" "|Found no storage."]]]]],
-                        "server-rendered?" ["def"
-                                            "server-rendered?"
-                                            ["some?" [".querySelector" "js/document" "|meta#server-rendered"]]],
-                        "mount-target" ["def" "mount-target" [".querySelector" "js/document" "|#app"]]},
-                 :procs [["set!" "js/window.onload" "-main"]]},
+                        "render-app!" ["defn"
+                                       "render-app!"
+                                       ["renderer"]
+                                       ["renderer" "mount-target" ["comp-container" "@*store"] "dispatch!"]],
+                        "reload!" ["defn"
+                                   "reload!"
+                                   []
+                                   ["clear-cache!"]
+                                   ["render-app!" "render!"]
+                                   ["println" "|Code updated."]],
+                        "mount-target" ["def" "mount-target" [".querySelector" "js/document" "|.app"]]},
+                 :procs [["set!" "js/window.onload" "main!"]]},
          "render" {:ns ["ns"
                         "app.render"
                         [":require"
-                         ["[]"
-                          "respo.alias"
-                          ":refer"
-                          ["[]" "html" "head" "title" "script" "style" "meta'" "div" "link" "body"]]
-                         ["[]" "respo.render.html" ":refer" ["[]" "make-html" "make-string"]]
-                         ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]
-                         ["[]" "|fs" ":refer" ["[]" "readFileSync" "writeFileSync"]]]],
+                         ["[]" "respo.render.html" ":refer" ["[]" "make-string"]]
+                         ["[]" "shell-page.core" ":refer" ["[]" "make-page" "spit" "slurp"]]
+                         ["[]" "app.comp.container" ":refer" ["[]" "comp-container"]]]],
                    :defs {"main!" ["defn"
                                    "main!"
                                    []
-                                   ["spit"
-                                    "|dist/index.html"
-                                    ["if" ["=" "js/process.env.env" "|dev"] ["generate-empty-html"] ["generate-html"]]]],
-                          "spit" ["defn"
-                                  "spit"
-                                  ["file-name" "content"]
-                                  ["writeFileSync" "file-name" "content"]
-                                  ["println" "|Wrote to:" "file-name"]],
-                          "generate-empty-html" ["defn"
-                                                 "generate-empty-html"
-                                                 []
-                                                 ["html-dsl" ["{}" [":build?" "false"] [":main" "|/main.js"]] "|"]],
-                          "generate-html" ["defn"
-                                           "generate-html"
-                                           []
-                                           ["let"
-                                            [["tree" ["comp-container" ["{}"]]]
-                                             ["html-content" ["make-string" "tree"]]
-                                             ["resources"
-                                              ["let"
-                                               [["manifest" ["js/JSON.parse" ["slurp" "|dist/manifest.json"]]]]
-                                               ["{}"
-                                                [":build?" "true"]
-                                                [":css" ["aget" "manifest" "|main.css"]]
-                                                [":main" ["aget" "manifest" "|main.js"]]
-                                                [":vendor" ["aget" "manifest" "|vendor.js"]]]]]]
-                                            ["html-dsl" "resources" "html-content"]]],
-                          "slurp" ["defn" "slurp" ["x"] ["readFileSync" "x" "|utf8"]],
-                          "html-dsl" ["defn"
-                                      "html-dsl"
-                                      ["resources" "html-content"]
-                                      ["make-html"
-                                       ["html"
-                                        ["{}"]
-                                        ["head"
-                                         ["{}"]
-                                         ["title" ["{}" [":innerHTML" "|Stack Workflow"]]]
-                                         ["link" ["{}" [":rel" "|icon"] [":type" "|image/png"] [":href" "icon-url"]]]
-                                         ["link" ["{}" [":rel" "|manifest"] [":href" "|manifest.json"]]]
-                                         ["meta'" ["{}" [":charset" "|utf8"]]]
-                                         ["meta'"
+                                   ["if"
+                                    ["=" "js/process.env.env" "|dev"]
+                                    ["spit" "|target/index.html" ["dev-page"]]
+                                    ["spit" "|dist/index.html" ["prod-page"]]]],
+                          "base-info" ["def"
+                                       "base-info"
+                                       ["{}"
+                                        [":title" "|Stack Workflow"]
+                                        [":icon" "|http://logo.mvc-works.org/mvc.png"]
+                                        [":ssr" "nil"]
+                                        [":inner-html" "nil"]]],
+                          "dev-page" ["defn"
+                                      "dev-page"
+                                      []
+                                      ["make-page"
+                                       "|"
+                                       ["merge"
+                                        "base-info"
+                                        ["{}" [":styles" ["[]"]] [":scripts" ["[]" "|/main.js" "|/browser/main.js"]]]]]],
+                          "prod-page" ["defn"
+                                       "prod-page"
+                                       []
+                                       ["let"
+                                        [["html-content" ["make-string" ["comp-container" ["{}"] "nil"]]]
+                                         ["manifest" [".parse" "js/JSON" ["slurp" "|dist/manifest.json"]]]]
+                                        ["make-page"
+                                         "html-content"
+                                         ["merge"
+                                          "base-info"
                                           ["{}"
-                                           [":name" "|viewport"]
-                                           [":content" "|width=device-width, initial-scale=1"]]]
-                                         ["if"
-                                          [":build?" "resources"]
-                                          ["meta'" ["{}" [":id" "|server-rendered"] [":type" "|text/edn"]]]]
-                                         ["if"
-                                          ["contains?" "resources" ":css"]
-                                          ["link"
-                                           ["{}"
-                                            [":rel" "|stylesheet"]
-                                            [":type" "|text/css"]
-                                            [":href" [":css" "resources"]]]]]]
-                                        ["body"
-                                         ["{}"]
-                                         ["div" ["{}" [":id" "|app"] [":innerHTML" "html-content"]]]
-                                         ["if"
-                                          [":build?" "resources"]
-                                          ["script" ["{}" [":src" [":vendor" "resources"]]]]]
-                                         ["script" ["{}" [":src" [":main" "resources"]]]]]]]],
-                          "icon-url" ["def" "icon-url" "|http://logo.mvc-works.org/mvc.png"]},
-                   :procs [["main!"]]},
+                                           [":styles" ["[]" ["aget" "manifest" "|main.css"]]]
+                                           [":scripts"
+                                            ["[]" ["aget" "manifest" "|vendor.js"] ["aget" "manifest" "|main.js"]]]]]]]]},
+                   :procs []},
          "schema" {:ns ["ns" "app.schema"],
                    :defs {"configs" ["def" "configs" ["{}" [":storage-key" "|workflow-storage"] [":port" "5021"]]]},
                    :procs []}}}
