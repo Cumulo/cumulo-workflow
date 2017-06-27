@@ -5,13 +5,14 @@
                 [mvc-works/shell-page   "0.1.2"]
                 [cumulo/recollect       "0.1.7"]
                 [respo/ui               "0.1.9"]
-                [respo                  "0.5.7"]
+                [respo                  "0.5.10"]
                 [org.clojure/core.async "0.3.443"]]
  :builds {:browser {:output-dir "target/browser"
                     :asset-path "/browser"
                     :target :browser
                     :modules {:main {:entries [app.main]}}
-                    :devtools {:after-load app.main/reload!}}
+                    :devtools {:after-load app.main/reload!
+                               :preloads [shadow.cljs.devtools.client.hud]}}
           :ssr {:target :node-script
                 :output-to "target/ssr.js"
                 :main app.render/main!
