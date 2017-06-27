@@ -17,6 +17,10 @@
                 :output-to "target/ssr.js"
                 :main app.render/main!
                 :devtools {:after-load app.render/main!}}
-          :release {:entries [app.main]
-                    :target :npm-module
-                    :output-dir "target/release/"}}}
+          :release {:target :browser
+                    :output-dir "dist/"
+                    :module-hash-names true
+                    :modules {:main {:entries [app.main]
+                                     :depends-on #{:lib}}
+                              :lib {:entries [respo.core respo.macros
+                                              respo.comp.inspect]}}}}}

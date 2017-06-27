@@ -15,13 +15,16 @@
 
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
-        manifest (.parse js/JSON (slurp "dist/manifest.json"))]
+        manifest (.parse js/JSON (slurp "dist/assets-manifest.json"))
+        cljs-manifest (.parse js/JSON (slurp "dist/manifest.json"))]
     (make-page
      html-content
      (merge
       base-info
       {:styles [(aget manifest "main.css")],
-       :scripts [(aget manifest "vendor.js") (aget manifest "main.js")]}))))
+       :scripts [(aget manifest "main.js")
+                 (-> cljs-manifest (aget 0) (aget "js-name"))
+                 (-> cljs-manifest (aget 1) (aget "js-name"))]}))))
 
 (defn main! []
   (if (= js/process.env.env "dev")
