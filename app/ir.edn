@@ -370,8 +370,8 @@
                           "base-info" ["def"
                                        "base-info"
                                        ["{}"
-                                        [":title" "|Stack Workflow"]
-                                        [":icon" "|http://logo.mvc-works.org/mvc.png"]
+                                        [":title" "|Cumulo"]
+                                        [":icon" "|http://logo.cumulo.org/cumulo.png"]
                                         [":ssr" "nil"]
                                         [":inner-html" "nil"]]],
                           "dev-page" ["defn"
@@ -381,7 +381,9 @@
                                        "|"
                                        ["merge"
                                         "base-info"
-                                        ["{}" [":styles" ["[]"]] [":scripts" ["[]" "|/main.js" "|/browser/main.js"]]]]]],
+                                        ["{}"
+                                         [":styles" ["[]"]]
+                                         [":scripts" ["[]" "|/main.js" "|/browser/lib.js" "|/browser/main.js"]]]]]],
                           "prod-page" ["defn"
                                        "prod-page"
                                        []

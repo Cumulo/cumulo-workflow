@@ -5,13 +5,14 @@
             [app.comp.container :refer [comp-container]]))
 
 (def base-info
-  {:title "Stack Workflow",
-   :icon "http://logo.mvc-works.org/mvc.png",
-   :ssr nil,
-   :inner-html nil})
+  {:title "Cumulo", :icon "http://logo.cumulo.org/cumulo.png", :ssr nil, :inner-html nil})
 
 (defn dev-page []
-  (make-page "" (merge base-info {:styles [], :scripts ["/main.js" "/browser/main.js"]})))
+  (make-page
+   ""
+   (merge
+    base-info
+    {:styles [], :scripts ["/main.js" "/browser/lib.js" "/browser/main.js"]})))
 
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))

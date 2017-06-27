@@ -10,17 +10,14 @@
  :builds {:browser {:output-dir "target/browser"
                     :asset-path "/browser"
                     :target :browser
-                    :modules {:main {:entries [app.main]}}
-                    :devtools {:after-load app.main/reload!
-                               :preloads [shadow.cljs.devtools.client.hud]}}
-          :ssr {:target :node-script
-                :output-to "target/ssr.js"
-                :main app.render/main!
-                :devtools {:after-load app.render/main!}}
-          :release {:target :browser
-                    :output-dir "dist/"
-                    :module-hash-names true
                     :modules {:main {:entries [app.main]
                                      :depends-on #{:lib}}
                               :lib {:entries [respo.core respo.macros
-                                              respo.comp.inspect]}}}}}
+                                              respo.comp.inspect]}}
+                    :devtools {:after-load app.main/reload!
+                               :preloads [shadow.cljs.devtools.client.hud]}
+                    :release {:output-dir "dist/"}}
+          :ssr {:target :node-script
+                :output-to "target/ssr.js"
+                :main app.render/main!
+                :devtools {:after-load app.render/main!}}}}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tiye": "rsync -r dist/ tiye.me:repo/Cumulo/workflow",
-    "release": "shadow-cljs release release",
+    "release": "shadow-cljs release browser",
     "watch": "shadow-cljs watch browser",
     "compile-ssr": "shadow-cljs compile ssr",
     "html-dev": "env=dev node target/ssr.js",
