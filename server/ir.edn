@@ -52,7 +52,7 @@
                                     ["{}" [":name" "nil"] [":title" "nil"] [":data" ["{}"]] [":router" "nil"]]],
                           "configs" ["def"
                                      "configs"
-                                     ["{}" [":storage-key" "|/tmp/workflow-storage.edn"] [":port" "5021"]]],
+                                     ["{}" [":storage-key" "|/data/cumulo/workflow-storage.edn"] [":port" "5021"]]],
                           "database" ["def" "database" ["{}" [":sessions" ["{}"]] [":users" ["{}"]] [":topics" ["{}"]]]],
                           "session" ["def"
                                      "session"
@@ -184,11 +184,7 @@
                                     ["let"
                                      [["fs" ["js/require" "|fs"]]]
                                      ["fs.writeFileSync" [":storage-key" "schema/configs"] ["pr-str" "@*writer-db"]]]],
-                        "reload!" ["defn"
-                                      "reload!"
-                                      []
-                                      ["println" "|Code updated."]
-                                      ["render-clients!" "@*reader-db"]],
+                        "reload!" ["defn" "reload!" [] ["println" "|Code updated."] ["render-clients!" "@*reader-db"]],
                         "main!" ["defn"
                                  "main!"
                                  []
@@ -211,21 +207,25 @@
                                  ["add-watch" "*reader-db" ":log" ["fn" []]]
                                  [".on"
                                   "js/process"
-                                  "|exit"
-                                  ["fn" ["code"] ["println" "|Saving file on exit" "code"] ["persist!"]]]
+                                  "|SIGINT"
+                                  ["fn"
+                                   ["code"]
+                                   ["persist!"]
+                                   ["println" "|Saving file on exit" "code"]
+                                   [".exit" "js/process"]]]
                                  ["println" "|Server started."]],
                         "*writer-db" ["defonce"
-                                         "*writer-db"
-                                         ["atom"
-                                          ["let"
-                                           [["fs" ["js/require" "|fs"]] ["filepath" [":storage-key" "schema/configs"]]]
-                                           ["enable-console-print!"]
-                                           ["if"
-                                            ["fs.existsSync" "filepath"]
-                                            ["do"
-                                             ["println" "|Found storage."]
-                                             ["read-string" ["fs.readFileSync" "filepath" "|utf8"]]]
-                                            ["do" ["println" "|Found no storage."] "schema/database"]]]]],
+                                      "*writer-db"
+                                      ["atom"
+                                       ["let"
+                                        [["fs" ["js/require" "|fs"]] ["filepath" [":storage-key" "schema/configs"]]]
+                                        ["enable-console-print!"]
+                                        ["if"
+                                         ["fs.existsSync" "filepath"]
+                                         ["do"
+                                          ["println" "|Found storage."]
+                                          ["read-string" ["fs.readFileSync" "filepath" "|utf8"]]]
+                                         ["do" ["println" "|Found no storage."] "schema/database"]]]]],
                         "render-loop!" ["defn"
                                         "render-loop!"
                                         []

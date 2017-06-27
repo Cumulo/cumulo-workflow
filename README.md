@@ -21,7 +21,7 @@ cd app/
 yarn
 stack-editor
 # with another terminal
-yarn cljs
+yarn watch
 # with another terminal
 yarn dev
 # open http://localhost:8080
@@ -32,10 +32,9 @@ Start developing server:
 ```bash
 cd server/
 yarn
-
-yarn cljs
-# another terminal
 stack-editor
+# another terminal
+yarn watch
 # another terminal
 node target/main.js
 ```

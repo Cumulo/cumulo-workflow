@@ -45,5 +45,8 @@
        (recur)))
     (render-loop!))
   (add-watch *reader-db :log (fn [] ))
-  (.on js/process "exit" (fn [code] (println "Saving file on exit" code) (persist!)))
+  (.on
+   js/process
+   "SIGINT"
+   (fn [code] (persist!) (println "Saving file on exit" code) (.exit js/process)))
   (println "Server started."))

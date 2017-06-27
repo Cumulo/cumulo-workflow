@@ -5,7 +5,7 @@
 
 (def router {:name nil, :title nil, :data {}, :router nil})
 
-(def configs {:storage-key "/tmp/workflow-storage.edn", :port 5021})
+(def configs {:storage-key "/data/cumulo/workflow-storage.edn", :port 5021})
 
 (def database {:sessions {}, :users {}, :topics {}})
 
