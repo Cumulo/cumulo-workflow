@@ -26,4 +26,4 @@
   {:style ui/flex}
   (<> span (str "Hello! " (:name user)) nil)
   (=< 8 nil)
-  (a {:style style-trigger, :event {:click on-log-out}} (<> span "Log out" nil))))
+  (a {:style style-trigger, :on {:click on-log-out}} (<> span "Log out" nil))))

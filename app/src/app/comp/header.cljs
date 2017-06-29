@@ -29,7 +29,7 @@
  (logged-in?)
  (div
   {:style (merge ui/row-center style-header)}
-  (div {:event {:click on-home}, :style style-logo} (<> span "Cumulo" nil))
+  (div {:on {:click on-home}, :style style-logo} (<> span "Cumulo" nil))
   (div
-   {:style style-pointer, :event {:click on-profile}}
+   {:style style-pointer, :on {:click on-profile}}
    (<> span (if logged-in? "Me" "Guest") nil))))

@@ -139,7 +139,7 @@
                                                   [":placeholder" "|Username"]
                                                   [":value" [":username" "state"]]
                                                   [":style" "ui/input"]
-                                                  [":event" ["{}" [":input" ["on-input" "state" ":username"]]]]]]]
+                                                  [":on" ["{}" [":input" ["on-input" "state" ":username"]]]]]]]
                                                ["=<" "nil" "8"]
                                                ["div"
                                                 ["{}"]
@@ -148,7 +148,7 @@
                                                   [":placeholder" "|Password"]
                                                   [":value" [":password" "state"]]
                                                   [":style" "ui/input"]
-                                                  [":event" ["{}" [":input" ["on-input" "state" ":password"]]]]]]]]
+                                                  [":on" ["{}" [":input" ["on-input" "state" ":password"]]]]]]]]
                                               ["=<" "nil" "8"]
                                               ["div"
                                                ["{}" [":style" "ui/flex"]]
@@ -157,7 +157,7 @@
                                                  [":inner-text" "|Sign up"]
                                                  [":style"
                                                   ["merge" "ui/button" ["{}" [":outline" ":none"] [":border" ":none"]]]]
-                                                 [":event"
+                                                 [":on"
                                                   ["{}"
                                                    [":click"
                                                     ["on-submit" [":username" "state"] [":password" "state"] "true"]]]]]]
@@ -167,7 +167,7 @@
                                                  [":inner-text" "|Sign in"]
                                                  [":style"
                                                   ["merge" "ui/button" ["{}" [":outline" ":none"] [":border" ":none"]]]]
-                                                 [":event"
+                                                 [":on"
                                                   ["{}"
                                                    [":click"
                                                     ["on-submit" [":username" "state"] [":password" "state"] "false"]]]]]]]]]],
@@ -198,7 +198,7 @@
                                                  ["a"
                                                   ["{}"
                                                    [":style" "style-trigger"]
-                                                   [":event" ["{}" [":click" "on-log-out"]]]]
+                                                   [":on" ["{}" [":click" "on-log-out"]]]]
                                                   ["<>" "span" "|Log out" "nil"]]]],
                                 "style-trigger" ["def"
                                                  "style-trigger"
@@ -230,12 +230,10 @@
                                               ["div"
                                                ["{}" [":style" ["merge" "ui/row-center" "style-header"]]]
                                                ["div"
-                                                ["{}" [":event" ["{}" [":click" "on-home"]]] [":style" "style-logo"]]
+                                                ["{}" [":on" ["{}" [":click" "on-home"]]] [":style" "style-logo"]]
                                                 ["<>" "span" "|Cumulo" "nil"]]
                                                ["div"
-                                                ["{}"
-                                                 [":style" "style-pointer"]
-                                                 [":event" ["{}" [":click" "on-profile"]]]]
+                                                ["{}" [":style" "style-pointer"] [":on" ["{}" [":click" "on-profile"]]]]
                                                 ["<>" "span" ["if" "logged-in?" "|Me" "|Guest"] "nil"]]]],
                                "style-pointer" ["def" "style-pointer" ["{}" [":cursor" "|pointer"]]],
                                "style-header" ["def"
