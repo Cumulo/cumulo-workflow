@@ -183,7 +183,9 @@
                                     []
                                     ["let"
                                      [["fs" ["js/require" "|fs"]]]
-                                     ["fs.writeFileSync" [":storage-key" "schema/configs"] ["pr-str" "@*writer-db"]]]],
+                                     ["fs.writeFileSync"
+                                      [":storage-key" "schema/configs"]
+                                      ["pr-str" ["assoc" "@*writer-db" ":sessions" ["{}"]]]]]],
                         "reload!" ["defn" "reload!" [] ["println" "|Code updated."] ["render-clients!" "@*reader-db"]],
                         "main!" ["defn"
                                  "main!"
@@ -194,8 +196,15 @@
                                    ["[]"]
                                    ["let"
                                     [[["[]" "op" "op-data" "session-id" "op-id" "op-time"] ["<!" "server-ch"]]]
-                                    ["println" "|Action:" "op" "op-data" "session-id" "op-id" "op-time"]
-                                    ["println" "|Database:" "@*writer-db"]
+                                    [".log"
+                                     "js/console"
+                                     "|Action"
+                                     ["str" "op"]
+                                     ["clj->js" "op-data"]
+                                     "session-id"
+                                     "op-id"
+                                     "op-time"]
+                                    [".log" "js/console" "|Database:" ["clj->js" "@*writer-db"]]
                                     ["try"
                                      ["let"
                                       [["new-db"
@@ -268,6 +277,7 @@
                                                "|message"
                                                ["fn"
                                                 ["rawData"]
+                                                [".info" "js/console" "|New client."]
                                                 ["let"
                                                  [["action" ["reader/read-string" "rawData"]]
                                                   [["[]" "op" "op-data"] "action"]]
@@ -277,6 +287,7 @@
                                                "|close"
                                                ["fn"
                                                 []
+                                                [".warn" "js/console" "|Client closed!"]
                                                 ["swap!" "socket-registry" "dissoc" "session-id"]
                                                 ["handle-message" ":session/disconnect" "nil" "session-id"]]]]]]]
                                           "server-chan"],
@@ -294,7 +305,12 @@
                                                  ["collect!" ["fn" ["x"] ["swap!" "*changes" "conj" "x"]]]
                                                  ["socket" ["get" "@socket-registry" "session-id"]]]
                                                 ["diff-bunch" "collect!" ["[]"] "old-store" "new-store"]
-                                                ["println" "|Changes for:" "session-id" "@*changes"]
+                                                [".info"
+                                                 "js/console"
+                                                 "|Changes for"
+                                                 "session-id"
+                                                 "|:"
+                                                 ["clj->js" "@*changes"]]
                                                 ["if"
                                                  ["and" ["not=" "*changes" ["[]"]] ["some?" "socket"]]
                                                  ["do"

@@ -36,7 +36,7 @@ stack-editor
 # another terminal
 yarn watch
 # another terminal
-node target/main.js
+node --inspect target/main.js
 ```
 
 ### Build

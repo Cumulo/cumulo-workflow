@@ -35,12 +35,14 @@
           socket
           "message"
           (fn [rawData]
+            (.info js/console "New client.")
             (let [action (reader/read-string rawData), [op op-data] action]
               (handle-message op op-data session-id))))
          (.on
           socket
           "close"
           (fn []
+            (.warn js/console "Client closed!")
             (swap! socket-registry dissoc session-id)
             (handle-message :session/disconnect nil session-id)))))))
   server-chan)
@@ -56,7 +58,7 @@
           collect! (fn [x] (swap! *changes conj x))
           socket (get @socket-registry session-id)]
       (diff-bunch collect! [] old-store new-store)
-      (println "Changes for:" session-id @*changes)
+      (.info js/console "Changes for" session-id ":" (clj->js @*changes))
       (if (and (not= *changes []) (some? socket))
         (do
          (.send socket (pr-str @*changes))

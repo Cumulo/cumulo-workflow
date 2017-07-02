@@ -20,7 +20,7 @@
 (defcomp
  comp-container
  (states store)
- (let [state (:data states)]
+ (let [state (:data states), session (:session store)]
    (if (nil? store)
      (div
       {:style (merge ui/global ui/fullscreen ui/center)}

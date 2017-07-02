@@ -20,6 +20,6 @@
      ws.onmessage
      (fn [event]
        (let [changes (reader/read-string event.data)]
-         (println "Changes" changes)
+         (.log js/console "Changes" (clj->js changes))
          (reset! *store (patch-bunch @*store changes)))))
     (go (loop [] (.send ws (pr-str (<! sender))) (recur)))))

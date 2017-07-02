@@ -17,7 +17,7 @@
 
 (defn persist! []
   (let [fs (js/require "fs")]
-    (fs.writeFileSync (:storage-key schema/configs) (pr-str @*writer-db))))
+    (fs.writeFileSync (:storage-key schema/configs) (pr-str (assoc @*writer-db :sessions {})))))
 
 (defonce *reader-db (atom @*writer-db))
 
@@ -36,8 +36,8 @@
     (go-loop
      []
      (let [[op op-data session-id op-id op-time] (<! server-ch)]
-       (println "Action:" op op-data session-id op-id op-time)
-       (println "Database:" @*writer-db)
+       (.log js/console "Action" (str op) (clj->js op-data) session-id op-id op-time)
+       (.log js/console "Database:" (clj->js @*writer-db))
        (try
         (let [new-db (updater @*writer-db op op-data session-id op-id op-time)]
           (reset! *writer-db new-db))

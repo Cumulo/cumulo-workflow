@@ -7,7 +7,7 @@
             [respo.core :refer [create-comp]]))
 
 (defn on-profile [e dispatch!]
-  (dispatch! :router/change {:name :profile, :params nil, :router nil}))
+  (dispatch! :router/change {:name :profile, :data nil, :router nil}))
 
 (def style-logo {:cursor :pointer})
 
@@ -22,7 +22,7 @@
    :color :white})
 
 (defn on-home [e dispatch!]
-  (dispatch! :router/change {:name :home, :params nil, :router nil}))
+  (dispatch! :router/change {:name :home, :data nil, :router nil}))
 
 (defcomp
  comp-header

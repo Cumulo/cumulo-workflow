@@ -23,7 +23,7 @@
                                                     "comp-container"
                                                     ["states" "store"]
                                                     ["let"
-                                                     [["state" [":data" "states"]]]
+                                                     [["state" [":data" "states"]] ["session" [":session" "store"]]]
                                                      ["if"
                                                       ["nil?" "store"]
                                                       ["div"
@@ -91,7 +91,7 @@
                                                ["event"]
                                                ["let"
                                                 [["changes" ["reader/read-string" "event.data"]]]
-                                                ["println" "|Changes" "changes"]
+                                                [".log" "js/console" "|Changes" ["clj->js" "changes"]]
                                                 ["reset!" "*store" ["patch-bunch" "@*store" "changes"]]]]]
                                              ["go" ["loop" ["[]"] [".send" "ws" ["pr-str" ["<!" "sender"]]] ["recur"]]]]]},
                     :procs []},
@@ -222,7 +222,7 @@
                                              ["e" "dispatch!"]
                                              ["dispatch!"
                                               ":router/change"
-                                              ["{}" [":name" ":profile"] [":params" "nil"] [":router" "nil"]]]],
+                                              ["{}" [":name" ":profile"] [":data" "nil"] [":router" "nil"]]]],
                                "style-logo" ["def" "style-logo" ["{}" [":cursor" ":pointer"]]],
                                "comp-header" ["defcomp"
                                               "comp-header"
@@ -250,7 +250,7 @@
                                           ["e" "dispatch!"]
                                           ["dispatch!"
                                            ":router/change"
-                                           ["{}" [":name" ":home"] [":params" "nil"] [":router" "nil"]]]]},
+                                           ["{}" [":name" ":home"] [":data" "nil"] [":router" "nil"]]]]},
                         :procs []},
          "main" {:ns ["ns"
                       "app.main"
@@ -265,14 +265,10 @@
                         "dispatch!" ["defn"
                                      "dispatch!"
                                      ["op" "op-data"]
-                                     ["println" "|dispatch:" "op" "op-data"]
+                                     [".info" "js/console" "|Dispatch" ["str" "op"] ["clj->js" "op-data"]]
                                      ["if"
                                       ["=" "op" ":states"]
-                                      ["let"
-                                       [["new-states" [["mutate" "op-data"] "@*states"]]]
-                                       ["println" "|states:" "new-states"]
-                                       ["reset!" "*states" "new-states"]
-                                       ["--" "swap!" "*states" ["mutate" "op-data"]]]
+                                      ["reset!" "*states" [["mutate" "op-data"] "@*states"]]
                                       ["send!" "op" "op-data"]]],
                         "*store" ["defonce" "*store" ["atom" "nil"]],
                         "main!" ["defn"
