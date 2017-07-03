@@ -31,11 +31,11 @@
        (let [session-id (.generate shortid)]
          (handle-message :session/connect nil session-id)
          (swap! socket-registry assoc session-id socket)
+         (.info js/console "New client.")
          (.on
           socket
           "message"
           (fn [rawData]
-            (.info js/console "New client.")
             (let [action (reader/read-string rawData), [op op-data] action]
               (handle-message op op-data session-id))))
          (.on
