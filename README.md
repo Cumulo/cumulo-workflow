@@ -10,7 +10,7 @@ Features:
 * hot swapping server
 * declarative programming
 
-Based on [Stack Editor](https://github.com/mvc-works/stack-workflow).
+Based on [Cumulo Editor](https://github.com/mvc-works/coworkflow).
 
 ### Usages
 
@@ -19,7 +19,7 @@ Start developing app:
 ```bash
 cd app/
 yarn
-stack-editor
+cumulo-editor
 # with another terminal
 yarn watch
 # with another terminal
@@ -32,7 +32,7 @@ Start developing server:
 ```bash
 cd server/
 yarn
-stack-editor
+cumulo-editor
 # another terminal
 yarn watch
 # another terminal
