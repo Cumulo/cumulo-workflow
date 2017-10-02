@@ -4,7 +4,9 @@
   "description": "Stack Workflow",
   "main": "index.js",
   "scripts": {
-    "tiye": "rsync -r dist/ tiye.me:repo/Cumulo/workflow",
+    "cdn": "ls -1 dist | xargs -I % upx put dist/% cumulo-workflow/%",
+    "tiye": "rsync -r dist/index.html tiye.me:repo/Cumulo/workflow/",
+    "upload": "yarn cdn && yarn tiye",
     "release": "shadow-cljs release browser",
     "watch": "shadow-cljs watch browser",
     "compile-ssr": "shadow-cljs compile ssr",
@@ -29,7 +31,6 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "http-server": "^0.10.0",
-    "respo-ui": "^0.1.2",
     "shadow-cljs": "^2.0.4",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
