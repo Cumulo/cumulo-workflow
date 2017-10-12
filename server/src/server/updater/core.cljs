@@ -14,4 +14,5 @@
     :session/remove-notification
       (session/remove-notification db op-data session-id op-id op-time)
     :router/change (router/change db op-data session-id op-id op-time)
+    :inc (update db :count (fn [x] (+ x 1)))
     db))

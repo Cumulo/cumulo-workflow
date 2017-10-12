@@ -1,15 +1,17 @@
 
 (ns app.comp.container
-  (:require-macros [respo.macros :refer [defcomp <> div span]])
+  (:require-macros [respo.macros :refer [defcomp <> div span button]])
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
             [respo.core :refer [create-comp]]
             [respo.comp.inspect :refer [comp-inspect]]
+            [respo.comp.space :refer [=<]]
             [app.comp.header :refer [comp-header]]
             [app.comp.profile :refer [comp-profile]]
             [app.comp.login :refer [comp-login]]
-            [respo-message.comp.msg-list :refer [comp-msg-list]]))
+            [respo-message.comp.msg-list :refer [comp-msg-list]]
+            [app.comp.reel :refer [comp-reel]]))
 
 (def style-alert {:font-family "Josefin Sans", :font-weight 100, :font-size 40})
 
@@ -36,7 +38,13 @@
           (let [router (:router store)]
             (case (:name router)
               :profile (comp-profile (:user store))
-              (div {} (<> span (str "404 page: " (pr-str router)) nil))))
+              (div
+               {}
+               (button {:inner-text "Inc", :on {:click (fn [e d! m!] (d! :inc nil))}})
+               (<> span (:count store) nil)
+               (=< 8 nil)
+               (<> span (str "404 page: " (pr-str router)) nil))))
           (comp-login states))))
       (comp-inspect "Store" store style-debugger)
-      (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)))))
+      (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)
+      (comp-reel (:reel-length store) {})))))

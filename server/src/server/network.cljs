@@ -9,7 +9,7 @@
             ["shortid" :as shortid]
             ["ws" :as ws]))
 
-(defonce socket-registry (atom {}))
+(defonce *registry (atom {}))
 
 (defn run-server! [on-action! port]
   (let [WebSocketServer (.-Server ws), wss (new WebSocketServer (js-obj "port" port))]
@@ -21,7 +21,7 @@
              op-id (.generate shortid)
              op-time (.valueOf (js/Date.))]
          (on-action! :session/connect nil sid op-id op-time)
-         (swap! socket-registry assoc sid socket)
+         (swap! *registry assoc sid socket)
          (.info js/console "New client.")
          (.on
           socket
@@ -34,18 +34,22 @@
           "close"
           (fn []
             (.warn js/console "Client closed!")
-            (swap! socket-registry dissoc sid)
+            (swap! *registry dissoc sid)
             (on-action! :session/disconnect nil sid op-id op-time))))))))
 
 (defonce client-caches (atom {}))
 
-(defn sync-clients! [db]
-  (doseq [session-entry (:sessions db)]
-    (let [[session-id session] session-entry
-          old-store (or (get @client-caches session-id) nil)
-          new-store (render-bunch (twig-container db session) old-store)
-          changes (diff-bunch old-store new-store {:key :id})
-          socket (get @socket-registry session-id)]
-      (log-js! "Changes for" session-id ":" changes)
-      (if (and (not= changes []) (some? socket))
-        (do (.send socket (pr-str changes)) (swap! client-caches assoc session-id new-store))))))
+(defn sync-clients! [reel]
+  (let [db (:db reel), records (:records reel)]
+    (doseq [sid (keys @*registry)]
+      (let [session-id sid
+            session (get-in db [:sessions sid])
+            old-store (or (get @client-caches session-id) nil)
+            new-store (render-bunch (twig-container db session records) old-store)
+            changes (diff-bunch old-store new-store {:key :id})
+            socket (get @*registry session-id)]
+        (log-js! "Changes for" session-id ":" changes (count records))
+        (if (and (not= changes []) (some? socket))
+          (do
+           (.send socket (pr-str changes))
+           (swap! client-caches assoc session-id new-store)))))))

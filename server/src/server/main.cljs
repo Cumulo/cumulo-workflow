@@ -14,33 +14,35 @@
       (do (println "Found storage.") (read-string (fs/readFileSync filepath "utf8")))
       schema/database)))
 
-(defonce *reader-db (atom initial-db))
-
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
 
-(defn reload! []
-  (println "Code updated.")
-  (reset! *reel (refresh-reel @*reel initial-db updater))
-  (sync-clients! @*reader-db))
-
-(defn render-loop! []
-  (if (not= @*reader-db (:db @*reel))
-    (do (reset! *reader-db (:db @*reel)) (sync-clients! @*reader-db)))
-  (js/setTimeout render-loop! 300))
+(defn dispatch! [op op-data sid op-id op-time]
+  (log-js! "Dispatch!" (str op) op-data sid op-id op-time)
+  (try-verbosely!
+   (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
+     (reset! *reel new-reel))))
 
 (defn on-exit! [code]
   (fs/writeFileSync (:storage-key schema/configs) (pr-str (assoc (:db @*reel) :sessions {})))
   (println "Saving file on exit" code)
   (.exit js/process))
 
-(defn dispatch! [op op-data sid op-id op-time]
-  (log-js! "Action" (str op) op-data sid op-id op-time)
-  (try-verbosely!
-   (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
-     (reset! *reel new-reel))))
+(defn proxy-dispatch! [& args] "Make dispatch hot relodable." (apply dispatch! args))
+
+(defonce *reader-reel (atom @*reel))
+
+(defn render-loop! []
+  (if (not (identical? @*reader-reel @*reel))
+    (do (reset! *reader-reel @*reel) (sync-clients! @*reader-reel)))
+  (js/setTimeout render-loop! 300))
 
 (defn main! []
-  (run-server! dispatch! (:port schema/configs))
+  (run-server! proxy-dispatch! (:port schema/configs))
   (render-loop!)
   (.on js/process "SIGINT" on-exit!)
   (println "Server started."))
+
+(defn reload! []
+  (println "Code updated.")
+  (reset! *reel (refresh-reel @*reel initial-db updater))
+  (sync-clients! @*reader-reel))

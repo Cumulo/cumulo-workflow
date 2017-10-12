@@ -7,7 +7,7 @@
 
 (def configs {:storage-key "/data/cumulo/workflow-storage.edn", :port 5021})
 
-(def database {:sessions {}, :users {}, :topics {}})
+(def database {:sessions {}, :users {}, :topics {}, :count 0})
 
 (def session
   {:user-id nil,
