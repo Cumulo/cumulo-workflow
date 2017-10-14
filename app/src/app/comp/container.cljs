@@ -41,6 +41,7 @@
               (div
                {}
                (button {:inner-text "Inc", :on {:click (fn [e d! m!] (d! :inc nil))}})
+               (=< 8 nil)
                (<> span (:count store) nil)
                (=< 8 nil)
                (<> span (str "404 page: " (pr-str router)) nil))))
