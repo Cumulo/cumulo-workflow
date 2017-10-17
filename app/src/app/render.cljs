@@ -5,7 +5,7 @@
             [app.comp.container :refer [comp-container]]))
 
 (def base-info
-  {:title "Cumulo", :icon "http://logo.cumulo.org/cumulo.png", :ssr nil, :inner-html nil})
+  {:title "Cumulo", :icon "http://cdn.tiye.me/logo/cumulo.png", :ssr nil, :inner-html nil})
 
 (defn dev-page []
   (make-page
@@ -21,13 +21,13 @@
   (let [html-content (make-string (comp-container {} nil))
         webpack-info (.parse js/JSON (slurp "dist/webpack-manifest.json"))
         cljs-info (.parse js/JSON (slurp "dist/cljs-manifest.json"))
-        cdn (if preview? "" "http://repo-cdn.b0.upaiyun.com/cumulo-workflow/")
+        cdn (if preview? "" "http://cdn.tiye.me/cumulo-workflow/")
         prefix-cdn (fn [x] (str cdn x))]
     (make-page
      html-content
      (merge
       base-info
-      {:styles ["http://repo-cdn.b0.upaiyun.com/favored-fonts/main.css"
+      {:styles ["http://cdn.tiye.me/favored-fonts/main.css"
                 (prefix-cdn (aget webpack-info "main.css"))],
        :scripts (map
                  prefix-cdn
