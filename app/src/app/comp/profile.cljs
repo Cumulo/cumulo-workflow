@@ -1,11 +1,10 @@
 
 (ns app.comp.profile
-  (:require-macros [respo.macros :refer [defcomp <> span div a]])
   (:require [hsl.core :refer [hsl]]
             [app.schema :as schema]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [respo.core :refer [create-comp]]
+            [respo.macros :refer [defcomp <> span div a]]
             [respo.comp.space :refer [=<]]))
 
 (defn on-log-out [e dispatch!]

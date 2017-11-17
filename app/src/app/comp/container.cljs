@@ -1,10 +1,9 @@
 
 (ns app.comp.container
-  (:require-macros [respo.macros :refer [defcomp <> div span button]])
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
             [respo-ui.style.colors :as colors]
-            [respo.core :refer [create-comp]]
+            [respo.macros :refer [defcomp <> div span button]]
             [respo.comp.inspect :refer [comp-inspect]]
             [respo.comp.space :refer [=<]]
             [app.comp.header :refer [comp-header]]
