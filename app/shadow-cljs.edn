@@ -1,7 +1,7 @@
 
 {:source-paths ["src"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
-                [respo/message          "0.2.0"]
+                [respo/message          "0.2.1"]
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.3.0"]
                 [respo/ui               "0.2.0"]
