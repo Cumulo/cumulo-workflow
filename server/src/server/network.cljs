@@ -3,8 +3,8 @@
   (:require [cljs.nodejs :as nodejs]
             [cljs.reader :as reader]
             [server.twig.container :refer [twig-container]]
-            [recollect.diff :refer [diff-bunch]]
-            [recollect.bunch :refer [render-bunch]]
+            [recollect.diff :refer [diff-twig]]
+            [recollect.twig :refer [render-twig]]
             [server.util :refer [log-js!]]
             ["shortid" :as shortid]
             ["ws" :as ws]))
@@ -45,8 +45,8 @@
       (let [session-id sid
             session (get-in db [:sessions sid])
             old-store (or (get @client-caches session-id) nil)
-            new-store (render-bunch (twig-container db session records) old-store)
-            changes (diff-bunch old-store new-store {:key :id})
+            new-store (render-twig (twig-container db session records) old-store)
+            changes (diff-twig old-store new-store {:key :id})
             socket (get @*registry session-id)]
         (log-js! "Changes for" session-id ":" changes (count records))
         (if (and (not= changes []) (some? socket))

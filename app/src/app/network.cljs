@@ -3,7 +3,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.reader :as reader]
             [cljs.core.async :as a :refer [>! <! chan timeout]]
-            [recollect.patch :refer [patch-bunch]]))
+            [recollect.patch :refer [patch-twig]]))
 
 (defonce sender (chan))
 
@@ -21,5 +21,5 @@
      (fn [event]
        (let [changes (reader/read-string event.data)]
          (.log js/console "Changes" (clj->js changes))
-         (reset! *store (patch-bunch @*store changes)))))
+         (reset! *store (patch-twig @*store changes)))))
     (go (loop [] (.send ws (pr-str (<! sender))) (recur)))))
