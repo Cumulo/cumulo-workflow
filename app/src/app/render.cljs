@@ -2,7 +2,8 @@
 (ns app.render
   (:require [respo.render.html :refer [make-string]]
             [shell-page.core :refer [make-page spit slurp]]
-            [app.comp.container :refer [comp-container]]))
+            [app.comp.container :refer [comp-container]]
+            [cljs.reader :refer [read-string]]))
 
 (def base-info
   {:title "Cumulo",
@@ -23,7 +24,7 @@
 
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
-        cljs-info (.parse js/JSON (slurp "dist/cljs-manifest.json"))
+        assets (read-string (slurp "dist/assets.edn"))
         cdn (if preview? "" "http://cdn.tiye.me/cumulo-workflow/")
         prefix-cdn (fn [x] (str cdn x))]
     (make-page
@@ -31,10 +32,7 @@
      (merge
       base-info
       {:styles ["http://cdn.tiye.me/favored-fonts/main.css"],
-       :scripts (map
-                 prefix-cdn
-                 [(-> cljs-info (aget 0) (aget "js-name"))
-                  (-> cljs-info (aget 1) (aget "js-name"))])}))))
+       :scripts (map #(-> % :output-name prefix-cdn) assets)}))))
 
 (defn main! []
   (if (= js/process.env.env "dev")
