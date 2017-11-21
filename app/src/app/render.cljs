@@ -9,7 +9,6 @@
   {:title "Cumulo",
    :icon "http://cdn.tiye.me/logo/cumulo.png",
    :ssr nil,
-   :inner-html nil,
    :inline-styles [(slurp "entry/main.css")]})
 
 (defn dev-page []
@@ -26,7 +25,7 @@
   (let [html-content (make-string (comp-container {} nil))
         assets (read-string (slurp "dist/assets.edn"))
         cdn (if preview? "" "http://cdn.tiye.me/cumulo-workflow/")
-        prefix-cdn (fn [x] (str cdn x))]
+        prefix-cdn #(str cdn %)]
     (make-page
      html-content
      (merge
