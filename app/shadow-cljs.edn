@@ -5,7 +5,7 @@
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.4.1"]
                 [respo/ui               "0.2.0"]
-                [respo                  "0.7.1"]
+                [respo                  "0.7.2"]
                 [org.clojure/core.async "0.3.443"]]
  :builds {:browser {:output-dir "target/browser"
                     :asset-path "/browser"

@@ -6,7 +6,8 @@
             [cljs.reader :refer [read-string]]
             [server.util :refer [try-verbosely! log-js!]]
             [server.reel :refer [reel-updater refresh-reel reel-schema]]
-            ["fs" :as fs]))
+            ["fs" :as fs]
+            ["shortid" :as shortid]))
 
 (def initial-db
   (let [filepath (:storage-key schema/configs)]
@@ -16,11 +17,12 @@
 
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
 
-(defn dispatch! [op op-data sid op-id op-time]
-  (log-js! "Dispatch!" (str op) op-data sid op-id op-time)
-  (try-verbosely!
-   (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
-     (reset! *reel new-reel))))
+(defn dispatch! [op op-data sid]
+  (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
+    (log-js! "Dispatch!" (str op) op-data sid)
+    (try-verbosely!
+     (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
+       (reset! *reel new-reel)))))
 
 (defn on-exit! [code]
   (fs/writeFileSync (:storage-key schema/configs) (pr-str (assoc (:db @*reel) :sessions {})))

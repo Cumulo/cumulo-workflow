@@ -17,10 +17,8 @@
      wss
      "connection"
      (fn [socket]
-       (let [sid (.generate shortid)
-             op-id (.generate shortid)
-             op-time (.valueOf (js/Date.))]
-         (on-action! :session/connect nil sid op-id op-time)
+       (let [sid (.generate shortid)]
+         (on-action! :session/connect nil sid)
          (swap! *registry assoc sid socket)
          (.info js/console "New client.")
          (.on
@@ -28,14 +26,14 @@
           "message"
           (fn [rawData]
             (let [action (reader/read-string rawData), [op op-data] action]
-              (on-action! op op-data sid op-id op-time))))
+              (on-action! op op-data sid))))
          (.on
           socket
           "close"
           (fn []
             (.warn js/console "Client closed!")
             (swap! *registry dissoc sid)
-            (on-action! :session/disconnect nil sid op-id op-time))))))))
+            (on-action! :session/disconnect nil sid))))))))
 
 (defonce client-caches (atom {}))
 
