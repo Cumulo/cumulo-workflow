@@ -12,13 +12,13 @@
                     :target :browser
                     :modules {:main {:entries [app.main]
                                      :depends-on #{:lib}}
-                              :lib {:entries [respo.core respo.macros
-                                              respo.comp.inspect]}}
+                              :lib {:entries [respo.core respo.macros respo.comp.inspect]}}
                     :devtools {:after-load app.main/reload!
                                :preloads [shadow.cljs.devtools.client.hud]
                                :http-root "target"
                                :http-port 8080}
                     :release {:output-dir "dist/"}
+                              :module-hash-names 8
                               :build-options {:manifest-name "assets.edn"}}
           :ssr {:target :node-script
                 :output-to "target/ssr.js"
