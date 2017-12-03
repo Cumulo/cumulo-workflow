@@ -25,7 +25,9 @@
    (if (nil? store)
      (div
       {:style (merge ui/global ui/fullscreen ui/center)}
-      (<> span "No connection!" style-alert))
+      (span
+       {:style {:cursor :pointer}, :on {:click (fn [e d! m!] (d! :effect/connect nil))}}
+       (<> "No connection!" style-alert)))
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
       (comp-header (:logged-in? store))

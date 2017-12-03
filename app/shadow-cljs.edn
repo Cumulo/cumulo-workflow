@@ -3,10 +3,9 @@
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [respo/message          "0.2.1"]
                 [mvc-works/shell-page   "0.1.6"]
-                [cumulo/recollect       "0.4.1"]
+                [cumulo/recollect       "0.4.3"]
                 [respo/ui               "0.2.0"]
-                [respo                  "0.7.2"]
-                [org.clojure/core.async "0.3.443"]]
+                [respo                  "0.8.0"]]
  :builds {:browser {:output-dir "target/browser"
                     :asset-path "/browser"
                     :target :browser

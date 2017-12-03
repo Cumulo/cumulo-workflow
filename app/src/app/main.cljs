@@ -7,21 +7,37 @@
             [app.network :refer [send! setup-socket!]]
             [app.schema :as schema]))
 
+(declare dispatch!)
+
+(declare connect!)
+
+(declare simulate-login!)
+
 (def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
-(defonce *states (atom {}))
-
-(defn dispatch! [op op-data]
-  (.info js/console "Dispatch" (str op) (clj->js op-data))
-  (if (= op :states) (reset! *states ((mutate op-data) @*states)) (send! op op-data)))
-
 (defonce *store (atom nil))
+
+(defonce *states (atom {}))
 
 (defn simulate-login! []
   (let [raw (.getItem js/localStorage (:storage-key schema/configs))]
     (if (some? raw)
       (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
       (do (println "Found no storage.")))))
+
+(defn connect! []
+  (setup-socket!
+   *store
+   {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
+    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
+    :on-open! (fn [event] (simulate-login!))}))
+
+(defn dispatch! [op op-data]
+  (println "Dispatch" op op-data)
+  (case op
+    :states (reset! *states ((mutate op-data) @*states))
+    :effect/connect (connect!)
+    (send! op op-data)))
 
 (def mount-target (.querySelector js/document ".app"))
 
@@ -31,13 +47,9 @@
 (defn main! []
   (if ssr? (render-app! realize-ssr!))
   (render-app! render!)
-  (setup-socket!
-   *store
-   {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
-    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
-    :on-open! (fn [event] (simulate-login!))})
-  (add-watch *store :changes (fn [] (render-app! render!)))
-  (add-watch *states :changes (fn [] (render-app! render!)))
+  (connect!)
+  (add-watch *store :changes #(render-app! render!))
+  (add-watch *states :changes #(render-app! render!))
   (println "App started!"))
 
 (defn reload! [] (clear-cache!) (render-app! render!) (println "Code updated."))
