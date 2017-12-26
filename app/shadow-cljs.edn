@@ -4,8 +4,8 @@
                 [respo/message          "0.2.1"]
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.4.3"]
-                [respo/ui               "0.2.0"]
-                [respo                  "0.8.1"]]
+                [respo/ui               "0.2.3"]
+                [respo                  "0.8.3"]]
  :builds {:browser {:output-dir "target/browser"
                     :asset-path "/browser"
                     :target :browser

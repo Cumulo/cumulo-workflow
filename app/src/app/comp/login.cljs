@@ -29,7 +29,7 @@
        {:placeholder "Username",
         :value (:username state),
         :style ui/input,
-        :on {:input (on-input state :username)}}))
+        :on-input (on-input state :username)}))
      (=< nil 8)
      (div
       {}
@@ -37,16 +37,16 @@
        {:placeholder "Password",
         :value (:password state),
         :style ui/input,
-        :on {:input (on-input state :password)}})))
+        :on-input (on-input state :password)})))
     (=< nil 8)
     (div
      {:style ui/flex}
      (button
       {:inner-text "Sign up",
        :style (merge ui/button {:outline :none, :border :none}),
-       :on {:click (on-submit (:username state) (:password state) true)}})
+       :on-click (on-submit (:username state) (:password state) true)})
      (=< 8 nil)
      (button
       {:inner-text "Sign in",
        :style (merge ui/button {:outline :none, :border :none}),
-       :on {:click (on-submit (:username state) (:password state) false)}})))))
+       :on-click (on-submit (:username state) (:password state) false)})))))

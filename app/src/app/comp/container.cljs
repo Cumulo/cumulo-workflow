@@ -26,7 +26,7 @@
      (div
       {:style (merge ui/global ui/fullscreen ui/center)}
       (span
-       {:style {:cursor :pointer}, :on {:click (fn [e d! m!] (d! :effect/connect nil))}}
+       {:style {:cursor :pointer}, :on-click (fn [e d! m!] (d! :effect/connect nil))}
        (<> "No connection!" style-alert)))
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
