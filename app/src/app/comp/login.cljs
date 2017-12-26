@@ -6,14 +6,14 @@
             [respo-ui.style :as ui]
             [app.schema :as schema]))
 
+(def initial-state {:username "", :password ""})
+
+(defn on-input [state k] (fn [e dispatch! mutate!] (mutate! (assoc state k (:value e)))))
+
 (defn on-submit [username password signup?]
   (fn [e dispatch!]
     (dispatch! (if signup? :user/sign-up :user/log-in) [username password])
     (.setItem js/localStorage (:storage-key schema/configs) [username password])))
-
-(defn on-input [state k] (fn [e dispatch! mutate!] (mutate! (assoc state k (:value e)))))
-
-(def initial-state {:username "", :password ""})
 
 (defcomp
  comp-login

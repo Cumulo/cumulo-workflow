@@ -11,6 +11,8 @@
 
 (defonce *registry (atom {}))
 
+(defonce client-caches (atom {}))
+
 (defn run-server! [on-action! port]
   (let [WebSocketServer (.-Server ws), wss (new WebSocketServer (js-obj "port" port))]
     (.on
@@ -34,8 +36,6 @@
             (.warn js/console "Client closed!")
             (swap! *registry dissoc sid)
             (on-action! :session/disconnect nil sid))))))))
-
-(defonce client-caches (atom {}))
 
 (defn sync-clients! [reel]
   (let [db (:db reel), records (:records reel)]

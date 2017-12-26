@@ -5,12 +5,11 @@
             [respo-ui.style.colors :as colors]
             [respo.macros :refer [defcomp <> span div]]))
 
+(defn on-home [e dispatch!]
+  (dispatch! :router/change {:name :home, :data nil, :router nil}))
+
 (defn on-profile [e dispatch!]
   (dispatch! :router/change {:name :profile, :data nil, :router nil}))
-
-(def style-logo {:cursor :pointer})
-
-(def style-pointer {:cursor "pointer"})
 
 (def style-header
   {:height 48,
@@ -20,8 +19,9 @@
    :font-size 16,
    :color :white})
 
-(defn on-home [e dispatch!]
-  (dispatch! :router/change {:name :home, :data nil, :router nil}))
+(def style-logo {:cursor :pointer})
+
+(def style-pointer {:cursor "pointer"})
 
 (defcomp
  comp-header
