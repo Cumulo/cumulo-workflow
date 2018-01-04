@@ -17,6 +17,8 @@
 
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
 
+(defonce *reader-reel (atom @*reel))
+
 (defn dispatch! [op op-data sid]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
     (log-js! "Dispatch!" (str op) op-data sid)
@@ -30,8 +32,6 @@
   (.exit js/process))
 
 (defn proxy-dispatch! [& args] "Make dispatch hot relodable." (apply dispatch! args))
-
-(defonce *reader-reel (atom @*reel))
 
 (defn render-loop! []
   (if (not (identical? @*reader-reel @*reel))

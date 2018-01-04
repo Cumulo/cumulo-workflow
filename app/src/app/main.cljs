@@ -13,24 +13,15 @@
 
 (declare simulate-login!)
 
-(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
+(defonce *states (atom {}))
 
 (defonce *store (atom nil))
-
-(defonce *states (atom {}))
 
 (defn simulate-login! []
   (let [raw (.getItem js/localStorage (:storage-key schema/configs))]
     (if (some? raw)
       (do (println "Found storage.") (dispatch! :user/log-in (read-string raw)))
       (do (println "Found no storage.")))))
-
-(defn connect! []
-  (setup-socket!
-   *store
-   {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
-    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
-    :on-open! (fn [event] (simulate-login!))}))
 
 (defn dispatch! [op op-data]
   (println "Dispatch" op op-data)
@@ -39,10 +30,19 @@
     :effect/connect (connect!)
     (send! op op-data)))
 
+(defn connect! []
+  (setup-socket!
+   *store
+   {:url (str "ws://" (.-hostname js/location) ":" (:port schema/configs)),
+    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
+    :on-open! (fn [event] (simulate-login!))}))
+
 (def mount-target (.querySelector js/document ".app"))
 
 (defn render-app! [renderer]
   (renderer mount-target (comp-container @*states @*store) dispatch!))
+
+(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
 (defn main! []
   (if ssr? (render-app! realize-ssr!))

@@ -4,10 +4,10 @@
                 [respo/message          "0.2.1"]
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.4.3"]
-                [respo/ui               "0.2.3"]
-                [respo                  "0.8.3"]]
- :builds {:browser {:output-dir "target/browser"
-                    :asset-path "/browser"
+                [respo/ui               "0.2.4"]
+                [respo                  "0.8.5"]]
+ :builds {:browser {:output-dir "target/"
+                    :asset-path "./"
                     :target :browser
                     :modules {:main {:entries [app.main]
                                      :depends-on #{:lib}}
@@ -15,7 +15,7 @@
                     :devtools {:after-load app.main/reload!
                                :preloads [shadow.cljs.devtools.client.hud]
                                :http-root "target"
-                               :http-port 8080}
+                               :http-port 7000}
                     :release {:output-dir "dist/"}
                               :module-hash-names 8
                               :build-options {:manifest-name "assets.edn"}}
