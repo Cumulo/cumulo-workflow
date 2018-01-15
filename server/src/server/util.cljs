@@ -6,4 +6,4 @@
 (defn log-js! [& args]
   (apply js/console.log (map (fn [x] (if (coll? x) (clj->js x) x)) args)))
 
-(defn try-verbosely! [x] (try x (catch js/Error e (.log js/console e))))
+(defn try-verbosely! [x] (try x (catch js/Error e (.error js/console e))))

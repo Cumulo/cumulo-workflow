@@ -3605,7 +3605,7 @@
            "v" {
             :type :expr, :id "S1BfVX5phhb", :by "root", :at 1507805724033
             :data {
-             "T" {:type :leaf, :text ".log", :id "BkUMVQcp2hW", :by "root", :at 1507805724033}
+             "T" {:type :leaf, :text ".error", :id "BkUMVQcp2hW", :by "root", :at 1515986547318}
              "j" {:type :leaf, :text "js/console", :id "ByPGV75Tn2Z", :by "root", :at 1507805724033}
              "r" {:type :leaf, :text "e", :id "SkuMVQ9a2hZ", :by "root", :at 1507805724033}
             }

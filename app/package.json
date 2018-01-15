@@ -1,7 +1,7 @@
 {
   "name": "cumulo-workflow",
   "version": "0.1.0",
-  "description": "Stack Workflow",
+  "description": "Cumulo Workflow",
   "main": "index.js",
   "scripts": {
     "cdn": "rsync -avr --progress dist/* tiye.me:cdn/cumulo-workflow",
@@ -24,7 +24,7 @@
   "author": "jiyinyiyong",
   "license": "MIT",
   "devDependencies": {
-    "http-server": "^0.10.0",
-    "shadow-cljs": "^2.0.128"
+    "http-server": "^0.11.1",
+    "shadow-cljs": "2.0.131"
   }
 }
