@@ -1,8 +1,8 @@
 
 (ns app.comp.reel
   (:require [hsl.core :refer [hsl]]
-            [respo-ui.style :as ui]
-            [respo-ui.style.colors :as colors]
+            [respo-ui.core :as ui]
+            [respo-ui.colors :as colors]
             [respo.macros :refer [defcomp <> span button div]]
             [respo.comp.space :refer [=<]]))
 

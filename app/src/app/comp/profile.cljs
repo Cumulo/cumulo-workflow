@@ -2,8 +2,8 @@
 (ns app.comp.profile
   (:require [hsl.core :refer [hsl]]
             [app.schema :as schema]
-            [respo-ui.style :as ui]
-            [respo-ui.style.colors :as colors]
+            [respo-ui.core :as ui]
+            [respo-ui.colors :as colors]
             [respo.macros :refer [defcomp <> span div a]]
             [respo.comp.space :refer [=<]]))
 
