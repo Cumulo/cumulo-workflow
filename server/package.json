@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Boot Workflow ----",
+  "description": "Cumulo Workflow",
   "main": "index.js",
   "scripts": {
     "tiye": "rsync -r dist/main.js repo.tiye.me:servers/tiye",
@@ -12,21 +12,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mvc-works/boot-workflow.git"
+    "url": "git+https://github.com/Cumulo/cumulo-workflow.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mvc-works/boot-workflow/issues"
+    "url": "https://github.com/Cumulo/cumulo-workflow/issues"
   },
-  "homepage": "https://github.com/mvc-works/boot-workflow#readme",
+  "homepage": "https://github.com/Cumulo/cumulo-workflow#readme",
   "dependencies": {
     "md5": "^2.2.1",
     "shortid": "^2.2.6",
     "uws": "^9.14.0"
   },
   "devDependencies": {
-    "shadow-cljs": "2.0.138",
+    "shadow-cljs": "2.0.144",
     "source-map-support": "^0.5.0",
     "ws": "^4.0.0"
   }
