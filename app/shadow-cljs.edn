@@ -1,11 +1,11 @@
 
 {:source-paths ["src"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
-                [respo/message          "0.2.3"]
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.4.3"]
-                [respo/ui               "0.3.1"]
-                [respo                  "0.8.12"]]
+                [respo                  "0.8.14"]
+                [respo/ui               "0.3.2"]
+                [respo/message          "0.2.3"]]
  :builds {:browser {:output-dir "target/"
                     :asset-path "./"
                     :target :browser
