@@ -3,7 +3,7 @@
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [mvc-works/shell-page   "0.1.6"]
                 [cumulo/recollect       "0.4.3"]
-                [respo                  "0.8.14"]
+                [respo                  "0.8.15"]
                 [respo/ui               "0.3.2"]
                 [respo/message          "0.2.3"]]
  :builds {:browser {:output-dir "target/"
