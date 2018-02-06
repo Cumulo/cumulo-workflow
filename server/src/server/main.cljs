@@ -2,7 +2,7 @@
 (ns server.main
   (:require [server.schema :as schema]
             [server.network :refer [run-server! sync-clients!]]
-            [server.updater.core :refer [updater]]
+            [server.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
             [server.util :refer [try-verbosely! log-js!]]
             [server.reel :refer [reel-updater refresh-reel reel-schema]]
