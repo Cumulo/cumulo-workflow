@@ -4,11 +4,10 @@
   "description": "Cumulo Workflow",
   "main": "index.js",
   "scripts": {
-    "tiye": "rsync -r dist/main.js repo.tiye.me:servers/tiye",
     "compile": "shadow-cljs compile app",
     "build": "shadow-cljs release app",
     "watch": "shadow-cljs watch app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "repl": "rlwrap shadow-cljs clj-repl"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,7 @@
     "uws": "^9.14.0"
   },
   "devDependencies": {
-    "shadow-cljs": "2.1.1",
+    "shadow-cljs": "2.1.10",
     "source-map-support": "^0.5.0",
     "ws": "^4.0.0"
   }
