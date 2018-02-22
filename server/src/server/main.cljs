@@ -4,7 +4,7 @@
             [server.network :refer [run-server! sync-clients!]]
             [server.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
-            [server.util :refer [try-verbosely! log-js!]]
+            [server.util :refer [try-verbosely!]]
             [server.reel :refer [reel-updater refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]))
@@ -21,7 +21,7 @@
 
 (defn dispatch! [op op-data sid]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
-    (log-js! "Dispatch!" (str op) op-data sid)
+    (println "Dispatch!" (str op) op-data sid)
     (try-verbosely!
      (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
        (reset! *reel new-reel)))))

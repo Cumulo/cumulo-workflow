@@ -13,11 +13,11 @@
 
 (def style-header
   {:height 48,
-   :background-color colors/motif,
    :justify-content :space-between,
    :padding "0 16px",
    :font-size 16,
-   :color :white})
+   :border-bottom (str "1px solid " (hsl 0 0 0 0.1)),
+   :font-family ui/font-fancy})
 
 (def style-logo {:cursor :pointer})
 

@@ -5,7 +5,6 @@
             [server.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
-            [server.util :refer [log-js!]]
             ["shortid" :as shortid]
             ["ws" :as ws]))
 
@@ -35,7 +34,8 @@
           (fn []
             (.warn js/console "Client closed!")
             (swap! *registry dissoc sid)
-            (on-action! :session/disconnect nil sid))))))))
+            (on-action! :session/disconnect nil sid)))
+         (.on socket "error" (fn [error] (.error js/console error))))))))
 
 (defn sync-clients! [reel]
   (let [db (:db reel), records (:records reel)]
@@ -46,7 +46,7 @@
             new-store (render-twig (twig-container db session records) old-store)
             changes (diff-twig old-store new-store {:key :id})
             socket (get @*registry session-id)]
-        (log-js! "Changes for" session-id ":" changes (count records))
+        (println "Changes for" session-id ":" changes (count records))
         (if (and (not= changes []) (some? socket))
           (do
            (.send socket (pr-str changes))
