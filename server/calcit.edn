@@ -1855,18 +1855,6 @@
            }
           }
          }
-         "v" {
-          :type :expr, :id "SyvseLWe0H-", :by nil, :at 1500541255553
-          :data {
-           "T" {:type :leaf, :id "SkOse8beABZ", :text ":topics", :by "root", :at 1500541255553}
-           "j" {
-            :type :expr, :id "H1Yix8beRr-", :by nil, :at 1500541255553
-            :data {
-             "T" {:type :leaf, :id "S19slIZeArZ", :text "{}", :by "root", :at 1500541255553}
-            }
-           }
-          }
-         }
          "x" {
           :type :expr, :id "SJeJ8GxphZ", :by "root", :at 1507816006992
           :data {

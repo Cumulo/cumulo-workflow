@@ -19,11 +19,9 @@ Start developing app:
 ```bash
 cd app/
 yarn
-calcit-editor
-# with another terminal
 yarn watch
 # with another terminal
-yarn dev
+yarn shadow-cljs clj-run build.main/html
 # open http://localhost:7000
 ```
 
@@ -32,12 +30,12 @@ Start developing server:
 ```bash
 cd server/
 yarn
-calcit-editor
-# another terminal
 yarn watch
 # another terminal
 node target/main.js
 ```
+
+For editing code, go to `app/` and `server/` and then run `calcit-editor` as editor servers.
 
 ### Build
 

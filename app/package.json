@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "shadow-cljs watch browser",
+    "build": "shadow-cljs clj-run -m build.main/build",
     "serve": "http-server dist -s",
     "repl": "rlwrap shadow-cljs clj-repl"
   },
@@ -16,6 +17,6 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.11.1",
-    "shadow-cljs": "^2.1.23"
+    "shadow-cljs": "^2.1.24"
   }
 }
