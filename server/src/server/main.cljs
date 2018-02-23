@@ -36,7 +36,7 @@
 (defn render-loop! []
   (if (not (identical? @*reader-reel @*reel))
     (do (reset! *reader-reel @*reel) (sync-clients! @*reader-reel)))
-  (js/setTimeout render-loop! 300))
+  (js/setTimeout render-loop! 200))
 
 (defn main! []
   (run-server! proxy-dispatch! (:port schema/configs))
