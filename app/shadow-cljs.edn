@@ -13,7 +13,6 @@
                     :target :browser
                     :modules {:main {:entries [app.main]}}
                     :devtools {:after-load app.main/reload!
-                               :preloads [shadow.cljs.devtools.client.hud]
                                :http-root "target"
                                :http-port 7000}
                     :release {:output-dir "dist/"}
