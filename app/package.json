@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "shadow-cljs watch browser",
-    "build": "shadow-cljs clj-run -m build.main/build",
+    "build": "shadow-cljs clj-run build.main/build",
     "serve": "http-server dist -s",
     "repl": "rlwrap shadow-cljs clj-repl"
   },
