@@ -19,19 +19,26 @@
 
 (defonce *reader-reel (atom @*reel))
 
+(defn persist-db! []
+  (println "Saving file on exit")
+  (fs/writeFileSync
+   (:storage-key schema/configs)
+   (pr-str (assoc (:db @*reel) :sessions {}))))
+
 (defn dispatch! [op op-data sid]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
     (println "Dispatch!" (str op) op-data sid)
     (try-verbosely!
-     (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
-       (reset! *reel new-reel)))))
+     (cond
+       (= op :effect/persist) (persist-db!)
+       :else
+         (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
+           (reset! *reel new-reel))))))
 
 (defn on-exit! [code]
-  (fs/writeFileSync (:storage-key schema/configs) (pr-str (assoc (:db @*reel) :sessions {})))
-  (println "Saving file on exit" code)
+  (persist-db!)
+  (println "exit code is:" (pr-str code))
   (.exit js/process))
-
-(defn proxy-dispatch! [& args] "Make dispatch hot relodable." (apply dispatch! args))
 
 (defn render-loop! []
   (if (not (identical? @*reader-reel @*reel))
@@ -39,7 +46,7 @@
   (js/setTimeout render-loop! 200))
 
 (defn main! []
-  (run-server! proxy-dispatch! (:port schema/configs))
+  (run-server! #(dispatch! %1 %2 %3) (:port schema/configs))
   (render-loop!)
   (.on js/process "SIGINT" on-exit!)
   (println "Server started."))

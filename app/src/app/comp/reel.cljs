@@ -3,7 +3,7 @@
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
-            [respo.macros :refer [defcomp <> span button div]]
+            [respo.macros :refer [defcomp action-> <> span button div]]
             [respo.comp.space :refer [=<]]))
 
 (def style-click
@@ -31,4 +31,7 @@
   (span
    {:inner-text "Merge",
     :style style-click,
-    :on {:click (fn [e d! m!] (d! :reel/merge nil))}})))
+    :on {:click (fn [e d! m!] (d! :reel/merge nil))}})
+  (=< 8 nil)
+  (span
+   {:inner-text "Persist", :style style-click, :on {:click (action-> :effect/persist nil)}})))
