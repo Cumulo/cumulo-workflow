@@ -5,6 +5,8 @@
 
 (def database {:sessions {}, :users {}, :count 0})
 
+(def dev? (do ^boolean js/goog.DEBUG))
+
 (def notification {:id nil, :kind nil, :text nil})
 
 (def router {:name nil, :title nil, :data {}, :router nil})

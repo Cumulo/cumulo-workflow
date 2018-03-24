@@ -10,16 +10,17 @@
             [app.comp.profile :refer [comp-profile]]
             [app.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]
-            [app.comp.reel :refer [comp-reel]]))
+            [app.comp.reel :refer [comp-reel]]
+            [app.schema :refer [dev?]]))
 
-(def style-alert {:font-family "Josefin Sans", :font-weight 100, :font-size 40})
+(def style-alert {:font-family "Josefin Sans", :font-weight 100, :font-size 32})
 
 (def chunk-offline
   (div
    {:style (merge ui/global ui/fullscreen ui/center)}
    (span
     {:style {:cursor :pointer}, :on-click (fn [e d! m!] (d! :effect/connect nil))}
-    (<> "No connection!" style-alert))))
+    (<> "Socket broken! Click to retry." style-alert))))
 
 (def style-debugger {:bottom 0, :left 0, :max-width "100%"})
 
@@ -45,8 +46,8 @@
              (=< 8 nil)
              (<> span (pr-str router) nil))))
         (comp-login states))
-      (comp-inspect "Store" store style-debugger)
+      (when dev? (comp-inspect "Store" store style-debugger))
       (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)
-      (comp-reel (:reel-length store) {})))))
+      (when dev? (comp-reel (:reel-length store) {}))))))
 
 (def style-body {:padding "8px 16px"})

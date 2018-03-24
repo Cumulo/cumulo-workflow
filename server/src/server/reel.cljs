@@ -1,5 +1,5 @@
 
-(ns server.reel (:require [clojure.string :as string]))
+(ns server.reel (:require [clojure.string :as string] [app.schema :refer [dev?]]))
 
 (defn play-records [db records updater]
   (if (empty? records)
@@ -20,7 +20,7 @@
        (do (println "Unknown op:" op) reel)))
     (let [msg-pack [op op-data sid op-id op-time]]
       (-> reel
-          (update :records (fn [records] (conj records msg-pack)))
+          (update :records (fn [records] (if dev? (conj records msg-pack) records)))
           (assoc :db (updater (:db reel) op op-data sid op-id op-time))))))
 
 (defn refresh-reel [reel base updater]
