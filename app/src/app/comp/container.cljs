@@ -3,7 +3,7 @@
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
-            [respo.macros :refer [defcomp <> div span button]]
+            [respo.macros :refer [defcomp <> div span action-> button]]
             [respo.comp.inspect :refer [comp-inspect]]
             [respo.comp.space :refer [=<]]
             [app.comp.header :refer [comp-header]]
@@ -13,23 +13,23 @@
             [app.comp.reel :refer [comp-reel]]
             [app.schema :refer [dev?]]))
 
-(def style-alert {:font-family "Josefin Sans", :font-weight 100, :font-size 32})
-
-(def chunk-offline
-  (div
-   {:style (merge ui/global ui/fullscreen ui/center)}
-   (span
-    {:style {:cursor :pointer}, :on-click (fn [e d! m!] (d! :effect/connect nil))}
-    (<> "Socket broken! Click to retry." style-alert))))
-
-(def style-debugger {:bottom 0, :left 0, :max-width "100%"})
+(defcomp
+ comp-offline
+ ()
+ (div
+  {:style (merge ui/global ui/fullscreen ui/center)}
+  (span
+   {:style {:cursor :pointer}, :on-click (action-> :effect/connect nil)}
+   (<>
+    "Socket broken! Click to retry."
+    {:font-family ui/font-fancy, :font-weight 100, :font-size 32}))))
 
 (defcomp
  comp-container
  (states store)
  (let [state (:data states), session (:session store)]
    (if (nil? store)
-     chunk-offline
+     (comp-offline)
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
       (comp-header (:logged-in? store))
@@ -39,14 +39,13 @@
             :profile (comp-profile (:user store))
             (div
              {:style {:padding 16}}
-             (button
-              {:inner-text "Inc", :style ui/button, :on-click (fn [e d! m!] (d! :inc nil))})
+             (button {:inner-text "Inc", :style ui/button, :on-click (action-> :inc nil)})
              (=< 8 nil)
-             (<> span (:count store) nil)
+             (<> (:count store))
              (=< 8 nil)
-             (<> span (pr-str router) nil))))
+             (<> (pr-str router)))))
         (comp-login states))
-      (when dev? (comp-inspect "Store" store style-debugger))
+      (when dev? (comp-inspect "Store" store {:bottom 0, :left 0, :max-width "100%"}))
       (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)
       (when dev? (comp-reel (:reel-length store) {}))))))
 
