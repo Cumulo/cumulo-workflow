@@ -2369,6 +2369,25 @@
                  "j" {:type :leaf, :id "BJaEl8ZxCS-", :text "router", :by "root", :at 1500541255553}
                 }
                }
+               "y" {
+                :type :expr, :by "root", :at 1523120222572, :id "H1DPud8iG"
+                :data {
+                 "T" {:type :leaf, :by "root", :at 1523120223864, :text ":count", :id "H1DPud8iGleaf"}
+                 "j" {
+                  :type :expr, :by "root", :at 1523120229051, :id "rygpP_OUif"
+                  :data {
+                   "T" {:type :leaf, :by "root", :at 1523120230136, :text "count", :id "HkaDOd8iM"}
+                   "j" {
+                    :type :expr, :by "root", :at 1523120230346, :id "SJrAwd_8oM"
+                    :data {
+                     "T" {:type :leaf, :by "root", :at 1523120232122, :text ":sessions", :id "rJVAwd_8if"}
+                     "j" {:type :leaf, :by "root", :at 1523120232500, :text "db", :id "BJreO_d8of"}
+                    }
+                   }
+                  }
+                 }
+                }
+               }
               }
              }
              "v" {:type :leaf, :text "nil", :id "ryg7ssXahb", :by "root", :at 1507830683551}

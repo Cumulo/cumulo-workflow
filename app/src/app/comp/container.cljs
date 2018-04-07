@@ -6,7 +6,7 @@
             [respo.macros :refer [defcomp <> div span action-> button]]
             [respo.comp.inspect :refer [comp-inspect]]
             [respo.comp.space :refer [=<]]
-            [app.comp.header :refer [comp-header]]
+            [app.comp.navigation :refer [comp-navigation]]
             [app.comp.profile :refer [comp-profile]]
             [app.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]
@@ -32,7 +32,7 @@
      (comp-offline)
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
-      (comp-header (:logged-in? store))
+      (comp-navigation (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (let [router (:router store)]
           (case (:name router)

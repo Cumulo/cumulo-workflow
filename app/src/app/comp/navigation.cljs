@@ -1,13 +1,14 @@
 
-(ns app.comp.header
+(ns app.comp.navigation
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
+            [respo.comp.space :refer [=<]]
             [respo.macros :refer [defcomp <> action-> span div]]))
 
 (defcomp
- comp-header
- (logged-in?)
+ comp-navigation
+ (logged-in? count-members)
  (div
   {:style (merge
            ui/row-center
@@ -22,4 +23,6 @@
    (<> span "Cumulo" nil))
   (div
    {:style {:cursor "pointer"}, :on-click (action-> :router/change {:name :profile})}
-   (<> (if logged-in? "Me" "Guest")))))
+   (<> (if logged-in? "Me" "Guest"))
+   (=< 8 nil)
+   (<> count-members))))

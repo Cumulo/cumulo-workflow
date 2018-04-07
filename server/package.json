@@ -24,8 +24,8 @@
     "shortid": "^2.2.6"
   },
   "devDependencies": {
-    "shadow-cljs": "^2.2.20",
-    "source-map-support": "^0.5.3",
-    "ws": "^5.0.0"
+    "shadow-cljs": "^2.2.25",
+    "source-map-support": "^0.5.4",
+    "ws": "^5.1.1"
   }
 }
