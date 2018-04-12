@@ -1,5 +1,5 @@
 
-(ns server.updater.session (:require [server.schema :as schema]))
+(ns app.updater.session (:require [app.schema :as schema]))
 
 (defn connect [db op-data session-id op-id op-time]
   (assoc-in db [:sessions session-id] (merge schema/session {:id session-id})))

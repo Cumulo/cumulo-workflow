@@ -1,7 +1,10 @@
 
-(ns server.schema )
+(ns app.schema )
 
-(def configs {:storage-key "/data/cumulo/workflow-storage.edn", :port 5021})
+(def configs
+  {:storage-key "/data/cumulo/workflow-storage.edn",
+   :local-storage-key "workflow-storage",
+   :port 5021})
 
 (def database {:sessions {}, :users {}, :count 0})
 

@@ -1,5 +1,5 @@
 
-(ns server.reel (:require [clojure.string :as string] [server.schema :refer [dev?]]))
+(ns app.reel (:require [clojure.string :as string] [app.schema :refer [dev?]]))
 
 (defn play-records [db records updater]
   (if (empty? records)

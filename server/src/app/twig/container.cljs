@@ -1,6 +1,6 @@
 
-(ns server.twig.container
-  (:require [recollect.macros :refer [deftwig]] [server.twig.user :refer [twig-user]]))
+(ns app.twig.container
+  (:require [recollect.macros :refer [deftwig]] [app.twig.user :refer [twig-user]]))
 
 (deftwig
  twig-container

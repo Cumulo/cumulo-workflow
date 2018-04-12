@@ -1,5 +1,6 @@
 
-(ns app.network (:require [cljs.reader :as reader] [recollect.patch :refer [patch-twig]]))
+(ns app.connection
+  (:require [cljs.reader :as reader] [recollect.patch :refer [patch-twig]]))
 
 (defonce *global-ws (atom nil))
 

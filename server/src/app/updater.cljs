@@ -1,8 +1,8 @@
 
-(ns server.updater
-  (:require [server.updater.session :as session]
-            [server.updater.user :as user]
-            [server.updater.router :as router]))
+(ns app.updater
+  (:require [app.updater.session :as session]
+            [app.updater.user :as user]
+            [app.updater.router :as router]))
 
 (defn updater [db op op-data sid op-id op-time]
   (let [f (case op

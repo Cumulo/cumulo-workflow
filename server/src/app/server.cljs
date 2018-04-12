@@ -1,11 +1,11 @@
 
-(ns server.main
-  (:require [server.schema :as schema]
-            [server.network :refer [run-server! sync-clients!]]
-            [server.updater :refer [updater]]
+(ns app.server
+  (:require [app.schema :as schema]
+            [app.service :refer [run-server! sync-clients!]]
+            [app.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
-            [server.util :refer [try-verbosely!]]
-            [server.reel :refer [reel-updater refresh-reel reel-schema]]
+            [app.util :refer [try-verbosely!]]
+            [app.reel :refer [reel-updater refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]))
 

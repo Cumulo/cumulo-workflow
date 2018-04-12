@@ -11,8 +11,8 @@
  :builds {:browser {:output-dir "target/"
                     :asset-path "./"
                     :target :browser
-                    :modules {:main {:entries [app.main]}}
-                    :devtools {:after-load app.main/reload!
+                    :modules {:main {:entries [app.client]}}
+                    :devtools {:after-load app.client/reload!
                                :http-root "target"
                                :http-port 7000}
                     :release {:output-dir "dist/"}
@@ -20,5 +20,5 @@
                               :build-options {:manifest-name "assets.edn"}}
           :ssr {:target :node-script
                 :output-to "target/ssr.js"
-                :main app.render/main!
-                :devtools {:after-load app.render/main!}}}}
+                :main app.page/main!
+                :devtools {:after-load app.page/main!}}}}

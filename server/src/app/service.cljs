@@ -1,8 +1,8 @@
 
-(ns server.network
+(ns app.service
   (:require [cljs.nodejs :as nodejs]
             [cljs.reader :as reader]
-            [server.twig.container :refer [twig-container]]
+            [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
             ["shortid" :as shortid]
