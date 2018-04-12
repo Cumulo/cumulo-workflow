@@ -1,0 +1,29 @@
+
+{:source-paths ["src" "cli"]
+ :dependencies [[mvc-works/hsl          "0.1.2"]
+                [mvc-works/verbosely    "0.1.2"]
+                [mvc-works/shell-page   "0.1.7"]
+                [cumulo/recollect       "0.4.3"]
+                [respo                  "0.8.16"]
+                [respo/ui               "0.3.3"]
+                [respo/message          "0.2.3"]]
+ :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
+ :builds {:client {:output-dir "target/"
+                   :asset-path "./"
+                   :target :browser
+                   :modules {:client {:entries [app.client]}}
+                   :devtools {:after-load app.client/reload!
+                              :http-root "target"
+                              :http-port 7000}
+                   :release {:output-dir "dist/"}
+                             :module-hash-names 8
+                             :build-options {:manifest-name "assets.edn"}}
+          :page {:target :node-script
+                 :output-to "target/page.js"
+                 :main app.page/main!
+                 :devtools {:after-load app.page/main!}}
+          :server {:target :node-script
+                   :output-to "target/server.js"
+                   :main app.server/main!
+                   :devtools {:after-load app.server/reload!}
+                   :release {:output-to "dist/server.js"}}}}

@@ -16,4 +16,6 @@
     (str "rsync -avr --progress dist/{index.html,manifest.json} tiye.me:repo/"
       (:orgization configs) "/"
       (:name configs) "/"))
+  (sh!
+    (str "rsync -avr --progress dist/{server.js,package.json} tiye.me:servers/" (:name configs)))
   (shutdown-agents))

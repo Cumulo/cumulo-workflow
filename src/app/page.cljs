@@ -14,7 +14,7 @@
 (defn dev-page []
   (make-page
    ""
-   (merge base-info {:styles ["http://localhost:8100/main.css"], :scripts ["/main.js"]})))
+   (merge base-info {:styles ["http://localhost:8100/main.css"], :scripts ["/client.js"]})))
 
 (def preview? (= "preview" js/process.env.prod))
 
