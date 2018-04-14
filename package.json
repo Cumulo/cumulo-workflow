@@ -6,6 +6,9 @@
   "scripts": {
     "watch": "shadow-cljs watch client server",
     "build": "shadow-cljs clj-run build.main/build",
+    "build-local": "shadow-cljs clj-run build.main/build-local",
+    "page": "shadow-cljs clj-run build.main/page",
+    "upload": "clj -m build.upload",
     "serve": "http-server dist -s",
     "repl": "rlwrap shadow-cljs clj-repl client",
     "repl-server": "rlwrap shadow-cljs clj-repl server"
@@ -22,7 +25,7 @@
   },
   "devDependencies": {
     "http-server": "^0.11.1",
-    "shadow-cljs": "^2.2.29",
+    "shadow-cljs": "^2.2.30",
     "source-map-support": "^0.5.4",
     "ws": "^5.1.1"
   }

@@ -2,37 +2,37 @@
 Cumulo Worflow
 ------
 
-> Cumulo apps project template.
+> Personal project template for creating realtime apps. Accomplished with [recollect](https://github.com/Cumulo/recollect) and [calcit-workrlow](https://github.com/mvc-works/calcit-workflow).
 
 Features:
 
-* hot swapping client
-* hot swapping server
-* declarative programming
+* hot swapping client & server
+* developing realtime app like building an SPA
+* ClojureScript by default
 
-Based on [Calcit Editor](https://github.com/Cirru/calcit-editor).
+View showcases on http://topix.im/ .
 
 ### Usages
 
-Start developing app:
+To develop:
 
 ```bash
 yarn
 yarn watch
 # another terminal
 node target/main.js
-# with another terminal
-yarn shadow-cljs clj-run build.main/page
+# another terminal
+yarn page
 # open http://localhost:7000
 ```
 
-For editing code, run `calcit-editor` as editor servers.
-
-### Build
+To build and optimize:
 
 ```bash
-yarn shadow-cljs clj-run build.main/build
+yarn build-local
 ```
+
+Code is editing with [calcit-editor](https://github.com/Cirru/calcit-editor).
 
 ### Workflow
 
