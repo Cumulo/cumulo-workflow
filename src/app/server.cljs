@@ -7,12 +7,15 @@
             [app.util :refer [try-verbosely!]]
             [app.reel :refer [reel-updater refresh-reel reel-schema]]
             ["fs" :as fs]
-            ["shortid" :as shortid]))
+            ["shortid" :as shortid]
+            [app.node-env :as node-env]))
 
 (def initial-db
-  (let [filepath (:storage-key schema/configs)]
+  (let [filepath (:storage-path node-env/configs)]
     (if (fs/existsSync filepath)
-      (do (println "Found storage.") (read-string (fs/readFileSync filepath "utf8")))
+      (do
+       (println "Found storage in:" (:storage-path node-env/configs))
+       (read-string (fs/readFileSync filepath "utf8")))
       schema/database)))
 
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
@@ -20,9 +23,9 @@
 (defonce *reader-reel (atom @*reel))
 
 (defn persist-db! []
-  (println "Saving file on exit")
+  (println "Saving file on exit:" (:storage-path node-env/configs))
   (fs/writeFileSync
-   (:storage-key schema/configs)
+   (:storage-path node-env/configs)
    (pr-str (assoc (:db @*reel) :sessions {}))))
 
 (defn dispatch! [op op-data sid]
