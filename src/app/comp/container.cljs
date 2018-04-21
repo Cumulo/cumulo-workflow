@@ -25,6 +25,19 @@
     {:font-family ui/font-fancy, :font-weight 100, :font-size 32}))))
 
 (defcomp
+ comp-status-color
+ (color)
+ (div
+  {:style {:width 16,
+           :height 16,
+           :position :absolute,
+           :top 60,
+           :right 8,
+           :background-color color,
+           :border-radius "8px",
+           :opacity 0.8}}))
+
+(defcomp
  comp-container
  (states store)
  (let [state (:data states), session (:session store)]
@@ -45,6 +58,7 @@
              (=< 8 nil)
              (<> (pr-str router)))))
         (comp-login states))
+      (comp-status-color (:color store))
       (when dev? (comp-inspect "Store" store {:bottom 0, :left 0, :max-width "100%"}))
       (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)
       (when dev? (comp-reel (:reel-length store) {}))))))
