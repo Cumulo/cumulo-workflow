@@ -52,6 +52,7 @@
   (run-server! #(dispatch! %1 %2 %3) (:port schema/configs))
   (render-loop!)
   (.on js/process "SIGINT" on-exit!)
+  (js/setInterval #(persist-db!) (* 60 1000 10))
   (println "Server started."))
 
 (defn reload! []
