@@ -8,9 +8,7 @@
           next-db (updater db op op-data sid op-id op-time)]
       (recur next-db (rest records) updater))))
 
-(def reel-schema {:base nil, :db nil, :records [], :merged? false})
-
-(defn reel-updater [reel updater op op-data sid op-id op-time]
+(defn reel-reducer [reel updater op op-data sid op-id op-time]
   (if (string/starts-with? (str op) ":reel/")
     (merge
      reel
@@ -22,6 +20,8 @@
       (-> reel
           (update :records (fn [records] (if dev? (conj records msg-pack) records)))
           (assoc :db (updater (:db reel) op op-data sid op-id op-time))))))
+
+(def reel-schema {:base nil, :db nil, :records [], :merged? false})
 
 (defn refresh-reel [reel base updater]
   (let [next-base (if (:merged? reel) (:base reel) base)]

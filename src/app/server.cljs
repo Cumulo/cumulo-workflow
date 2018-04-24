@@ -5,7 +5,7 @@
             [app.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
             [app.util :refer [try-verbosely!]]
-            [app.reel :refer [reel-updater refresh-reel reel-schema]]
+            [app.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]
             [app.node-env :as node-env]))
@@ -35,7 +35,7 @@
      (cond
        (= op :effect/persist) (persist-db!)
        :else
-         (let [new-reel (reel-updater @*reel updater op op-data sid op-id op-time)]
+         (let [new-reel (reel-reducer @*reel updater op op-data sid op-id op-time)]
            (reset! *reel new-reel))))))
 
 (defn on-exit! [code]
