@@ -14,7 +14,7 @@
      reel
      (case op
        :reel/reset {:records [], :db (:base reel)}
-       :reel/merge {:records [], :base (:db reel)}
+       :reel/merge {:records [], :base (:db reel), :merged? true}
        (do (println "Unknown op:" op) reel)))
     (let [msg-pack [op op-data sid op-id op-time]]
       (-> reel

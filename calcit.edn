@@ -4540,6 +4540,13 @@
                    }
                   }
                  }
+                 "v" {
+                  :type :expr, :by "root", :at 1525016595808, :id "r1xhzOvmTG"
+                  :data {
+                   "T" {:type :leaf, :by "root", :at 1525016599243, :text ":merged?", :id "r1xhzOvmTGleaf"}
+                   "j" {:type :leaf, :by "root", :at 1525016599965, :text "true", :id "Bk-1mdw7pz"}
+                  }
+                 }
                 }
                }
               }
