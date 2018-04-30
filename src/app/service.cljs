@@ -40,14 +40,12 @@
 (defn sync-clients! [reel]
   (let [db (:db reel), records (:records reel)]
     (doseq [sid (keys @*registry)]
-      (let [session-id sid
+      (let [sid sid
             session (get-in db [:sessions sid])
-            old-store (or (get @client-caches session-id) nil)
+            old-store (or (get @client-caches sid) nil)
             new-store (render-twig (twig-container db session records) old-store)
             changes (diff-twig old-store new-store {:key :id})
-            socket (get @*registry session-id)]
-        (println "Changes for" session-id ":" changes (count records))
+            socket (get @*registry sid)]
+        (println "Changes for" sid ":" changes (count records))
         (if (and (not= changes []) (some? socket))
-          (do
-           (.send socket (pr-str changes))
-           (swap! client-caches assoc session-id new-store)))))))
+          (do (.send socket (pr-str changes)) (swap! client-caches assoc sid new-store)))))))
