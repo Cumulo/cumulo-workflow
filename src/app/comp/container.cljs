@@ -11,7 +11,8 @@
             [app.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]
             [app.comp.reel :refer [comp-reel]]
-            [app.schema :refer [dev?]]))
+            [app.schema :refer [dev?]]
+            [app.comp.pages :refer [comp-pages]]))
 
 (defcomp
  comp-offline
@@ -40,23 +41,20 @@
 (defcomp
  comp-container
  (states store)
- (let [state (:data states), session (:session store)]
+ (let [state (:data states)
+       session (:session store)
+       router (:router store)
+       router-data (:data router)]
    (if (nil? store)
      (comp-offline)
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
       (comp-navigation (:logged-in? store) (:count store))
       (if (:logged-in? store)
-        (let [router (:router store)]
-          (case (:name router)
-            :profile (comp-profile (:user store) (:data router))
-            (div
-             {:style {:padding 16}}
-             (button {:inner-text "Inc", :style ui/button, :on-click (action-> :inc nil)})
-             (=< 8 nil)
-             (<> (:count store))
-             (=< 8 nil)
-             (<> (pr-str router)))))
+        (case (:name router)
+          :home (comp-pages router-data)
+          :profile (comp-profile (:user store) (:data router))
+          (<> router))
         (comp-login states))
       (comp-status-color (:color store))
       (when dev? (comp-inspect "Store" store {:bottom 0, :left 0, :max-width "100%"}))

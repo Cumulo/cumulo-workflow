@@ -3,11 +3,13 @@
 
 (def configs {:storage-key "workflow-storage", :port 5021})
 
-(def database {:sessions {}, :users {}, :count 0})
+(def database {:sessions {}, :users {}})
 
 (def dev? (do ^boolean js/goog.DEBUG))
 
 (def notification {:id nil, :kind nil, :text nil})
+
+(def page {:id nil, :title "", :time nil})
 
 (def router {:name nil, :title nil, :data {}, :router nil})
 
