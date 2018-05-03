@@ -6,7 +6,8 @@
                 [cumulo/recollect       "0.4.3"]
                 [respo                  "0.8.16"]
                 [respo/ui               "0.3.3"]
-                [respo/message          "0.2.3"]]
+                [respo/message          "0.2.3"]
+                [cirru/bisection-key    "0.1.5"]]
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
  :builds {:client {:output-dir "target/"
                    :asset-path "./"
