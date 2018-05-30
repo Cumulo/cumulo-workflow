@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "http-server": "^0.11.1",
-    "shadow-cljs": "2.3.24",
+    "shadow-cljs": "^2.3.30",
     "source-map-support": "^0.5.6",
     "ws": "^5.2.0"
   }
