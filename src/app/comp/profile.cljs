@@ -5,7 +5,8 @@
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
             [respo.macros :refer [defcomp list-> <> span div a]]
-            [respo.comp.space :refer [=<]]))
+            [respo.comp.space :refer [=<]]
+            [app.config :as config]))
 
 (defcomp
  comp-profile
@@ -43,5 +44,5 @@
              :padding "0 8px"},
      :on-click (fn [e dispatch! mutate!]
        (dispatch! :user/log-out nil)
-       (.removeItem js/localStorage (:storage-key schema/configs)))}
+       (.removeItem js/localStorage (:storage-key config/site)))}
     (<> span "Log out" nil)))))

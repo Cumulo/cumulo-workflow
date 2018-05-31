@@ -7,14 +7,15 @@
             [app.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]
-            [app.node-env :as node-env]
-            [app.schema :refer [dev?]]))
+            [app.node-config :as node-config]
+            [app.config :refer [dev?]]
+            [app.config :as config]))
 
 (def initial-db
-  (let [filepath (:storage-path node-env/configs)]
+  (let [filepath (:storage-path node-config/env)]
     (if (fs/existsSync filepath)
       (do
-       (println "Found storage in:" (:storage-path node-env/configs))
+       (println "Found storage in:" (:storage-path node-config/env))
        (read-string (fs/readFileSync filepath "utf8")))
       schema/database)))
 
@@ -23,9 +24,9 @@
 (defonce *reader-reel (atom @*reel))
 
 (defn persist-db! []
-  (println "Saving file on exit:" (:storage-path node-env/configs))
+  (println "Saving file on exit:" (:storage-path node-config/env))
   (fs/writeFileSync
-   (:storage-path node-env/configs)
+   (:storage-path node-config/env)
    (pr-str (assoc (:db @*reel) :sessions {}))))
 
 (defn dispatch! [op op-data sid]
@@ -50,7 +51,7 @@
   (js/setTimeout render-loop! 200))
 
 (defn main! []
-  (run-server! #(dispatch! %1 %2 %3) (:port schema/configs))
+  (run-server! #(dispatch! %1 %2 %3) (:port config/site))
   (render-loop!)
   (.on js/process "SIGINT" on-exit!)
   (js/setInterval #(persist-db!) (* 60 1000 10))
