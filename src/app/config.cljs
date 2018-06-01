@@ -6,6 +6,10 @@
 (def site
   {:storage-key "workflow-storage",
    :port 5021,
+   :title "Cumulo",
+   :icon "http://cdn.tiye.me/logo/cumulo.png",
    :dev-ui "http://localhost:8100/main.css",
    :release-ui "http://cdn.tiye.me/favored-fonts/main.css",
-   :cdn "http://cdn.tiye.me/cumulo-workflow/"})
+   :cdn-path "cumulo-workflow",
+   :upload-path "Cumulo/workflow",
+   :server-path "workflow"})

@@ -8,8 +8,8 @@
             [app.config :as config]))
 
 (def base-info
-  {:title "Cumulo",
-   :icon "http://cdn.tiye.me/logo/cumulo.png",
+  {:title (:title config/site),
+   :icon (:icon config/site),
    :ssr nil,
    :inline-styles [(slurp "entry/main.css")]})
 
@@ -21,7 +21,7 @@
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
         assets (read-string (slurp "dist/assets.edn"))
-        cdn (if preview? "" (:cdn config/site))
+        cdn (if preview? "" (str "http://cdn.tiye.me/" (:cdn-path config/site) "/"))
         prefix-cdn #(str cdn %)]
     (make-page
      html-content
