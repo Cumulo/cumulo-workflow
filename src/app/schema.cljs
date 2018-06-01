@@ -1,16 +1,7 @@
 
 (ns app.schema )
 
-(def configs
-  {:storage-key "workflow-storage",
-   :port 5021,
-   :dev-ui "http://localhost:8100/main.css",
-   :release-ui "http://cdn.tiye.me/favored-fonts/main.css",
-   :cdn "http://cdn.tiye.me/cumulo-workflow/"})
-
 (def database {:sessions {}, :users {}})
-
-(def dev? (do ^boolean js/goog.DEBUG))
 
 (def notification {:id nil, :kind nil, :text nil})
 
