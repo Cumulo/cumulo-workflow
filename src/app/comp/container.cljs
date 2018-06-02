@@ -11,7 +11,7 @@
             [app.comp.login :refer [comp-login]]
             [respo-message.comp.msg-list :refer [comp-msg-list]]
             [app.comp.reel :refer [comp-reel]]
-            [app.schema :refer [dev?]]
+            [app.config :refer [dev?]]
             [app.comp.pages :refer [comp-pages]]))
 
 (defcomp

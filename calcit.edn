@@ -788,7 +788,7 @@
          :type :expr, :by "root", :at 1521911479054, :id "BygkTL-EqM"
          :data {
           "T" {:type :leaf, :by "root", :at 1521911480104, :text "[]", :id "BygkTL-EqMleaf"}
-          "j" {:type :leaf, :by "root", :at 1521911481410, :text "app.schema", :id "SJMe6IZ45z"}
+          "j" {:type :leaf, :by "root", :at 1527789167264, :text "app.config", :id "SJMe6IZ45z"}
           "r" {:type :leaf, :by "root", :at 1521911483589, :text ":refer", :id "B1GaI-V5M"}
           "v" {
            :type :expr, :by "root", :at 1521911483778, :id "BJb4T8ZNcM"
@@ -4147,6 +4147,20 @@
            "j" {:type :leaf, :id "rJF9g8-gCHZ", :text "5021", :by "root", :at 1500541255553}
           }
          }
+         "t" {
+          :type :expr, :by "root", :at 1527867502467, :id "BkeUud1ye7"
+          :data {
+           "T" {:type :leaf, :by "root", :at 1527867504737, :text ":title", :id "BkeUud1ye7leaf"}
+           "j" {:type :leaf, :by "root", :at 1527867511502, :text "\"Cumulo", :id "H1zKduykx7"}
+          }
+         }
+         "u" {
+          :type :expr, :by "root", :at 1527867511986, :id "r1gxKOykeQ"
+          :data {
+           "T" {:type :leaf, :by "root", :at 1527867512819, :text ":icon", :id "r1gxKOykeQleaf"}
+           "j" {:type :leaf, :by "root", :at 1527867517723, :text "\"http://cdn.tiye.me/logo/cumulo.png", :id "B1SY_yJx7"}
+          }
+         }
          "v" {
           :type :expr, :by "root", :at 1527615278481, :id "rJ-8EyzsyQ"
           :data {
@@ -4161,11 +4175,25 @@
            "j" {:type :leaf, :by "root", :at 1527615339502, :text "\"http://cdn.tiye.me/favored-fonts/main.css", :id "r1gz_kzjkQ"}
           }
          }
-         "y" {
-          :type :expr, :by "root", :at 1527615284630, :id "rypVJfjJQ"
+         "xT" {
+          :type :expr, :by "root", :at 1527866740692, :id "ryTOBJJxX"
           :data {
-           "T" {:type :leaf, :by "root", :at 1527615285294, :text ":cdn", :id "rypVJfjJQleaf"}
-           "j" {:type :leaf, :by "root", :at 1527615319821, :text "\"http://cdn.tiye.me/cumulo-workflow/", :id "rklALkMi1m"}
+           "T" {:type :leaf, :by "root", :at 1527868108005, :text ":cdn-path", :id "ryTOBJJxXleaf"}
+           "j" {:type :leaf, :by "root", :at 1527866751095, :text "\"cumulo-workflow", :id "HJgUFBJJl7"}
+          }
+         }
+         "yT" {
+          :type :expr, :by "root", :at 1527866712917, :id "SyebDS1kgQ"
+          :data {
+           "T" {:type :leaf, :by "root", :at 1527866723278, :text ":upload-path", :id "SyebDS1kgQleaf"}
+           "j" {:type :leaf, :by "root", :at 1527866731926, :text "\"Cumulo/workflow", :id "BymiPr1kgm"}
+          }
+         }
+         "yj" {
+          :type :expr, :by "root", :at 1527866893140, :id "BJxHfLkygX"
+          :data {
+           "T" {:type :leaf, :by "root", :at 1527866895724, :text ":server-path", :id "BJxHfLkygXleaf"}
+           "j" {:type :leaf, :by "root", :at 1527866904535, :text "\"workflow", :id "S1gpf8y1gQ"}
           }
          }
         }
@@ -4742,14 +4770,26 @@
           :type :expr, :id "rkqWVqLxxAHZ", :by nil, :at 1500541010211
           :data {
            "T" {:type :leaf, :id "r1s-EqLelCBW", :text ":title", :by "root", :at 1500541010211}
-           "j" {:type :leaf, :id "B13ZNqUlxRB-", :text "|Cumulo", :by "root", :at 1500541010211}
+           "j" {
+            :type :expr, :by "root", :at 1527867530055, :id "Hyxz9O11g7"
+            :data {
+             "T" {:type :leaf, :id "B13ZNqUlxRB-", :text ":title", :by "root", :at 1527867532592}
+             "j" {:type :leaf, :by "root", :at 1527867534092, :text "config/site", :id "SyxrqOkyxQ"}
+            }
+           }
           }
          }
          "r" {
           :type :expr, :id "r1pbNcLee0S-", :by nil, :at 1500541010211
           :data {
            "T" {:type :leaf, :id "H10WV5IgxAHZ", :text ":icon", :by "root", :at 1500541010211}
-           "j" {:type :leaf, :id "Sk1GNc8exArZ", :text "|http://cdn.tiye.me/logo/cumulo.png", :by "root", :at 1508258797732}
+           "j" {
+            :type :expr, :by "root", :at 1527867537627, :id "Hkccd11lX"
+            :data {
+             "T" {:type :leaf, :id "Sk1GNc8exArZ", :text ":icon", :by "root", :at 1527867538513}
+             "j" {:type :leaf, :by "root", :at 1527867540157, :text "config/site", :id "Syo9_kJgQ"}
+            }
+           }
           }
          }
          "v" {
@@ -4982,10 +5022,18 @@
                "j" {:type :leaf, :text "preview?", :id "Bkjpiv13Z", :by "root", :at 1506929604190}
                "r" {:type :leaf, :text "\"", :id "rkZoRjvJh-", :by "root", :at 1527615312281}
                "v" {
-                :type :expr, :by "root", :at 1527615301140, :id "rkTSkzoJX"
+                :type :expr, :by "root", :at 1527868023807, :id "SyeltcykxX"
                 :data {
-                 "T" {:type :leaf, :text ":cdn", :id "ryg3AiwJhZ", :by "root", :at 1527615305101}
-                 "j" {:type :leaf, :by "root", :at 1527788812036, :text "config/site", :id "BJgW8JfjJm"}
+                 "D" {:type :leaf, :by "root", :at 1527868024596, :text "str", :id "Hy-xK5yyx7"}
+                 "L" {:type :leaf, :by "root", :at 1527868036067, :text "\"http://cdn.tiye.me/", :id "r1WZK9yJxQ"}
+                 "T" {
+                  :type :expr, :by "root", :at 1527615301140, :id "rkTSkzoJX"
+                  :data {
+                   "T" {:type :leaf, :text ":cdn-path", :id "ryg3AiwJhZ", :by "root", :at 1527868122747}
+                   "j" {:type :leaf, :by "root", :at 1527788812036, :text "config/site", :id "BJgW8JfjJm"}
+                  }
+                 }
+                 "j" {:type :leaf, :by "root", :at 1527868037828, :text "\"/", :id "Sylpt91ylX"}
                 }
                }
               }
