@@ -21,7 +21,7 @@
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
         assets (read-string (slurp "dist/assets.edn"))
-        cdn (if preview? "" (str "http://cdn.tiye.me/" (:cdn-path config/site) "/"))
+        cdn (if preview? "" (:cdn-url config/site))
         prefix-cdn #(str cdn %)]
     (make-page
      html-content
