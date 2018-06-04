@@ -3,7 +3,7 @@
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
-            [respo.macros :refer [defcomp <> div span action-> button]]
+            [respo.macros :refer [defcomp <> div span action-> cursor-> button]]
             [respo.comp.inspect :refer [comp-inspect]]
             [respo.comp.space :refer [=<]]
             [app.comp.navigation :refer [comp-navigation]]
@@ -52,7 +52,7 @@
       (comp-navigation (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (case (:name router)
-          :home (comp-pages router-data)
+          :home (cursor-> :pages comp-pages states router-data)
           :profile (comp-profile (:user store) (:data router))
           (<> router))
         (comp-login states))
