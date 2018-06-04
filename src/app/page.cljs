@@ -5,7 +5,8 @@
             [app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [app.schema :as schema]
-            [app.config :as config]))
+            [app.config :as config]
+            [app.util :refer [get-env!]]))
 
 (def base-info
   {:title (:title config/site),
@@ -16,12 +17,12 @@
 (defn dev-page []
   (make-page "" (merge base-info {:styles [(:dev-ui config/site)], :scripts ["/client.js"]})))
 
-(def preview? (= "preview" js/process.env.prod))
+(def local-bundle? (= "local-bundle" (get-env! "mode")))
 
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
         assets (read-string (slurp "dist/assets.edn"))
-        cdn (if preview? "" (:cdn-url config/site))
+        cdn (if local-bundle? "" (:cdn-url config/site))
         prefix-cdn #(str cdn %)]
     (make-page
      html-content
@@ -31,6 +32,6 @@
        :scripts (map #(-> % :output-name prefix-cdn) assets)}))))
 
 (defn main! []
-  (if (= js/process.env.env "dev")
-    (spit "target/index.html" (dev-page))
-    (spit "dist/index.html" (prod-page))))
+  (if (contains? config/bundle-builds (get-env! "mode"))
+    (spit "dist/index.html" (prod-page))
+    (spit "target/index.html" (dev-page))))
