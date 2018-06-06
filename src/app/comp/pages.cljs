@@ -4,14 +4,16 @@
             [app.schema :as schema]
             [respo-ui.core :as ui]
             [respo-ui.colors :as colors]
-            [respo.macros :refer [defcomp list-> button <> span div a]]
+            [respo.macros :refer [defcomp list-> cursor-> button <> span div a]]
             [respo.comp.space :refer [=<]]
             [clojure.string :as string]
-            [respo-ui.comp.icon :refer [comp-icon]]))
+            [respo-ui.comp.icon :refer [comp-icon]]
+            [respo-alerts.comp.alerts :refer [comp-confirm comp-prompt]]
+            [respo.comp.inspect :refer [comp-inspect]]))
 
 (defcomp
  comp-pages
- (router-data)
+ (states router-data)
  (div
   {:style {:padding 16}}
   (list->
@@ -32,23 +34,29 @@
              (<> (:title page) {:cursor :pointer})
              (div
               {:style ui/row}
-              (span
-               {:style {:cursor :pointer},
-                :on-click (fn [e d! m!]
-                  (let [new-title (js/prompt "A new title?" (:title page))]
-                    (when (not (string/blank? new-title))
-                      (d! :page/update-title {:id (:id page), :title new-title}))))}
-               (comp-icon :compose))
+              (cursor->
+               (str "prompt-" (:id page))
+               comp-prompt
+               states
+               (comp-icon :compose)
+               "Add a new title:"
+               (:title page)
+               (fn [result d! m!]
+                 (when (not (string/blank? result))
+                   (d! :page/update-title {:id (:id page), :title result}))))
               (=< 8 nil)
-              (span
-               {:style {:cursor :pointer},
-                :on-click (fn [e d! m!]
-                  (let [confirmation? (js/confirm "Sure to delete?")]
-                    (when confirmation? (d! :page/remove-one (:id page)))))}
-               (comp-icon :ios-trash))))]))))
-  (button
-   {:style ui/button,
-    :on-click (fn [e d! m!]
-      (let [title (js/prompt "Page title?")]
-        (when (not (string/blank? title)) (d! :page/create title))))}
-   (<> "Add"))))
+              (cursor->
+               :confirm
+               comp-confirm
+               states
+               (comp-icon :ios-trash)
+               "Are you sure to delete?"
+               (fn [result d! m!] (when result (d! :page/remove-one (:id page)))))))]))))
+  (cursor->
+   :create-prompt
+   comp-prompt
+   states
+   (button {:style ui/button} (<> "Add"))
+   "A title:"
+   ""
+   (fn [result d! m!] (when (not (string/blank? result)) (d! :page/create result))))))
