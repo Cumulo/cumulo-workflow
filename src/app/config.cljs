@@ -6,7 +6,7 @@
 (def dev?
   (if (exists? js/window)
     (do ^boolean js/goog.DEBUG)
-    (not (contains? bundle-builds (get-env! "demo")))))
+    (not (contains? bundle-builds (get-env! "mode")))))
 
 (def site
   {:storage-key "workflow-storage",
