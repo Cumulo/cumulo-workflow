@@ -9,10 +9,11 @@
             [app.comp.navigation :refer [comp-navigation]]
             [app.comp.profile :refer [comp-profile]]
             [app.comp.login :refer [comp-login]]
-            [respo-message.comp.msg-list :refer [comp-msg-list]]
+            [respo-message.comp.messages :refer [comp-messages]]
             [app.comp.reel :refer [comp-reel]]
             [app.config :refer [dev?]]
-            [app.comp.pages :refer [comp-pages]]))
+            [app.comp.pages :refer [comp-pages]]
+            [app.schema :as schema]))
 
 (defcomp
  comp-offline
@@ -58,7 +59,10 @@
         (comp-login states))
       (comp-status-color (:color store))
       (when dev? (comp-inspect "Store" store {:bottom 0, :left 0, :max-width "100%"}))
-      (comp-msg-list (get-in store [:session :notifications]) :session/remove-notification)
+      (comp-messages
+       (get-in store [:session :messages])
+       {}
+       (fn [info d! m!] (d! :session/remove-message info)))
       (when dev? (comp-reel (:reel-length store) {}))))))
 
 (def style-body {:padding "8px 16px"})
