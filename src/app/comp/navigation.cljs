@@ -2,7 +2,6 @@
 (ns app.comp.navigation
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
-            [respo-ui.colors :as colors]
             [respo.comp.space :refer [=<]]
             [respo.macros :refer [defcomp <> action-> span div]]))
 
