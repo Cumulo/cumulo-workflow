@@ -7,7 +7,7 @@
             [respo.comp.space :refer [=<]]
             [clojure.string :as string]
             [respo-ui.comp.icon :refer [comp-icon]]
-            [respo-alerts.comp.alerts :refer [comp-confirm comp-prompt]]
+            [respo-alerts.comp.alerts :refer [comp-prompt comp-confirm]]
             [respo.comp.inspect :refer [comp-inspect]]))
 
 (defcomp
@@ -37,9 +37,9 @@
                (str "prompt-" (:id page))
                comp-prompt
                states
-               (comp-icon :compose)
-               "Add a new title:"
-               (:title page)
+               {:trigger (comp-icon :compose),
+                :text "Add a new title:",
+                :initial (:title page)}
                (fn [result d! m!]
                  (when (not (string/blank? result))
                    (d! :page/update-title {:id (:id page), :title result}))))
@@ -48,14 +48,11 @@
                :confirm
                comp-confirm
                states
-               (comp-icon :ios-trash)
-               "Are you sure to delete?"
-               (fn [result d! m!] (when result (d! :page/remove-one (:id page)))))))]))))
+               {:trigger (comp-icon :ios-trash), :text "Are you sure to delete?"}
+               (fn [e d! m!] (d! :page/remove-one (:id page))))))]))))
   (cursor->
    :create-prompt
    comp-prompt
    states
-   (button {:style ui/button} (<> "Add"))
-   "A title:"
-   ""
+   {:trigger (button {:style ui/button} (<> "Add")), :text "A title:"}
    (fn [result d! m!] (when (not (string/blank? result)) (d! :page/create result))))))
