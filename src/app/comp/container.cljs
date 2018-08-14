@@ -29,14 +29,16 @@
  comp-status-color
  (color)
  (div
-  {:style {:width 16,
-           :height 16,
-           :position :absolute,
-           :top 60,
-           :right 8,
-           :background-color color,
-           :border-radius "8px",
-           :opacity 0.8}}))
+  {:style (let [size 24]
+     {:width size,
+      :height size,
+      :position :absolute,
+      :bottom 60,
+      :left 8,
+      :background-color color,
+      :border-radius "50%",
+      :opacity 0.6,
+      :pointer-events :none})}))
 
 (defcomp
  comp-container
