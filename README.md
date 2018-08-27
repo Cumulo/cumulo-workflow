@@ -20,7 +20,7 @@ To develop:
 yarn
 yarn watch
 # another terminal
-node target/main.js
+node target/server.js
 # another terminal
 yarn page
 # open http://localhost:7000
