@@ -18,4 +18,5 @@
    :cdn-url "http://cdn.tiye.me/cumulo-workflow/",
    :cdn-folder "tiye.me:cdn/cumulo-workflow",
    :upload-folder "tiye.me:repo/Cumulo/workflow/",
-   :server-folder "tiye.me:servers/workflow"})
+   :server-folder "tiye.me:servers/workflow",
+   :theme "#eeeeff"})
