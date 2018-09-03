@@ -12,18 +12,28 @@
             [app.comp.reel :refer [comp-reel]]
             [app.config :refer [dev?]]
             [app.comp.pages :refer [comp-pages]]
-            [app.schema :as schema]))
+            [app.schema :as schema]
+            [app.config :as config]))
 
 (defcomp
  comp-offline
  ()
  (div
-  {:style (merge ui/global ui/fullscreen ui/center)}
-  (span
-   {:style {:cursor :pointer}, :on-click (action-> :effect/connect nil)}
-   (<>
-    "Socket broken! Click to retry."
-    {:font-family ui/font-fancy, :font-weight 100, :font-size 32}))))
+  {:style (merge
+           ui/global
+           ui/fullscreen
+           ui/column-dispersive
+           {:background-color (:theme config/site)})}
+  (div {:style {:height 0}})
+  (div
+   {:style {:background-image (str "url(" (:icon config/site) ")"),
+            :width 128,
+            :height 128,
+            :background-size :contain}})
+  (div
+   {:style {:cursor :pointer, :line-height "32px"},
+    :on-click (action-> :effect/connect nil)}
+   (<> "No connection..." {:font-family ui/font-fancy, :font-size 24}))))
 
 (defcomp
  comp-status-color

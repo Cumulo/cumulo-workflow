@@ -15,7 +15,13 @@
    :inline-styles [(slurp "entry/main.css")]})
 
 (defn dev-page []
-  (make-page "" (merge base-info {:styles [(:dev-ui config/site)], :scripts ["/client.js"]})))
+  (make-page
+   ""
+   (merge
+    base-info
+    {:styles [(:dev-ui config/site) "/entry/main.css"],
+     :scripts ["/client.js"],
+     :inline-styles []})))
 
 (def local-bundle? (= "local-bundle" (get-env! "mode")))
 
