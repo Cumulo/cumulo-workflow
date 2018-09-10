@@ -3,7 +3,8 @@
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo.comp.space :refer [=<]]
-            [respo.macros :refer [defcomp <> action-> span div]]))
+            [respo.macros :refer [defcomp <> action-> span div]]
+            [app.config :as config]))
 
 (defcomp
  comp-navigation
@@ -19,7 +20,7 @@
             :font-family ui/font-fancy})}
   (div
    {:on-click (action-> :router/change {:name :home}), :style {:cursor :pointer}}
-   (<> span "Cumulo" nil))
+   (<> (:title config/site) nil))
   (div
    {:style {:cursor "pointer"}, :on-click (action-> :router/change {:name :profile})}
    (<> (if logged-in? "Me" "Guest"))
