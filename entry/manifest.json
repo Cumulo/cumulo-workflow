@@ -8,7 +8,7 @@
     }
   ],
   "start_url": "index.html",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#eeeeff",
   "theme_color": "#eeeeff"
