@@ -36,8 +36,14 @@
   (div
    {}
    (button
+    {:style (merge ui/button),
+     :on-click (fn [e d! m!]
+       (.replace js/location (str js/location.origin "?time=" (.now js/Date))))}
+    (<> "Refresh"))
+   (=< 8 nil)
+   (button
     {:style (merge ui/button {:color :red, :border-color :red}),
      :on-click (fn [e dispatch! mutate!]
        (dispatch! :user/log-out nil)
        (.removeItem js/localStorage (:storage-key config/site)))}
-    (<> span "Log out" nil)))))
+    (<> "Log out")))))

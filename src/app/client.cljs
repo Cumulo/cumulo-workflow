@@ -51,6 +51,10 @@
   (connect!)
   (add-watch *store :changes #(render-app! render!))
   (add-watch *states :changes #(render-app! render!))
+  (.addEventListener
+   js/window
+   "visibilitychange"
+   (fn [] (when (and (nil? @*store) (= "visible" js/document.visibilityState)) (connect!))))
   (println "App started!"))
 
 (defn reload! [] (clear-cache!) (render-app! render!) (println "Code updated."))

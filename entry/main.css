@@ -7,3 +7,8 @@ body {
 body * {
   box-sizing: border-box;
 }
+
+.dev-shadows,
+.dev-shadows * {
+  box-shadow: 0 0 1px hsla(0,0%,0%,0.3);
+}
