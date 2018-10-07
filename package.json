@@ -25,7 +25,7 @@
     "md5": "^2.2.1",
     "randomcolor": "^0.5.3",
     "shortid": "^2.2.13",
-    "ws": "^6.0.0"
+    "ws": "^6.1.0"
   },
   "devDependencies": {
     "http-server": "^0.11.1",
