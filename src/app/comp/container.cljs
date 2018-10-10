@@ -11,7 +11,6 @@
             [respo-message.comp.messages :refer [comp-messages]]
             [app.comp.reel :refer [comp-reel]]
             [app.config :refer [dev?]]
-            [app.comp.pages :refer [comp-pages]]
             [app.schema :as schema]
             [app.config :as config]))
 
@@ -64,7 +63,7 @@
       (comp-navigation (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (case (:name router)
-          :home (cursor-> :pages comp-pages states router-data)
+          :home (<> "Home")
           :profile (comp-profile (:user store) (:data router))
           (<> router))
         (comp-login states))

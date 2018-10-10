@@ -13,5 +13,3 @@
 (def user {:name nil, :id nil, :nickname nil, :avatar nil, :password nil})
 
 (def database {:sessions (do session {}), :users (do user {})})
-
-(def page {:id nil, :title "", :time nil})
