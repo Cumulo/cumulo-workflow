@@ -6,7 +6,9 @@
             [cljs.reader :refer [read-string]]
             [app.schema :as schema]
             [app.config :as config]
-            [app.util :refer [get-env!]]))
+            [app.util :refer [get-env!]]
+            [build.util :refer [get-ip!]])
+  (:require-macros [clojure.core.strint :refer [<<]]))
 
 (def base-info
   {:title (:title config/site),
@@ -19,7 +21,7 @@
    ""
    (merge
     base-info
-    {:styles [(:dev-ui config/site) "/entry/main.css"],
+    {:styles [(<< "http://~{(get-ip!)}:8100/main.css") "/entry/main.css"],
      :scripts ["/client.js"],
      :inline-styles []})))
 
