@@ -15,7 +15,7 @@
  :builds {:client {:output-dir "target/"
                    :asset-path "./"
                    :target :browser
-                   :modules {:client {:entries [app.client]}}
+                   :modules {:client {:init-fn app.client/main!}}
                    :devtools {:after-load app.client/reload!
                               :http-root "target"
                               :http-port 7000
