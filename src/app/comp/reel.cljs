@@ -2,7 +2,7 @@
 (ns app.comp.reel
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
-            [respo.macros :refer [defcomp action-> <> span button div]]
+            [respo.core :refer [defcomp action-> <> span button div]]
             [respo.comp.space :refer [=<]]))
 
 (def style-click
