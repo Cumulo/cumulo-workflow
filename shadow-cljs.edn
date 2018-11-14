@@ -3,10 +3,11 @@
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [mvc-works/shell-page   "0.1.9"]
                 [cumulo/recollect       "0.4.3"]
-                [respo                  "0.10.0"]
+                [respo                  "0.10.1"]
                 [respo/ui               "0.3.9"]
                 [respo/alerts           "0.3.8"]
                 [respo/message          "0.3.4"]
+                [respo/feather          "0.1.1"]
                 [cirru/bisection-key    "0.1.5"]
                 [org.clojure/core.incubator "0.1.4"]]
  :repositories {"central" {:url "https://maven.aliyun.com/nexus/content/groups/public/"}
@@ -18,8 +19,7 @@
                    :modules {:client {:init-fn app.client/main!}}
                    :devtools {:after-load app.client/reload!
                               :http-root "target"
-                              :http-port 7000
-                              :loader-mode :eval}
+                              :http-port 7000}
                    :release {:output-dir "dist/"}
                              :module-hash-names 8
                              :build-options {:manifest-name "assets.edn"}}
