@@ -1,6 +1,6 @@
 
 (ns app.twig.container
-  (:require [recollect.macros :refer [deftwig]]
+  (:require [recollect.twig :refer [deftwig]]
             [app.twig.user :refer [twig-user]]
             ["randomcolor" :as color]))
 
