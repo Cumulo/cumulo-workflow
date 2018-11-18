@@ -4,7 +4,7 @@
                 [mvc-works/shell-page   "0.1.9"]
                 [cumulo/recollect       "0.5.0"]
                 [respo                  "0.10.2"]
-                [respo/ui               "0.3.9"]
+                [respo/ui               "0.3.10"]
                 [respo/alerts           "0.3.8"]
                 [respo/message          "0.3.4"]
                 [respo/feather          "0.1.1"]
