@@ -25,6 +25,18 @@
 
 (defonce *reader-reel (atom @*reel))
 
+(defn detect-then-write! [file-path content]
+  (let [do-write! (fn []
+                    (cp/execSync (str "mkdir -p " (path/dirname file-path)))
+                    (fs/writeFileSync file-path content)
+                    (println "Write to file:" file-path))]
+    (if (fs/existsSync file-path)
+      (let [old-content (fs/readFileSync file-path "utf8")]
+        (if (not= content old-content)
+          (do-write!)
+          (comment println "same file, skipping:" file-path)))
+      (do-write!))))
+
 (defn persist-db! []
   (let [file-content (pr-str (assoc (:db @*reel) :sessions {}))
         now (js/Date.)
@@ -34,10 +46,8 @@
                      "backups"
                      (str (inc (.getMonth now)))
                      (str (.getDate now) "-storage.edn"))]
-    (fs/writeFileSync storage-path file-content)
-    (cp/execSync (str "mkdir -p " (path/dirname backup-path)))
-    (fs/writeFileSync backup-path file-content)
-    (println "Saved file in" storage-path "and saved backup in" backup-path)))
+    (detect-then-write! storage-path file-content)
+    (detect-then-write! backup-path file-content)))
 
 (defn dispatch! [op op-data sid]
   (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
@@ -52,7 +62,7 @@
 
 (defn on-exit! [code]
   (persist-db!)
-  (println "exit code is:" (pr-str code))
+  (comment println "exit code is:" (pr-str code))
   (.exit js/process))
 
 (defn render-loop! []
