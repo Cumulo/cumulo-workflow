@@ -10,7 +10,7 @@
             ["child_process" :as cp]
             ["path" :as path]
             [app.node-config :as node-config]
-            [app.config :refer [dev?]]
+            [app.node-config :refer [dev?]]
             [app.config :as config]))
 
 (def initial-db
