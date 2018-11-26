@@ -4,7 +4,7 @@
             [app.service :refer [run-server! sync-clients!]]
             [app.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
-            [app.reel :refer [reel-reducer refresh-reel reel-schema]]
+            [cumulo-reel.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]
             ["child_process" :as cp]

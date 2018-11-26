@@ -9,7 +9,7 @@
             [app.comp.profile :refer [comp-profile]]
             [app.comp.login :refer [comp-login]]
             [respo-message.comp.messages :refer [comp-messages]]
-            [app.comp.reel :refer [comp-reel]]
+            [cumulo-reel.comp.reel :refer [comp-reel]]
             [app.config :refer [dev?]]
             [app.schema :as schema]
             [app.config :as config]))
