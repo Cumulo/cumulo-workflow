@@ -1,5 +1,5 @@
 
-(ns app.config (:require [app.util :refer [get-env!]]))
+(ns app.config (:require [cumulo-util.core :refer [get-env!]]))
 
 (def bundle-builds #{"release" "local-bundle"})
 

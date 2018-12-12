@@ -4,9 +4,10 @@
             [respo.cursor :refer [mutate]]
             [app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [app.connection :refer [send! setup-socket!]]
             [app.schema :as schema]
-            [app.config :as config]))
+            [app.config :as config]
+            [ws-edn.client :refer [ws-connect! ws-send!]]
+            [recollect.patch :refer [patch-twig]]))
 
 (declare dispatch!)
 
@@ -29,14 +30,20 @@
   (case op
     :states (reset! *states ((mutate op-data) @*states))
     :effect/connect (connect!)
-    (send! op op-data)))
+    (ws-send! {:kind :op, :op op, :data op-data})))
 
 (defn connect! []
-  (setup-socket!
-   *store
-   {:url (str "ws://" (.-hostname js/location) ":" (:port config/site)),
+  (ws-connect!
+   (str "ws://" (.-hostname js/location) ":" (:port config/site))
+   {:on-open! (fn [] (simulate-login!)),
     :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
-    :on-open! (fn [event] (simulate-login!))}))
+    :on-data! (fn [data]
+      (case (:kind data)
+        :patch
+          (let [changes (:data data)]
+            (.log js/console "Changes" (clj->js changes))
+            (reset! *store (patch-twig @*store changes)))
+        (println "unknown kind:" data)))}))
 
 (def mount-target (.querySelector js/document ".app"))
 

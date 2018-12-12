@@ -26,7 +26,9 @@
           socket
           "message"
           (fn [rawData]
-            (let [action (reader/read-string rawData), [op op-data] action]
+            (let [action (reader/read-string rawData)
+                  op (:op action)
+                  op-data (:data action)]
               (on-action! op op-data sid))))
          (.on
           socket
@@ -48,4 +50,6 @@
             socket (get @*registry sid)]
         (println "Changes for" sid ":" changes (count records))
         (if (and (not= changes []) (some? socket))
-          (do (.send socket (pr-str changes)) (swap! client-caches assoc sid new-store)))))))
+          (do
+           (.send socket (pr-str {:kind :patch, :data changes}))
+           (swap! client-caches assoc sid new-store)))))))

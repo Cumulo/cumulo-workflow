@@ -6,7 +6,7 @@
             [cljs.reader :refer [read-string]]
             [app.schema :as schema]
             [app.config :as config]
-            [app.util :refer [get-env!]]
+            [cumulo-util.core :refer [get-env!]]
             [build.util :refer [get-ip!]])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
