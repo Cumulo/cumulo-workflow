@@ -5,39 +5,28 @@
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
-            ["shortid" :as shortid]
-            ["ws" :as ws]))
+            [ws-edn.server :refer [wss-serve! wss-send!]]))
 
 (defonce *registry (atom {}))
 
 (defonce client-caches (atom {}))
 
 (defn run-server! [on-action! port]
-  (let [WebSocketServer (.-Server ws), wss (new WebSocketServer (js-obj "port" port))]
-    (.on
-     wss
-     "connection"
-     (fn [socket]
-       (let [sid (.generate shortid)]
-         (on-action! :session/connect nil sid)
-         (swap! *registry assoc sid socket)
-         (.info js/console "New client.")
-         (.on
-          socket
-          "message"
-          (fn [rawData]
-            (let [action (reader/read-string rawData)
-                  op (:op action)
-                  op-data (:data action)]
-              (on-action! op op-data sid))))
-         (.on
-          socket
-          "close"
-          (fn []
-            (.warn js/console "Client closed!")
-            (swap! *registry dissoc sid)
-            (on-action! :session/disconnect nil sid)))
-         (.on socket "error" (fn [error] (.error js/console error))))))))
+  (wss-serve!
+   port
+   {:on-open! (fn [sid socket]
+      (on-action! :session/connect nil sid)
+      (swap! *registry assoc sid socket)
+      (.info js/console "New client.")),
+    :on-data! (fn [sid action]
+      (case (:kind action)
+        :op (on-action! (:op action) (:data action) sid)
+        (println "unknown data" action))),
+    :on-close! (fn [sid event]
+      (.warn js/console "Client closed!")
+      (swap! *registry dissoc sid)
+      (on-action! :session/disconnect nil sid)),
+    :on-error! (fn [error] (.error js/console error))}))
 
 (defn sync-clients! [reel]
   (let [db (:db reel), records (:records reel)]
