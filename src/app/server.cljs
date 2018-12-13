@@ -10,7 +10,7 @@
             [app.node-config :as node-config]
             [app.node-config :refer [dev?]]
             [app.config :as config]
-            [cumulo-util.file :refer (write-mildly!)]
+            [cumulo-util.file :refer [write-mildly! get-backup-path! merge-local-edn!]]
             [cljs.nodejs :as nodejs]
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
@@ -19,13 +19,11 @@
 
 (defonce *client-caches (atom {}))
 
-(def initial-db
-  (let [filepath (:storage-path node-config/env)]
-    (if (fs/existsSync filepath)
-      (do
-       (println "Found storage in:" (:storage-path node-config/env))
-       (read-string (fs/readFileSync filepath "utf8")))
-      schema/database)))
+(defonce initial-db
+  (merge-local-edn!
+   schema/database
+   (:storage-path node-config/env)
+   (fn [found?] (if found? (println "Found local EDN data") (println "Found no data")))))
 
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
 
@@ -33,13 +31,8 @@
 
 (defn persist-db! []
   (let [file-content (pr-str (assoc (:db @*reel) :sessions {}))
-        now (js/Date.)
         storage-path (:storage-path node-config/env)
-        backup-path (path/join
-                     js/__dirname
-                     "backups"
-                     (str (inc (.getMonth now)))
-                     (str (.getDate now) "-storage.edn"))]
+        backup-path (get-backup-path!)]
     (write-mildly! storage-path file-content)
     (write-mildly! backup-path file-content)))
 
