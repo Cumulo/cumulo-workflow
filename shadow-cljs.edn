@@ -2,7 +2,7 @@
 {:source-paths ["src" "cli"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [mvc-works/shell-page   "0.1.9"]
-                [mvc-works/ws-edn       "0.1.0-a2"]
+                [mvc-works/ws-edn       "0.1.0-a3"]
                 [cumulo/recollect       "0.5.0"]
                 [cumulo/reel            "0.1.0"]
                 [cumulo/util            "0.1.0-a3"]

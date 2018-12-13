@@ -7,7 +7,6 @@
             [cumulo-reel.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]
-            ["child_process" :as cp]
             ["path" :as path]
             [app.node-config :as node-config]
             [app.node-config :refer [dev?]]
