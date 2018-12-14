@@ -9,7 +9,7 @@
             [app.node-config :as node-config]
             [app.config :as config]
             [cumulo-util.file :refer [write-mildly! get-backup-path! merge-local-edn!]]
-            [cumulo-util.core :refer [id! repeat! unix-time!]]
+            [cumulo-util.core :refer [id! repeat! unix-time! delay!]]
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
@@ -46,7 +46,7 @@
 (defn on-exit! [code]
   (persist-db!)
   (comment println "exit code is:" (pr-str code))
-  (.exit js/process))
+  (js/process.exit))
 
 (defn sync-clients! [reel]
   (wss-each!
@@ -64,9 +64,10 @@
           (swap! *client-caches assoc sid new-store)))))))
 
 (defn render-loop! []
-  (if (not (identical? @*reader-reel @*reel))
-    (do (reset! *reader-reel @*reel) (sync-clients! @*reader-reel)))
-  (js/setTimeout render-loop! 200))
+  (when (not (identical? @*reader-reel @*reel))
+    (reset! *reader-reel @*reel)
+    (sync-clients! @*reader-reel))
+  (delay! 0.2 render-loop!))
 
 (defn run-server! []
   (wss-serve!
@@ -86,7 +87,7 @@
 (defn main! []
   (run-server!)
   (render-loop!)
-  (.on js/process "SIGINT" on-exit!)
+  (js/process.on "SIGINT" on-exit!)
   (repeat! 600 #(persist-db!))
   (println "Server started."))
 
