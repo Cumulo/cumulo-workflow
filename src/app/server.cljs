@@ -6,12 +6,10 @@
             [cumulo-reel.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["shortid" :as shortid]
-            ["path" :as path]
             [app.node-config :as node-config]
-            [app.node-config :refer [dev?]]
             [app.config :as config]
             [cumulo-util.file :refer [write-mildly! get-backup-path! merge-local-edn!]]
-            [cljs.nodejs :as nodejs]
+            [cumulo-util.core :refer [id! repeat! unix-time!]]
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
@@ -37,15 +35,13 @@
     (write-mildly! backup-path file-content)))
 
 (defn dispatch! [op op-data sid]
-  (let [op-id (.generate shortid), op-time (.valueOf (js/Date.))]
-    (if dev? (println "Dispatch!" (str op) op-data sid))
+  (let [op-id (id!), op-time (unix-time!)]
+    (if node-config/dev? (println "Dispatch!" (str op) op-data sid))
     (try
      (cond
        (= op :effect/persist) (persist-db!)
-       :else
-         (let [new-reel (reel-reducer @*reel updater op op-data sid op-id op-time)]
-           (reset! *reel new-reel)))
-     (catch js/Error error (.error js/console error)))))
+       :else (reset! *reel (reel-reducer @*reel updater op op-data sid op-id op-time)))
+     (catch js/Error error (js/console.error error)))))
 
 (defn on-exit! [code]
   (persist-db!)
@@ -72,26 +68,26 @@
     (do (reset! *reader-reel @*reel) (sync-clients! @*reader-reel)))
   (js/setTimeout render-loop! 200))
 
-(defn run-server! [on-action! port]
+(defn run-server! []
   (wss-serve!
-   port
-   {:on-open! (fn [sid socket]
-      (on-action! :session/connect nil sid)
-      (.info js/console "New client.")),
-    :on-data! (fn [sid action]
+   (:port config/site)
+   {:on-open (fn [sid socket]
+      (dispatch! :session/connect nil sid)
+      (js/console.info "New client.")),
+    :on-data (fn [sid action]
       (case (:kind action)
-        :op (on-action! (:op action) (:data action) sid)
+        :op (dispatch! (:op action) (:data action) sid)
         (println "unknown data" action))),
-    :on-close! (fn [sid event]
-      (.warn js/console "Client closed!")
-      (on-action! :session/disconnect nil sid)),
-    :on-error! (fn [error] (.error js/console error))}))
+    :on-close (fn [sid event]
+      (js/console.warn "Client closed!")
+      (dispatch! :session/disconnect nil sid)),
+    :on-error (fn [error] (.error js/console error))}))
 
 (defn main! []
-  (run-server! #(dispatch! %1 %2 %3) (:port config/site))
+  (run-server!)
   (render-loop!)
   (.on js/process "SIGINT" on-exit!)
-  (js/setInterval #(persist-db!) (* 60 1000 10))
+  (repeat! 600 #(persist-db!))
   (println "Server started."))
 
 (defn reload! []

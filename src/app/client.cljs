@@ -7,7 +7,8 @@
             [app.schema :as schema]
             [app.config :as config]
             [ws-edn.client :refer [ws-connect! ws-send!]]
-            [recollect.patch :refer [patch-twig]]))
+            [recollect.patch :refer [patch-twig]])
+  (:require-macros [clojure.core.strint :refer [<<]]))
 
 (declare dispatch!)
 
@@ -34,14 +35,14 @@
 
 (defn connect! []
   (ws-connect!
-   (str "ws://" (.-hostname js/location) ":" (:port config/site))
-   {:on-open! (fn [] (simulate-login!)),
-    :on-close! (fn [event] (reset! *store nil) (.error js/console "Lost connection!")),
-    :on-data! (fn [data]
+   (<< "ws://~{js/location.hostname}:~(:port config/site)")
+   {:on-open (fn [] (simulate-login!)),
+    :on-close (fn [event] (reset! *store nil) (js/console.error "Lost connection!")),
+    :on-data (fn [data]
       (case (:kind data)
         :patch
           (let [changes (:data data)]
-            (.log js/console "Changes" (clj->js changes))
+            (js/console.log "Changes" (clj->js changes))
             (reset! *store (patch-twig @*store changes)))
         (println "unknown kind:" data)))}))
 
