@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "watch": "shadow-cljs watch client server",
+    "build-cdn": "shadow-cljs clj-run build.main/build-cdn",
     "build": "shadow-cljs clj-run build.main/build",
-    "build-local": "shadow-cljs clj-run build.main/build-local",
     "page": "shadow-cljs clj-run build.main/page",
     "upload": "lumo -c cli/:src/ -m build.upload",
+    "up": "yarn build-cdn && yarn upload",
     "serve": "http-server dist -s",
     "repl": "rlwrap shadow-cljs clj-repl client",
     "repl-server": "rlwrap shadow-cljs clj-repl server",

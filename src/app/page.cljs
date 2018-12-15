@@ -25,12 +25,10 @@
      :scripts ["/client.js"],
      :inline-styles []})))
 
-(def local-bundle? (= "local-bundle" (get-env! "mode")))
-
 (defn prod-page []
   (let [html-content (make-string (comp-container {} nil))
         assets (read-string (slurp "dist/assets.edn"))
-        cdn (if local-bundle? "" (:cdn-url config/site))
+        cdn (if config/cdn? (:cdn-url config/site) "")
         prefix-cdn #(str cdn %)]
     (make-page
      html-content
@@ -40,6 +38,4 @@
        :scripts (map #(-> % :output-name prefix-cdn) assets)}))))
 
 (defn main! []
-  (if (contains? config/bundle-builds (get-env! "mode"))
-    (spit "dist/index.html" (prod-page))
-    (spit "target/index.html" (dev-page))))
+  (if config/dev? (spit "target/index.html" (dev-page)) (spit "dist/index.html" (prod-page))))

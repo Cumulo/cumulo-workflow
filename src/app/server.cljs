@@ -5,8 +5,7 @@
             [cljs.reader :refer [read-string]]
             [cumulo-reel.reel :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
-            ["shortid" :as shortid]
-            [app.node-config :as node-config]
+            ["path" :as path]
             [app.config :as config]
             [cumulo-util.file :refer [write-mildly! get-backup-path! merge-local-edn!]]
             [cumulo-util.core :refer [id! repeat! unix-time! delay!]]
@@ -17,10 +16,12 @@
 
 (defonce *client-caches (atom {}))
 
+(def storage-file (path/join js/__dirname (:storage-file config/site)))
+
 (defonce initial-db
   (merge-local-edn!
    schema/database
-   (:storage-path node-config/env)
+   storage-file
    (fn [found?] (if found? (println "Found local EDN data") (println "Found no data")))))
 
 (defonce *reel (atom (merge reel-schema {:base initial-db, :db initial-db})))
@@ -29,14 +30,14 @@
 
 (defn persist-db! []
   (let [file-content (pr-str (assoc (:db @*reel) :sessions {}))
-        storage-path (:storage-path node-config/env)
+        storage-path storage-file
         backup-path (get-backup-path!)]
     (write-mildly! storage-path file-content)
     (write-mildly! backup-path file-content)))
 
 (defn dispatch! [op op-data sid]
   (let [op-id (id!), op-time (unix-time!)]
-    (if node-config/dev? (println "Dispatch!" (str op) op-data sid))
+    (if config/dev? (println "Dispatch!" (str op) op-data sid))
     (try
      (cond
        (= op :effect/persist) (persist-db!)
