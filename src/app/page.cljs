@@ -7,7 +7,7 @@
             [app.schema :as schema]
             [app.config :as config]
             [cumulo-util.core :refer [get-env!]]
-            [build.util :refer [get-ip!]])
+            [cumulo-util.build :refer [get-ip!]])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
 (def base-info
