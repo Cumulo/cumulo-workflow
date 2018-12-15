@@ -86,6 +86,7 @@
     :on-error (fn [error] (.error js/console error))}))
 
 (defn main! []
+  (println "Running mode:" (if config/dev? "dev" "release"))
   (run-server!)
   (render-loop!)
   (js/process.on "SIGINT" on-exit!)

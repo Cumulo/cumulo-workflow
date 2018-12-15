@@ -476,6 +476,22 @@
         :type :expr, :id "r1ZBm58llAS-", :by nil, :at 1500541010211
         :data {}
        }
+       "t" {
+        :type :expr, :by "B1y7Rc-Zz", :at 1544874518376, :id "ICEtj5Fxmg"
+        :data {
+         "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874519276, :text "println", :id "ICEtj5Fxmgleaf"}
+         "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874524299, :text "\"Running mode:", :id "ckXl0VHmU"}
+         "r" {
+          :type :expr, :by "B1y7Rc-Zz", :at 1544874525129, :id "6gcIZj22Hd"
+          :data {
+           "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874525354, :text "if", :id "hoH8abMFL"}
+           "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874529605, :text "config/dev?", :id "VT1AFOCPy3"}
+           "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874539526, :text "\"dev", :id "tJW-De5LCf"}
+           "v" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874537560, :text "\"release", :id "1o5SA2gNC"}
+          }
+         }
+        }
+       }
        "v" {
         :type :expr, :id "BkGHm98glCSb", :by nil, :at 1500541010211
         :data {
@@ -3431,13 +3447,13 @@
            "T" {
             :type :expr, :by "B1y7Rc-Zz", :at 1544871607735, :id "uJ5Ek6c92q"
             :data {
-             "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544871609765, :text "optimized?", :id "Vii-qHf5Pt"}
+             "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874876303, :text "debug?", :id "Vii-qHf5Pt"}
              "j" {
               :type :expr, :by "B1y7Rc-Zz", :at 1544871610620, :id "yHrUejRwFh"
               :data {
                "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544871610620, :text "do", :id "RvolgLrGvw"}
                "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544871610620, :text "^boolean", :id "fC4s47cQoF"}
-               "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1544871610620, :text "goog.DEBUG", :id "-dxneCk5rv"}
+               "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874779225, :text "js/goog.DEBUG", :id "-dxneCk5rv"}
               }
              }
             }
@@ -3458,13 +3474,7 @@
                "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544871382241, :text "js/window", :id "Wd2_0Bq5wa"}
               }
              }
-             "j" {
-              :type :expr, :by "B1y7Rc-Zz", :at 1544872900268, :id "Ey2Z797Z1b"
-              :data {
-               "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544872901849, :text "not", :id "E_pdg8oc0"}
-               "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544872905602, :text "optimized?", :id "v9XQ-rAt7F"}
-              }
-             }
+             "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874880715, :text "debug?", :id "naUFdCxj-1"}
             }
            }
            "m" {
@@ -3883,6 +3893,22 @@
        "r" {
         :type :expr, :id "ByVgVqUeeRHW", :by nil, :at 1500541010211
         :data {}
+       }
+       "t" {
+        :type :expr, :by "B1y7Rc-Zz", :at 1544874569523, :id "xWmMKp3dML"
+        :data {
+         "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "println", :id "U-mQ1CD8-2"}
+         "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "\"Running mode:", :id "J1fo3Pej2b"}
+         "r" {
+          :type :expr, :by "B1y7Rc-Zz", :at 1544874569523, :id "KexqNVqsxa"
+          :data {
+           "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "if", :id "1i7iwiUD-g"}
+           "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "config/dev?", :id "UMoQgt-AcC"}
+           "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "\"dev", :id "R1YGrucyne"}
+           "v" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874569523, :text "\"release", :id "otcgcqHSfP"}
+          }
+         }
+        }
        }
        "v" {
         :type :expr, :id "SJrx498ee0HZ", :by nil, :at 1500541010211
@@ -4804,6 +4830,22 @@
        "r" {
         :type :expr, :id "Sk-t-eUbgASZ", :by nil, :at 1500541255553
         :data {}
+       }
+       "t" {
+        :type :expr, :by "B1y7Rc-Zz", :at 1544874545787, :id "ixJMdEOdW6"
+        :data {
+         "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "println", :id "47x2yC5fQ1"}
+         "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "\"Running mode:", :id "vDtGabJoWY"}
+         "r" {
+          :type :expr, :by "B1y7Rc-Zz", :at 1544874545787, :id "1uZ2rIwEGV"
+          :data {
+           "T" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "if", :id "M2H1dLZdkO"}
+           "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "config/dev?", :id "2SiAe7kShD"}
+           "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "\"dev", :id "u9-nrGtmS_"}
+           "v" {:type :leaf, :by "B1y7Rc-Zz", :at 1544874545787, :text "\"release", :id "yuhA6uYStO"}
+          }
+         }
+        }
        }
        "v" {
         :type :expr, :id "HyDtWeIZgCBb", :by nil, :at 1500541255553

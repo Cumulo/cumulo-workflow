@@ -37,4 +37,7 @@
        :scripts (map #(-> % :output-name prefix-cdn) assets)}))))
 
 (defn main! []
-  (if config/dev? (spit "target/index.html" (dev-page)) (spit "dist/index.html" (prod-page))))
+  (println "Running mode:" (if config/dev? "dev" "release"))
+  (if config/dev?
+    (spit "target/index.html" (dev-page))
+    (spit "dist/index.html" (prod-page))))

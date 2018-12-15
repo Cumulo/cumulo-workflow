@@ -54,6 +54,7 @@
 (def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
 (defn main! []
+  (println "Running mode:" (if config/dev? "dev" "release"))
   (if ssr? (render-app! realize-ssr!))
   (render-app! render!)
   (connect!)

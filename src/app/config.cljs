@@ -10,9 +10,9 @@
     :else false))
 
 (def dev?
-  (let [optimized? (do ^boolean goog.DEBUG)]
+  (let [debug? (do ^boolean js/goog.DEBUG)]
     (cond
-      (exists? js/window) (not optimized?)
+      (exists? js/window) debug?
       (exists? js/process) (not= "true" js/process.env.release)
       :else true)))
 
