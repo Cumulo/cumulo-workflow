@@ -3693,21 +3693,6 @@
           "v" {:type :leaf, :by "root", :at 1527788806048, :text "config", :id "Byr6WHhpym"}
          }
         }
-        "yj" {
-         :type :expr, :by "root", :at 1528098081285, :id "rklKXaPfxX"
-         :data {
-          "T" {:type :leaf, :by "root", :at 1528098081582, :text "[]", :id "rklKXaPfxXleaf"}
-          "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544639183204, :text "cumulo-util.core", :id "SyZqXTPGlX"}
-          "r" {:type :leaf, :by "root", :at 1528098085922, :text ":refer", :id "rkQ3XaPflm"}
-          "v" {
-           :type :expr, :by "root", :at 1528098086107, :id "HJSRXpwGxm"
-           :data {
-            "T" {:type :leaf, :by "root", :at 1528098086331, :text "[]", :id "ByNCQpwGeX"}
-            "j" {:type :leaf, :by "root", :at 1528098089685, :text "get-env!", :id "r1WeNpvfg7"}
-           }
-          }
-         }
-        }
         "yr" {
          :type :expr, :by "root", :at 1540093092420, :id "TXstqBvxoE"
          :data {
@@ -3849,7 +3834,7 @@
                   :type :expr, :by "root", :at 1540093137793, :id "5nFq_MPac"
                   :data {
                    "T" {:type :leaf, :by "root", :at 1540093138946, :text "<<", :id "5nFq_MPacleaf"}
-                   "j" {:type :leaf, :by "root", :at 1540093267246, :text "\"http://~{(get-ip!)}:8100/main.css", :id "peslXnHRsj"}
+                   "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544873996625, :text "\"http://~(get-ip!):8100/main.css", :id "peslXnHRsj"}
                   }
                  }
                  "r" {:type :leaf, :by "B1y7Rc-Zz", :at 1535565930272, :text "\"/entry/main.css", :id "icJTcbEw5"}

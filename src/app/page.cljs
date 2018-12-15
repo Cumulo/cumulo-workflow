@@ -6,7 +6,6 @@
             [cljs.reader :refer [read-string]]
             [app.schema :as schema]
             [app.config :as config]
-            [cumulo-util.core :refer [get-env!]]
             [cumulo-util.build :refer [get-ip!]])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
@@ -21,7 +20,7 @@
    ""
    (merge
     base-info
-    {:styles [(<< "http://~{(get-ip!)}:8100/main.css") "/entry/main.css"],
+    {:styles [(<< "http://~(get-ip!):8100/main.css") "/entry/main.css"],
      :scripts ["/client.js"],
      :inline-styles []})))
 
