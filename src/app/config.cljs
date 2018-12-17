@@ -1,8 +1,6 @@
 
 (ns app.config (:require [cumulo-util.core :refer [get-env!]]))
 
-(def bundle-builds #{"release" "local-bundle"})
-
 (def cdn?
   (cond
     (exists? js/window) false

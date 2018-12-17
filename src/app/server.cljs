@@ -3,7 +3,7 @@
   (:require [app.schema :as schema]
             [app.updater :refer [updater]]
             [cljs.reader :refer [read-string]]
-            [cumulo-reel.reel :refer [reel-reducer refresh-reel reel-schema]]
+            [cumulo-reel.core :refer [reel-reducer refresh-reel reel-schema]]
             ["fs" :as fs]
             ["path" :as path]
             [app.config :as config]
