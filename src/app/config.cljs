@@ -9,10 +9,12 @@
 
 (def dev?
   (let [debug? (do ^boolean js/goog.DEBUG)]
-    (cond
-      (exists? js/window) debug?
-      (exists? js/process) (not= "true" js/process.env.release)
-      :else true)))
+    (if debug?
+      (cond
+        (exists? js/window) true
+        (exists? js/process) (not= "true" js/process.env.release)
+        :else true)
+      false)))
 
 (def site
   {:port 5021,
