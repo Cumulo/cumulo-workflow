@@ -1,5 +1,5 @@
 
-(ns app.config (:require [cumulo-util.core :refer [get-env!]]))
+(ns app.config )
 
 (def cdn?
   (cond

@@ -3361,27 +3361,6 @@
      :data {
       "T" {:type :leaf, :by "root", :at 1527788708227, :text "ns", :id "HJb3jEn6kX"}
       "j" {:type :leaf, :by "root", :at 1527788708227, :text "app.config", :id "BJfhoN3pym"}
-      "r" {
-       :type :expr, :by "root", :at 1528098188887, :id "rJxr9pwzlX"
-       :data {
-        "T" {:type :leaf, :by "root", :at 1528098190433, :text ":require", :id "B1HcpwMgm"}
-        "j" {
-         :type :expr, :by "root", :at 1528098190659, :id "HJDqpvMlm"
-         :data {
-          "T" {:type :leaf, :by "root", :at 1528098190811, :text "[]", :id "BJ_Lc6Dfl7"}
-          "j" {:type :leaf, :by "B1y7Rc-Zz", :at 1544376615232, :text "cumulo-util.core", :id "BJGP9TPzlQ"}
-          "r" {:type :leaf, :by "root", :at 1528098193514, :text ":refer", :id "SJgY56PzgX"}
-          "v" {
-           :type :expr, :by "root", :at 1528098193724, :id "Syl5qTvGlm"
-           :data {
-            "T" {:type :leaf, :by "root", :at 1528098194516, :text "[]", :id "Bkccpvzgm"}
-            "j" {:type :leaf, :by "root", :at 1528098196255, :text "get-env!", :id "S1oc6PGgX"}
-           }
-          }
-         }
-        }
-       }
-      }
      }
     }
     :defs {
