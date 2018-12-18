@@ -27,7 +27,7 @@
       (do (println "Found no storage.")))))
 
 (defn dispatch! [op op-data]
-  (println "Dispatch" op op-data)
+  (when (and config/dev? (not= op :states)) (println "Dispatch" op op-data))
   (case op
     :states (reset! *states ((mutate op-data) @*states))
     :effect/connect (connect!)
