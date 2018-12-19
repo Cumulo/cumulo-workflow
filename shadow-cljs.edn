@@ -5,7 +5,7 @@
                 [mvc-works/ws-edn       "0.1.1"]
                 [cumulo/recollect       "0.5.0"]
                 [cumulo/reel            "0.1.1"]
-                [cumulo/util            "0.1.4"]
+                [cumulo/util            "0.1.5"]
                 [respo                  "0.10.2"]
                 [respo/ui               "0.3.10"]
                 [respo/alerts           "0.3.10"]
