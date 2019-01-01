@@ -1,4 +1,8 @@
 {
+ :users {
+  "B1y7Rc-Zz" {:id "B1y7Rc-Zz", :name "chen", :nickname "chen", :password "d41d8cd98f00b204e9800998ecf8427e", :avatar nil, :theme :star-trail}
+  "root" {:id "root", :name "root", :nickname "root", :password "d41d8cd98f00b204e9800998ecf8427e", :avatar nil, :theme :star-trail}
+ }
  :ir {
   :package "app"
   :root {:ns "main", :def "main!"}
@@ -7280,15 +7284,5 @@
    }
   }
  }
- :sessions {}
- :users {
-  "B1y7Rc-Zz" {:id "B1y7Rc-Zz", :name "chen", :nickname "chen", :password "d41d8cd98f00b204e9800998ecf8427e", :avatar nil, :theme :star-trail}
-  "root" {:id "root", :name "root", :nickname "root", :password "d41d8cd98f00b204e9800998ecf8427e", :avatar nil, :theme :star-trail}
- }
- :saved-files {}
  :configs {:storage-key "calcit.edn", :extension ".cljs", :output "src", :port 6001}
- :repl {
-  :alive? false
-  :logs {}
- }
 }
