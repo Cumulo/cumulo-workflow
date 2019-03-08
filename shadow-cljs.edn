@@ -6,7 +6,7 @@
                 [cumulo/recollect       "0.5.0"]
                 [cumulo/reel            "0.1.1"]
                 [cumulo/util            "0.1.6"]
-                [respo                  "0.10.2"]
+                [respo                  "0.10.6"]
                 [respo/ui               "0.3.10"]
                 [respo/alerts           "0.3.11"]
                 [respo/message          "0.3.4"]
@@ -16,13 +16,12 @@
  :repositories {"central" {:url "https://maven.aliyun.com/nexus/content/groups/public/"}
                 "clojars" {:url "https://mirrors.ustc.edu.cn/clojars/"}}
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
+ :dev-http {7000 "target"}
  :builds {:client {:output-dir "target/"
                    :asset-path "./"
                    :target :browser
                    :modules {:client {:init-fn app.client/main!}}
-                   :devtools {:after-load app.client/reload!
-                              :http-root "target"
-                              :http-port 7000}
+                   :devtools {:after-load app.client/reload!}
                    :release {:output-dir "dist/"}
                              :module-hash-names 8
                              :build-options {:manifest-name "assets.edn"}}
