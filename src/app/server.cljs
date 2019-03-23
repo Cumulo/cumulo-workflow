@@ -58,7 +58,7 @@
            old-store (or (get @*client-caches sid) nil)
            new-store (render-twig (twig-container db session records) old-store)
            changes (diff-twig old-store new-store {:key :id})]
-       (println "Changes for" sid ":" changes (count records))
+       (when config/dev? (println "Changes for" sid ":" changes (count records)))
        (if (not= changes [])
          (do
           (wss-send! sid {:kind :patch, :data changes})
