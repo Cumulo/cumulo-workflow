@@ -12,7 +12,8 @@
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
-            [ws-edn.server :refer [wss-serve! wss-send! wss-each!]]))
+            [ws-edn.server :refer [wss-serve! wss-send! wss-each!]])
+  (:require-macros [clojure.core.strint :refer [<<]]))
 
 (defonce *client-caches (atom {}))
 
@@ -58,7 +59,7 @@
            old-store (or (get @*client-caches sid) nil)
            new-store (render-twig (twig-container db session records) old-store)
            changes (diff-twig old-store new-store {:key :id})]
-       (println "Changes for" sid ":" changes (count records))
+       (when config/dev? (println "Changes for" sid ":" changes (count records)))
        (if (not= changes [])
          (do
           (wss-send! sid {:kind :patch, :data changes})
@@ -70,9 +71,9 @@
     (sync-clients! @*reader-reel))
   (delay! 0.2 render-loop!))
 
-(defn run-server! []
+(defn run-server! [port]
   (wss-serve!
-   (:port config/site)
+   port
    {:on-open (fn [sid socket]
       (dispatch! :session/connect nil sid)
       (js/console.info "New client.")),
@@ -87,11 +88,14 @@
 
 (defn main! []
   (println "Running mode:" (if config/dev? "dev" "release"))
-  (run-server!)
+  (let [port (if (some? js/process.env.port)
+               (js/parseInt js/process.env.port)
+               (:port config/site))]
+    (run-server! port)
+    (println (<< "Server started on port ~{port}.")))
   (render-loop!)
   (js/process.on "SIGINT" on-exit!)
-  (repeat! 600 #(persist-db!))
-  (println "Server started."))
+  (repeat! 600 #(persist-db!)))
 
 (defn reload! []
   (println "Code updated.")
