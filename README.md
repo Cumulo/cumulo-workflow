@@ -1,5 +1,5 @@
 
-Cumulo Worflow
+Cumulo Workflow
 ------
 
 > Personal project template for creating realtime apps. Accomplished with [recollect](https://github.com/Cumulo/recollect) and [calcit-workrlow](https://github.com/mvc-works/calcit-workflow).
