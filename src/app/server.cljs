@@ -12,7 +12,8 @@
             [app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
-            [ws-edn.server :refer [wss-serve! wss-send! wss-each!]])
+            [ws-edn.server :refer [wss-serve! wss-send! wss-each!]]
+            [favored-edn.core :refer [write-edn]])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
 (defonce *client-caches (atom {}))
@@ -30,7 +31,7 @@
 (defonce *reader-reel (atom @*reel))
 
 (defn persist-db! []
-  (let [file-content (pr-str (assoc (:db @*reel) :sessions {}))
+  (let [file-content (write-edn (assoc (:db @*reel) :sessions {}))
         storage-path storage-file
         backup-path (get-backup-path!)]
     (write-mildly! storage-path file-content)
