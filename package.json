@@ -8,8 +8,7 @@
     "build-cdn": "shadow-cljs clj-run build.main/build-cdn",
     "build": "shadow-cljs clj-run build.main/build",
     "page": "shadow-cljs clj-run build.main/page",
-    "upload": "node target/upload.js",
-    "up": "yarn build-cdn && yarn upload",
+    "up": "yarn build-cdn && tiye-up",
     "serve": "http-server dist -s",
     "ln": "cd target && rm -f entry && ln -s ../entry",
     "prod": "yarn install --production"
