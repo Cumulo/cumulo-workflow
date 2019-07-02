@@ -23,10 +23,10 @@
     "md5": "^2.2.1",
     "randomcolor": "^0.5.4",
     "shortid": "^2.2.14",
-    "ws": "^7.0.0"
+    "ws": "^7.0.1"
   },
   "devDependencies": {
-    "feather-icons": "^4.21.0",
+    "feather-icons": "^4.22.1",
     "http-server": "^0.11.1",
     "shadow-cljs": "^2.8.39",
     "source-map-support": "^0.5.12",
