@@ -5,7 +5,6 @@
             [respo.comp.inspect :refer [comp-inspect]]
             [respo-ui.core :as ui]
             [app.schema :as schema]
-            [app.style :as style]
             [app.config :as config]))
 
 (def initial-state {:username "", :password ""})
@@ -47,10 +46,10 @@
       {:style {:text-align :right}}
       (span
        {:inner-text "Sign up",
-        :style (merge style/link),
+        :style (merge ui/link),
         :on-click (on-submit (:username state) (:password state) true)})
       (=< 8 nil)
       (span
        {:inner-text "Log in",
-        :style (merge style/link),
+        :style (merge ui/link),
         :on-click (on-submit (:username state) (:password state) false)}))))))

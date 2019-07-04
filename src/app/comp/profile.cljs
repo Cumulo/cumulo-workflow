@@ -38,7 +38,7 @@
    (button
     {:style (merge ui/button),
      :on-click (fn [e d! m!]
-       (.replace js/location (str js/location.origin "?time=" (.now js/Date))))}
+       (js/location.replace (str js/location.origin "?time=" (.now js/Date))))}
     (<> "Refresh"))
    (=< 8 nil)
    (button
