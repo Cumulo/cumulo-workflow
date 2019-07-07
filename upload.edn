@@ -5,4 +5,4 @@
            {:from "dist/{index.html,manifest.json}"
             :to "repo/Cumulo/workflow/"}
            {:from "dist/{server.js,package.json}"
-            :to "repo/Cumulo/workflow/"}]}
+            :to "servers/workflow/"}]}
