@@ -9,7 +9,8 @@
             [ws-edn.client :refer [ws-connect! ws-send!]]
             [recollect.patch :refer [patch-twig]]
             [cumulo-util.core :refer [on-page-touch]]
-            ["url-parse" :as url-parse])
+            ["url-parse" :as url-parse]
+            [applied-science.js-interop :as j])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
 (declare dispatch!)
@@ -37,8 +38,8 @@
 
 (defn connect! []
   (let [url-obj (url-parse js/location.href true)
-        host (or (.. url-obj -query -host) js/location.hostname)
-        port (or (.. url-obj -query -port) (:port config/site))]
+        host (or (j/get-in url-obj [:query :host]) js/location.hostname)
+        port (or (j/get-in url-obj [:query :port]) (:port config/site))]
     (ws-connect!
      (<< "ws://~{host}:~{port}")
      {:on-open (fn [] (simulate-login!)),
