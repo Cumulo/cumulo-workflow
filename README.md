@@ -8,7 +8,7 @@ Features:
 
 * hot swapping client & server
 * developing realtime app like building an SPA
-* ClojureScript by default
+* all in ClojureScript
 
 View showcases on http://topix.im/ .
 
