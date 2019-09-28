@@ -28,7 +28,7 @@
   "devDependencies": {
     "feather-icons": "^4.24.1",
     "http-server": "^0.11.1",
-    "shadow-cljs": "^2.8.53",
+    "shadow-cljs": "^2.8.59",
     "source-map-support": "^0.5.13",
     "url-parse": "^1.4.7"
   }
