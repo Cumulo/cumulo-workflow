@@ -18,18 +18,19 @@ To develop:
 
 ```bash
 yarn
-yarn watch
+yarn watch # dev building client and server code
+
 # another terminal
 node target/server.js
-# another terminal
-yarn page
+
+yarn page # generates target/index.html
 # open http://localhost:7000
 ```
 
 To build and optimize:
 
 ```bash
-yarn build-local
+yarn build
 ```
 
 Code is editing with [calcit-editor](https://github.com/Cirru/calcit-editor).
