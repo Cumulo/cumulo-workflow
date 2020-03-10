@@ -70,4 +70,4 @@ jobs:
           dest: 'rsync-user@tiye.me:/servers/workflow'
 
       - name: Display status from deploy
-        run: echo "${{ steps.deploy.outputs.status }}"
+        run: echo "${{ steps.deploy-server.outputs.status }}"
