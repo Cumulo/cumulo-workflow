@@ -19,7 +19,7 @@
 
 (declare simulate-login!)
 
-(defonce *states (atom {}))
+(defonce *states (atom {:states {:cursor []}}))
 
 (defonce *store (atom nil))
 
@@ -55,7 +55,7 @@
 (def mount-target (.querySelector js/document ".app"))
 
 (defn render-app! [renderer]
-  (renderer mount-target (comp-container @*states @*store) dispatch!))
+  (renderer mount-target (comp-container (:states @*states) @*store) dispatch!))
 
 (def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
