@@ -25,7 +25,7 @@
     "ws": "^7.2.3"
   },
   "devDependencies": {
-    "feather-icons": "^4.26.0",
+    "feather-icons": "^4.28.0",
     "shadow-cljs": "^2.8.93",
     "source-map-support": "^0.5.16",
     "url-parse": "^1.4.7"

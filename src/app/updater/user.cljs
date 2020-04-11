@@ -34,7 +34,7 @@
        db
        [:sessions sid :messages]
        (fn [messages]
-         (assoc messages op-id {:id op-id, :text (str "Name is token: " username)})))
+         (assoc messages op-id {:id op-id, :text (str "Name is taken: " username)})))
       (-> db
           (assoc-in [:sessions sid :user-id] op-id)
           (assoc-in
