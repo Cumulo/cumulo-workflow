@@ -13,7 +13,8 @@
             [recollect.diff :refer [diff-twig]]
             [recollect.twig :refer [render-twig]]
             [ws-edn.server :refer [wss-serve! wss-send! wss-each!]]
-            [favored-edn.core :refer [write-edn]])
+            [favored-edn.core :refer [write-edn]]
+            [app.build-info :as build-info])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
 (defonce *client-caches (atom {}))

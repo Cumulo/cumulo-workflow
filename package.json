@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "feather-icons": "^4.28.0",
-    "shadow-cljs": "^2.9.0",
+    "node-notifier": "^7.0.0",
+    "shadow-cljs": "^2.9.2",
     "source-map-support": "^0.5.19",
     "url-parse": "^1.4.7"
   }
