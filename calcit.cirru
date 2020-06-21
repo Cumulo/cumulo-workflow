@@ -1395,6 +1395,40 @@
                                       |j $ {} (:type :leaf) (:by |root) (:at 1517930819804) (:text "|\"Unknown op:") (:id |S1LxSYrvLM)
                                       |r $ {} (:type :leaf) (:by |root) (:at 1517930818446) (:text |op) (:id |Sye5StrPIf)
                                   |r $ {} (:type :leaf) (:id |BykZNlLbxRSW) (:text |identity) (:by |root) (:at 1517930805185)
+                      |D $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690540885)
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690550641) (:text |session) (:id |MYqjRJfllleaf)
+                          |j $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690553430)
+                            :data $ {}
+                              |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690555595) (:text |get-in) (:id |86uFhSp1xn)
+                              |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690555932) (:text |db) (:id |qqqM5pnYGV)
+                              |r $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690556882)
+                                :data $ {}
+                                  |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690557104) (:text |[]) (:id |JaQwaiY5q)
+                                  |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690559221) (:text |:sessions) (:id |P4cVlNGAAC)
+                                  |r $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690560293) (:text |sid) (:id |BKx2v2ngQ4)
+                                :id |BYszP7NaY0
+                            :id |VKN89vDVv
+                        :id |MYqjRJfll
+                      |L $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690561305)
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690563721) (:text |user) (:id |NpXkY1JzWleaf)
+                          |j $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690563994)
+                            :data $ {}
+                              |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690564923) (:text |get-in) (:id |2lLHSVQwtZ)
+                              |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690565646) (:text |db) (:id |AgcAOq5vl)
+                              |r $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690566041)
+                                :data $ {}
+                                  |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690566313) (:text |[]) (:id |ymiLb-VNn5)
+                                  |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690567241) (:text |:users) (:id |YwXjBnw4lF)
+                                  |r $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1592690570870)
+                                    :data $ {}
+                                      |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690572697) (:text |:user-id) (:id |K5kmLxVz6)
+                                      |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690574624) (:text |session) (:id |KOVKDJwH9O)
+                                    :id |t58hS0odzq
+                                :id |5TlTBZfmpw
+                            :id |RFBqhi3BZr
+                        :id |NpXkY1JzW
                   |j $ {} (:type :expr) (:by |root) (:at 1517930704255) (:id |HyxOAOHDUM)
                     :data $ {}
                       |T $ {} (:type :leaf) (:by |root) (:at 1517930704937) (:text |f) (:id |HyxOAOHDUMleaf)
@@ -1403,6 +1437,8 @@
                       |v $ {} (:type :leaf) (:by |root) (:at 1517930725426) (:text |sid) (:id |r1JytHD8G)
                       |x $ {} (:type :leaf) (:by |root) (:at 1517930717948) (:text |op-id) (:id |S1z4JKSDLG)
                       |y $ {} (:type :leaf) (:by |root) (:at 1517930719120) (:text |op-time) (:id |BkGLkYrDUz)
+                      |yT $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690579774) (:text |session) (:id |GFwkA4ALhX)
+                      |yj $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1592690581011) (:text |user) (:id |jayt3-y28)
         :proc $ {} (:type :expr) (:id |SkfhmgLbxRHb) (:by nil) (:at 1500541255553) (:data $ {})
       |app.config $ {}
         :ns $ {} (:type :expr) (:by |root) (:at 1527788708227) (:id |HJghs43Tk7)

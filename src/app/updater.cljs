@@ -7,7 +7,9 @@
             [respo-message.updater :refer [update-messages]]))
 
 (defn updater [db op op-data sid op-id op-time]
-  (let [f (case op
+  (let [session (get-in db [:sessions sid])
+        user (get-in db [:users (:user-id session)])
+        f (case op
             :session/connect session/connect
             :session/disconnect session/disconnect
             :session/remove-message session/remove-message
@@ -16,4 +18,4 @@
             :user/log-out user/log-out
             :router/change router/change
             (do (println "Unknown op:" op) identity))]
-    (f db op-data sid op-id op-time)))
+    (f db op-data sid op-id op-time session user)))
