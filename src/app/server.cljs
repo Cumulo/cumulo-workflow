@@ -64,8 +64,8 @@
        (if (not= changes [])
          (do
           (wss-send! sid {:kind :patch, :data changes})
-          (swap! *client-caches assoc sid new-store)))
-       (new-twig-loop!)))))
+          (swap! *client-caches assoc sid new-store))))))
+  (new-twig-loop!))
 
 (defn render-loop! []
   (when (not (identical? @*reader-reel @*reel))
