@@ -99,7 +99,9 @@
   (js/process.on "SIGINT" on-exit!)
   (repeat! 600 #(persist-db!)))
 
-(defn reload! []
+(defn ^:dev/after-load
+  reload!
+  []
   (println "Code updated.")
   (clear-twig-caches!)
   (reset! *reel (refresh-reel @*reel initial-db updater))
