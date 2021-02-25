@@ -1,4 +1,4 @@
 
-(ns app.twig.user (:require [recollect.twig :refer [deftwig]]))
+(ns app.twig.user (:require ))
 
-(deftwig twig-user (user) (dissoc user :password))
+(defn twig-user [user] (dissoc user :password))
